@@ -1,0 +1,37 @@
+{
+    "name": "mydriving-user-api",
+    "description": "This is the User API for the MyDriving service",
+    "version": "1.0.0",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Azure-Samples/openhack-devops.git"
+    },
+    "bugs": "http://github.com/Azure-Samples/openhack-devops/issues",
+    "dependencies": {
+        "express": "^4.0.0",
+        "express4-tedious": "^0.3.0",
+        "body-parser": "^1.15.0",
+        "swaggerize-express": "^4.0.0",
+        "swagmock": "~0.0.2",
+        "tedious": "^2.3.1"
+    },
+    "devDependencies": {
+        "eslint": "^2",
+        "tape": "^4",
+        "istanbul": "~0.4.3",
+        "is-my-json-valid": "^2.13.1",
+        "js-yaml": "^3.2.6",
+        "supertest": "^1.2.0",
+        "swagger-parser": "^3.4.1"
+    },
+    "scripts": {
+        "test": "tape 'tests/**/*.js'",
+        "cover": "istanbul cover tape -- 'tests/**/*.js'",
+        "lint": "eslint .",
+        "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.json'"
+    },
+    "generator-swaggerize": {
+        "version": "4.1.0"
+    },
+    "main": "./server"
+}

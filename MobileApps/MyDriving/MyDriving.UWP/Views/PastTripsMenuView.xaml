@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="MyDriving.UWP.Views.PastTripsMenuView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyDriving.DataObjects"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="Refresh" Label="Refresh" x:Name="RefreshButton" Click="RefreshButton_Click"/>
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{StaticResource MainBackgroundColor}">
+        <ListView x:Name="ListView" ItemsSource="{x:Bind ViewModel.Trips, Mode=OneWay}" SelectionChanged="listView_SelectionChanged" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="0,4,0,0"  />
+                    <Setter Property="Background" Value="{StaticResource MainBackgroundColor2}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource PastTripsBorderColor}" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="0,0,0,0" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:Trip">
+                    <Grid Holding="ListViewItem_Holding" HorizontalAlignment="Stretch">
+                        <FlyoutBase.AttachedFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Delete"
+                                                            Click="DeleteButton_Click" />
+                            </MenuFlyout>
+                        </FlyoutBase.AttachedFlyout>
+
+
+                        <Grid  HorizontalAlignment="Stretch" Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Image x:Name="Image" Source="{x:Bind MainPhotoUrl, Converter={StaticResource ImageSourceConverter}, Mode=OneWay}" HorizontalAlignment="Stretch"  Stretch="UniformToFill" />
+                            <TextBlock Text="{x:Bind Name}" Margin="12,5,0,0" HorizontalAlignment="Left"  Grid.Row="1"/>
+                            <TextBlock Text="{x:Bind TimeAgo}" HorizontalAlignment="Left" Foreground="{StaticResource CalculationTextColor}" Margin="12,0,0,5" FontSize="13.333" Grid.Row="2"/>
+                            <TextBlock Text="{x:Bind TotalDistance}" HorizontalAlignment="Right" Foreground="{StaticResource CalculationTextColor}" Margin="0,0,12,5" FontSize="13.333" Grid.Row="2"/>
+                           
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
