@@ -1,57 +1,28 @@
 # Project Name
 
-(short, 1-3 sentenced, description of the project)
+The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
-## Features
+## Architecture
 
-This project framework provides the following features:
+The application used for this event is a heavily modified and recreated version of the original [My Driving application](https://github.com/Azure-Samples/MyDriving).
 
-* Feature 1
-* Feature 2
-* ...
+The team environment consists of the following:
+* Azure Container Service (AKS) cluster which has three APIs deployed:
+    * POI (Trip Points of Interest) - CRUD API written in .Net Core 2 for points of interest on trips
+    * Trips - CRUD open API written in golang for trips connected to the client application
+    * UserProfile - CRUD open API written in Node.JS for the users of the client application
+* Mobile Apps - for iOS and Android which will display driving trip data
 
 ## Getting Started
 
+To understand each of the components above in more detail, please visit the readme files inside the root folder of each corresponding part of the application.
+
 ### Prerequisites
 
-(ideally very short, if any)
-
-- OS
-- Library version
-- ...
-
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
-
-
-## Demo
-
-A demo app is included to show how to use the project.
-
-To run the demo, follow these steps:
-
-(Add steps to start up the demo)
-
-1.
-2.
-3.
+It is useful but not required to have a basic knowledge of the following topics:
+* Kubernetes
+* VSTS or Jenkins
 
 ## Resources
 
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+The provisioning of this environment for proctors can be found in the [DevOps Openhack Proctor](https://github.com/Azure-Samples/openhack-devops-proctor) Github repository.
