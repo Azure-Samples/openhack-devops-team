@@ -1,0 +1,302 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for the user profile in the My Driving example app. https://github.com/Azure-Samples/openhack-devops",
+        "version": "0.1.0",
+        "title": "My Driving User Profile API"
+    },
+    "host": "myazurek8slbname.cloudapp.net",
+    "basePath": "/api",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/healthcheck/user": {
+            "x-swagger-router-controller": "healthcheck",
+            "get": {
+                "description": "Returns healthcheck for systems looking to ensure API is up and operational",
+                "responses": {
+                    "200": {
+                        "description": "Service is healthy",
+                        "schema": {
+                            "$ref": "#/definitions/Healthcheck"
+                        }
+                    },
+                    "default": {
+                        "description": "An error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/error_response_default"
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get": {
+                "description": "List all user profiles",
+                "operationId": "getAllUsers",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "List of all users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Profile"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/inline_response_default"
+                        }
+                    }
+                },
+                "x-swagger-router-controller": "user"
+            }
+        },
+        "/user/{userID}": {
+            "parameters": [
+                {
+                    "name": "userID",
+                    "in": "path",
+                    "description": "User's unique ID",
+                    "type": "string",
+                    "required": true
+                }
+            ],
+            "get": {
+                "description": "Get a User Profile by ID",
+                "operationId": "userGET",
+                "responses": {
+                    "200": {
+                        "description": "List of profiles",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Profile"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/inline_response_default"
+                        }
+                    }
+                },
+                "x-swagger-router-controller": "user"
+            },
+            "post": {
+                "description": "Declares and creates a new profile",
+                "operationId": "userPOST",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "_profile",
+                        "description": "Details of the profile",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Creation successful",
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        },
+                        "headers": {
+                            "location": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "An error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/inline_response_default"
+                        }
+                    }
+                },
+                "x-swagger-router-controller": "user"
+            },
+            "patch": {
+                "description": "Update User",
+                "operationId": "updateUser",
+                "responses": {
+                    "200": {
+                        "description": "User Updated",
+                        "schema": {
+                            "$ref": "#/definitions/Profile"
+                        }
+                    },
+                    "404": {
+                        "description": "User profile not found"
+                    },
+                    "default": {
+                        "description": "Unknown Error",
+                        "schema": {
+                            "$ref": "#/definitions/error_response_default"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete User By ID",
+                "operationId": "userDELETE",
+                "responses": {
+                    "204": {
+                        "description": "User Deleted"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "default": {
+                        "description": "Unknown Error",
+                        "schema": {
+                            "$ref": "#/definitions/error_response_default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Healthcheck": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "description": ""
+                },
+                "status": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        },
+        "Profile": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "User's unique identity"
+                },
+                "firstName": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 50,
+                    "pattern": "^[A-Za-z \u0000-][a-zA-Z \u0000-]*$"
+                },
+                "lastName": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 80,
+                    "pattern": "^[A-Za-z \u0000-][a-zA-Z \u0000-]*$"
+                },
+                "userId": {
+                    "type": "string",
+                    "description": "User's identity"
+                },
+                "profilePictureUri": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "User's Profile picture"
+                },
+                "rating": {
+                    "type": "integer",
+                    "description": "User's rating"
+                },
+                "ranking": {
+                    "type": "integer",
+                    "description": "User's ranking"
+                },
+                "totalDistance": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "User's total distance traveled"
+                },
+                "totalTrips": {
+                    "type": "integer",
+                    "format": "long",
+                    "description": "User's total number of trips"
+                },
+                "totalTime": {
+                    "type": "integer",
+                    "format": "long",
+                    "description": "User's total driving time"
+                },
+                "hardStops": {
+                    "type": "integer",
+                    "format": "long",
+                    "description": "User's total number of hard stops"
+                },
+                "hardAccelerations": {
+                    "type": "integer",
+                    "format": "long",
+                    "description": "User's total number of hard accelerations"
+                },
+                "fuelConsumption": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "User's amount of fuel consumed"
+                },
+                "maxSpeed": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "User's maximum speed"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "deleted": {
+                    "type": "boolean",
+                    "description": "Whether the user has been deleted or not."
+                }
+            }
+        },
+        "error_response_default": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "Error code (if available)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "description": "Error Message",
+                    "type": "string"
+                }
+            }
+        },
+        "inline_response_default": {
+            "required": [
+                "message",
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
