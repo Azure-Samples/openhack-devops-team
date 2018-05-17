@@ -1,8 +1,5 @@
-package: .
+package: github.com/Azure-Samples/openhack-devops-team/apis/trips
 import:
-- package: github.com/Azure-Samples/openhack-devops
-  subpackages:
-  - src/MobileAppServiceV2/TripService/tripsgo
 - package: github.com/codemodus/swagui
 - package: github.com/denisenkom/go-mssqldb
 - package: github.com/gorilla/mux

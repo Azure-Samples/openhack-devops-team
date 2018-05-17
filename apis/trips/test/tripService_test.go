@@ -5,9 +5,9 @@ import (
 	"log"
 	"testing"
 
-	"github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService/tripsgo"
+	"github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
 
-	tripSvc "github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService/tripsgo"
+	tripSvc "github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
 )
 
 var apiTestList = []apiTestCase{
