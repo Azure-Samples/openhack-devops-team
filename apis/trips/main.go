@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	sw "github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService/tripsgo"
+	sw "github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
 )
 
 var (

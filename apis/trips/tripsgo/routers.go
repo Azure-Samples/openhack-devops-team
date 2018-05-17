@@ -36,6 +36,8 @@ func NewRouter() *mux.Router {
 
 	// add docs route
 	CreateDocsHandler(router, docsRoute)
+	CreateDocsHandler(router, docsRoute2)
+
 	return router
 }
 
@@ -101,6 +103,13 @@ var docsRoute = Route{
 	"swagger-ui",
 	strings.ToUpper("Get"),
 	"/api/docs/trips/",
+	nil,
+}
+
+var docsRoute2 = Route{
+	"swagger-ui",
+	strings.ToUpper("Get"),
+	"/api/docs/trips",
 	nil,
 }
 
