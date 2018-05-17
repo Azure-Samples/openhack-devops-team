@@ -4,9 +4,9 @@
     "version": "1.0.0",
     "repository": {
         "type": "git",
-        "url": "git://github.com/Azure-Samples/openhack-devops.git"
+        "url": "git://github.com/Azure-Samples/openhack-devops-team.git"
     },
-    "bugs": "http://github.com/Azure-Samples/openhack-devops/issues",
+    "bugs": "http://github.com/Azure-Samples/openhack-devops-team/issues",
     "dependencies": {
         "express": "^4.0.0",
         "express4-tedious": "^0.3.0",

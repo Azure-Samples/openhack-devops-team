@@ -1,8 +1,8 @@
 FROM golang:1.10.1 AS gobuild
 
-RUN go get -t github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService
+RUN go get -t github.com/Azure-Samples/openhack-devops-team/apis/trips
 
-WORKDIR /go/src/github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService
+WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
@@ -18,6 +18,6 @@ WORKDIR /app
 RUN apk add --update \
   ca-certificates
 
-COPY --from=gobuild /go/src/github.com/Azure-Samples/openhack-devops/src/MobileAppServiceV2/TripService/main .
+COPY --from=gobuild /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips/main .
 
 CMD ["./main"]
