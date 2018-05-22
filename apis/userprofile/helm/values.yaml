@@ -18,10 +18,13 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     dnsurlreplace:
-      - path: /tables/UserProfile
+      - path: /api/user/*
         serviceName: api-user-mydrive-user
         servicePort: 80
-      - path: /docs
+      - path: /api/docs/user
+        serviceName: api-user-mydrive-user
+        servicePort: 80
+      - path: /api/healthcheck/user
         serviceName: api-user-mydrive-user
         servicePort: 80
 resources: {}

@@ -18,11 +18,16 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: traefik
   rules:
-    akstraefikrg9aa1.eastus.cloudapp.azure.com:
-      - path: /api/GetAllPOIs
+    dnsurlreplace:
+      - path: /api/poi
         serviceName: api-poi-mydrive-poi
         servicePort: 80
-
+      - path: /api/healthcheck/poi
+        serviceName: api-poi-mydrive-poi
+        servicePort: 80
+      - path: /api/docs/poi
+        serviceName: api-poi-mydrive-poi
+        servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
