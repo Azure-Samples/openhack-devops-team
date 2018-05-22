@@ -17,11 +17,14 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: traefik
   rules:
-    dnsurlreplace:
+    akstraefikteam1t2h6.eastus.cloudapp.azure.com:
       - path: /api/trips/*
         serviceName: api-trips-mydrive-trips
         servicePort: 80
-      - path: /healthcheck
+      - path: /api/healthcheck/trips/
+        serviceName: api-trips-mydrive-trips
+        servicePort: 80
+      - path: /api/docs/trips/
         serviceName: api-trips-mydrive-trips
         servicePort: 80
 resources: {}
