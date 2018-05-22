@@ -21,7 +21,10 @@ ingress:
       - path: /api/trips/*
         serviceName: api-trips-mydrive-trips
         servicePort: 80
-      - path: /healthcheck
+      - path: /api/healthcheck/trips/
+        serviceName: api-trips-mydrive-trips
+        servicePort: 80
+      - path: /api/docs/trips/
         serviceName: api-trips-mydrive-trips
         servicePort: 80
 resources: {}

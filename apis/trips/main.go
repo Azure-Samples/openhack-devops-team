@@ -12,7 +12,7 @@ import (
 
 var (
 	webServerPort    = flag.String("webServerPort", getEnv("WEB_PORT", "8080"), "web server port")
-	webServerBaseURI = flag.String("webServerBaseURI", getEnv("SERVER_BASE_URI", "changeme"), "base portion of server uri")
+	webServerBaseURI = flag.String("webServerBaseURI", getEnv("WEB_SERVER_BASE_URI", "changeme"), "base portion of server uri")
 )
 
 func getEnv(key, fallback string) string {
