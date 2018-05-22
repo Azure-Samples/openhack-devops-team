@@ -11,7 +11,7 @@ FROM alpine:3.7 AS gorun
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
 SQL_SERVER="changeme.database.windows.net" \
-SQL_DBNAME="mydrivingDB"
+SQL_DBNAME="mydrivingDB" \
 WEB_PORT="8080" \
 WEB_SERVER_BASE_URI="http://localhost" \
 DEBUG_LOGGING="false"
