@@ -7,11 +7,15 @@ var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var tediousExpress = require('express4-tedious');
 var sqlConfig = require('./config/sqlConfig');
+var morgan = require('morgan');
 
 var App = Express();
 
 var Server = Http.createServer(App);
 
+var logger = morgan(':remote-addr [:date[web]] :method :url HTTP/:http-version :status :res[content-length] :referrer :user-agent :response-time ms');
+
+App.use(logger);
 App.use(function (req, res, next) {
     req.sql = tediousExpress(sqlConfig);
     next();

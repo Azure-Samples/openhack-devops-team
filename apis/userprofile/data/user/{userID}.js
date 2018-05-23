@@ -1,7 +1,5 @@
 'use strict';
-var express = require('express');
 var Mockgen = require('../mockgen.js');
-var router = express.Router();
 var TYPES = require('tedious').TYPES;
 var queries = require('../queries');
 /**
