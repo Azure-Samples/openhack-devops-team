@@ -14,7 +14,7 @@ SQL_SERVER="changeme.database.windows.net" \
 SQL_DBNAME="mydrivingDB" \
 WEB_PORT="8080" \
 DOCS_PORT="80" \
-WEB_SERVER_BASE_URI="http://localhost" \
+WEB_SERVER_BASE_URI="http://0.0.0.0" \
 DEBUG_LOGGING="false"
 
 WORKDIR /app
