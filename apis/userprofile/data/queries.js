@@ -55,13 +55,13 @@ WITH \
 	FuelConsumption float(53),\
 	MaxSpeed float(53),\
 	Deleted bit\
- ) as json'
+ ) as json';
 
- exports.SELECT_USER_PROFILE_BY_ID=
- 'select * from userprofiles where id = @user_profile_id FOR JSON PATH, ROOT(\'user_profiles\')'
+exports.SELECT_USER_PROFILE_BY_ID=
+ 'select * from userprofiles where id = @user_profile_id FOR JSON PATH, ROOT(\'user_profiles\')';
 
- exports.SELECT_USER_PROFILES=
- 'select * FROM userprofiles FOR JSON PATH, ROOT(\'user_profiles\')'
+exports.SELECT_USER_PROFILES=
+ 'select * FROM userprofiles FOR JSON PATH, ROOT(\'user_profiles\')';
 
- exports.DELETE_USER_PROFILE=
- 'UPDATE userprofiles SET Deleted = 1 WHERE id = @user_profile_id'
+exports.DELETE_USER_PROFILE=
+ 'UPDATE userprofiles SET Deleted = 1 WHERE id = @user_profile_id';

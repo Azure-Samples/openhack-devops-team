@@ -10,6 +10,6 @@ const sqlConfig = {
         rowCollectionOnDone: true
         // Persist Security Info=False;Connection Timeout=30
     }
-}
+};
 
 exports = module.exports = sqlConfig;
