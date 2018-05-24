@@ -28,6 +28,9 @@ ingress:
       - path: /api/docs/poi
         serviceName: api-poi-svc
         servicePort: 80
+      - path: /swagger/docs/poi
+        serviceName: api-poi-svc
+        servicePort: 80        
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
