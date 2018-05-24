@@ -14,7 +14,9 @@ namespace poi
     {
         public static void Main(string[] args)
         {
+
             BuildWebHost(args).Run();
+
         }
 
         public static IWebHost BuildWebHostOld(string[] args) =>
@@ -24,18 +26,33 @@ namespace poi
 
 
         public static IWebHost BuildWebHost(string[] args) {
+            
+            //used to read env variables for host/port
             var configuration = new ConfigurationBuilder()
-                .AddCommandLine(args)
-                .AddEnvironmentVariables()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
-                .Build();
+            .AddEnvironmentVariables()
+            .Build();
+
 
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)
                 .UseIISIntegration()
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                })
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    var env = hostingContext.HostingEnvironment;
+                    config.AddCommandLine(args);
+                    config.AddEnvironmentVariables();
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile("appSettings.json", optional: false, reloadOnChange: true);
+                    config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                })
                 .UseStartup<Startup>()
                 .UseUrls(POIConfiguration.GetUri(configuration))
                 .Build();
