@@ -26,7 +26,7 @@ namespace poi
 
 
         public static IWebHost BuildWebHost(string[] args) {
-            
+
             //used to read env variables for host/port
             var configuration = new ConfigurationBuilder()
             .AddEnvironmentVariables()
@@ -47,11 +47,11 @@ namespace poi
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var env = hostingContext.HostingEnvironment;
-                    config.AddCommandLine(args);
-                    config.AddEnvironmentVariables();
                     config.SetBasePath(Directory.GetCurrentDirectory());
                     config.AddJsonFile("appSettings.json", optional: false, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
+                    config.AddCommandLine(args);
                 })
                 .UseStartup<Startup>()
                 .UseUrls(POIConfiguration.GetUri(configuration))

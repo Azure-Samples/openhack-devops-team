@@ -28,8 +28,7 @@ namespace poi.Controllers
         public IActionResult Get()
         {
             _logger.LogInformation(LoggingEvents.Healthcheck, "Healthcheck Requested");
-            string response = JsonConvert.SerializeObject(new Healthcheck());
-            return Ok(response);
+            return Ok(new Healthcheck());
         }
     }
 
