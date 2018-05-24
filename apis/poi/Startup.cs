@@ -52,14 +52,15 @@ namespace poi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger(c => 
+            app.UseSwagger(c =>
                 c.RouteTemplate = "swagger/{documentName}/poi/swagger.json"
             );
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
