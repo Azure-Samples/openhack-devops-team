@@ -8,21 +8,23 @@
     },
     "bugs": "http://github.com/Azure-Samples/openhack-devops-team/issues",
     "dependencies": {
-        "express": "^4.0.0",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.3",
         "express4-tedious": "^0.3.0",
-        "body-parser": "^1.15.0",
-        "swaggerize-express": "^4.0.0",
+        "morgan": "^1.9.0",
+        "swaggerize-express": "^4.0.5",
         "swagmock": "~0.0.2",
-        "tedious": "^2.3.1"
+        "swagger-ui-express": "^3.0.9",
+        "tedious": "^2.6.1"
     },
     "devDependencies": {
         "eslint": "^2",
         "tape": "^4",
-        "istanbul": "~0.4.3",
-        "is-my-json-valid": "^2.13.1",
-        "js-yaml": "^3.2.6",
-        "supertest": "^1.2.0",
-        "swagger-parser": "^3.4.1"
+        "istanbul": "~0.4.5",
+        "is-my-json-valid": "^2.17.2",
+        "js-yaml": "^3.11.0",
+        "supertest": "^3.1.0",
+        "swagger-parser": "^4.1.0"
     },
     "scripts": {
         "test": "tape 'tests/**/*.js'",
