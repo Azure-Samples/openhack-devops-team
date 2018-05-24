@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyDriving.ServiceObjects
+namespace poi.Models
 {
     public class BaseDataObject
     {
