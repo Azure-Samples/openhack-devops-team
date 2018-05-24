@@ -49,7 +49,7 @@ spec:
                 name: sql
                 key: sql_dbname
           - name: WEB_SERVER_BASE_URI
-            value: "http://localhost"
+            value: {{ .Values.env.webServerBaseUri }}
           - name: WEB_PORT
             value: '8080'
           - name: DEBUG_LOGGING
