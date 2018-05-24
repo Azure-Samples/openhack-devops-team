@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	wsp  = flag.String("wsp", getEnv("WEB_PORT", "8080"), "web server port")
+	wsp  = flag.String("wsp", getEnv("DOCS_PORT", "80"), "docs endpoint port")
 	wsbu = flag.String("wsbu", getEnv("WEB_SERVER_BASE_URI", "changeme"), "base portion of server uri")
 )
 

@@ -52,6 +52,8 @@ spec:
             value: {{ .Values.env.webServerBaseUri }}
           - name: WEB_PORT
             value: '8080'
+          - name: DOCS_PORT
+            value: '80'
           - name: DEBUG_LOGGING
             value: 'true'
 

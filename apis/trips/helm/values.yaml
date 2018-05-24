@@ -29,6 +29,9 @@ ingress:
       - path: /api/docs/trips/
         serviceName: api-trip-svc
         servicePort: 80
+      - path: /api/docs/trips
+        serviceName: api-trip-svc
+        servicePort: 80
       - path: /api/json
         serviceName: api-trip-svc
         servicePort: 80
