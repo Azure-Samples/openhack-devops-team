@@ -27,6 +27,9 @@ ingress:
       - path: /api/docs/trips/
         serviceName: api-trip-svc
         servicePort: 80
+      - path: /api/json
+        serviceName: api-trip-svc
+        servicePort: 80        
 resources: {}
  # We usually recommend not to specify default resources and to leave this as a conscious
  # choice for the user. This also increases chances charts run on environments with little
