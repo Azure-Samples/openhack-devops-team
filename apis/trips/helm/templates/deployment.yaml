@@ -54,6 +54,5 @@ spec:
             value: '8080'
           - name: DOCS_URI
             value: {{ .Values.env.webServerBaseUri }}
-            - name: DEBUG_LOGGING
+          - name: DEBUG_LOGGING
             value: 'true'
-
