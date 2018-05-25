@@ -48,3 +48,9 @@ spec:
               secretKeyRef:
                 name: sql
                 key: sql_dbname
+          - name: WEB_SERVER_BASE_URI
+            value: 'http://0.0.0.0'
+          - name: WEB_PORT
+            value: '8080'
+          - name: ASPNETCORE_ENVIRONMENT
+            value: 'Production'

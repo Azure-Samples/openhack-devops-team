@@ -10,6 +10,8 @@ image:
   name: mydrive-trips
   label: mydrive-trips
   containerPort: 8080
+env:
+  webServerBaseUri: 'http://localhost'
 service:
   externalPort: 80
 ingress:
@@ -18,14 +20,20 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     dnsurlreplace:
-      - path: /api/trips/*
-        serviceName: api-trips-mydrive-trips
+      - path: /api/trips
+        serviceName: api-trip-svc
         servicePort: 80
       - path: /api/healthcheck/trips/
-        serviceName: api-trips-mydrive-trips
+        serviceName: api-trip-svc
         servicePort: 80
       - path: /api/docs/trips/
-        serviceName: api-trips-mydrive-trips
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/docs/trips
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/json
+        serviceName: api-trip-svc
         servicePort: 80
 resources: {}
  # We usually recommend not to specify default resources and to leave this as a conscious

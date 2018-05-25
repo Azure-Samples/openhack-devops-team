@@ -20,14 +20,17 @@ ingress:
   rules:
     dnsurlreplace:
       - path: /api/poi
-        serviceName: api-poi-mydrive-poi
+        serviceName: api-poi-svc
         servicePort: 80
       - path: /api/healthcheck/poi
-        serviceName: api-poi-mydrive-poi
+        serviceName: api-poi-svc
         servicePort: 80
       - path: /api/docs/poi
-        serviceName: api-poi-mydrive-poi
+        serviceName: api-poi-svc
         servicePort: 80
+      - path: /swagger/docs/poi
+        serviceName: api-poi-svc
+        servicePort: 80        
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

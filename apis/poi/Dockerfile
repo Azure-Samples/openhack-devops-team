@@ -25,7 +25,5 @@ ASPNETCORE_ENVIRONMENT="Production"
 
 COPY --from=build-env /app/out .
 
-EXPOSE 8080
-
 ENTRYPOINT ["dotnet", "poi.dll"]
 

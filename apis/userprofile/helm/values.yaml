@@ -18,14 +18,14 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     dnsurlreplace:
-      - path: /api/user/*
-        serviceName: api-user-mydrive-user
+      - path: /api/user
+        serviceName: api-user-svc
         servicePort: 80
       - path: /api/docs/user
-        serviceName: api-user-mydrive-user
+        serviceName: api-user-svc
         servicePort: 80
       - path: /api/healthcheck/user
-        serviceName: api-user-mydrive-user
+        serviceName: api-user-svc
         servicePort: 80
 resources: {}
  # We usually recommend not to specify default resources and to leave this as a conscious
