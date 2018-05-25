@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	wsp  = flag.String("wsp", getEnv("DOCS_PORT", "80"), "docs endpoint port")
+	du   = flag.String("du", getEnv("DOCS_URI", "http://localhost:8080"), "docs endpoint")
 	wsbu = flag.String("wsbu", getEnv("WEB_SERVER_BASE_URI", "changeme"), "base portion of server uri")
 )
 
@@ -29,14 +29,13 @@ type Routes []Route
 
 // NewRouter - Constructor
 func NewRouter() *mux.Router {
-	router := mux.NewRouter() //.StrictSlash(true)
+	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		CreateHandler(router, route)
 	}
 
 	// add docs route
 	CreateDocsHandler(router, docsRoute)
-	CreateDocsHandler(router, docsRoute2)
 
 	return router
 }
@@ -64,10 +63,8 @@ func CreateDocsHandler(router *mux.Router, route Route) {
 	// var handler http.Handler
 	var options swagui.Options
 	options.PathPrefix = route.Pattern
-	options.DefaultURLParam = fmt.Sprintf("%s%s%s%s",
-		*wsbu,
-		":",
-		*wsp,
+	options.DefaultURLParam = fmt.Sprintf("%s%s",
+		*du,
 		"/api/json/swagger.json")
 
 	ui, err := swagui.New(&options)
@@ -103,13 +100,6 @@ var docsRoute = Route{
 	"swagger-ui",
 	strings.ToUpper("Get"),
 	"/api/docs/trips/",
-	nil,
-}
-
-var docsRoute2 = Route{
-	"swagger-ui",
-	strings.ToUpper("Get"),
-	"/api/docs/trips",
 	nil,
 }
 
