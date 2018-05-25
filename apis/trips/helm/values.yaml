@@ -23,7 +23,7 @@ ingress:
       - path: /api/trips
         serviceName: api-trip-svc
         servicePort: 80
-      - path: /api/healthcheck/trips/
+      - path: /api/healthcheck/trips
         serviceName: api-trip-svc
         servicePort: 80
       - path: /api/docs/trips/
