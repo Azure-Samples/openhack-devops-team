@@ -20,6 +20,7 @@ ingress:
   rules:
     endpoint:
       host: changeme
+      paths:
       - path: /api/poi
         serviceName: api-poi-svc
         servicePort: 80
