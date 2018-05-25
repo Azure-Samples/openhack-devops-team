@@ -19,7 +19,9 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: traefik
   rules:
-    dnsurlreplace:
+    endpoint:
+      host: changme
+      paths:
       - path: /api/trips
         serviceName: api-trip-svc
         servicePort: 80

@@ -18,10 +18,10 @@ metadata:
 spec:
   rules:
     {{- range $key, $value := .Values.ingress.rules }}
-    - host: {{ $key }}
+    - host: {{ $value.host }}
       http:
         paths:
-        {{- range $path := . }}
+        {{- range $path := .paths }}
           - path: {{ $path.path }}
             backend:
               serviceName: {{ $path.serviceName }}
