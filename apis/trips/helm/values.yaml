@@ -9,7 +9,7 @@ repository:
 image:
   name: mydrive-trips
   label: mydrive-trips
-  containerPort: 8080
+  containerPort: 80
 env:
   webServerBaseUri: 'http://localhost'
 service:
@@ -20,7 +20,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     endpoint:
-      host: changme
+      host: changeme
       paths:
       - path: /api/trips
         serviceName: api-trip-svc
