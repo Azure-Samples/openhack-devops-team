@@ -1,6 +1,6 @@
 ![Build Status](https://team1-hacker6.visualstudio.com/_apis/public/build/definitions/cffdb472-5477-483e-8f65-9bd9704d0f7c/5/badge)
 
-# Project Name
+# Project Name 
 
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
