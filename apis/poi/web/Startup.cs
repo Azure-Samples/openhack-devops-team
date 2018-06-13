@@ -14,6 +14,7 @@ using System.Reflection;
 using poi.Data;
 using poi.Utility;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace poi
 {
@@ -55,6 +56,8 @@ namespace poi
                 app.UseBrowserLink();
             }
 
+            app.UseRewriter(new RewriteOptions().AddRedirect("(.*)api/docs/poi$", "$1api/docs/poi/index.html"));
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger(c =>
                 c.RouteTemplate = "swagger/{documentName}/poi/swagger.json"
@@ -66,9 +69,6 @@ namespace poi
             {
                 c.SwaggerEndpoint("/swagger/docs/poi/swagger.json", "Points Of Interest(POI) API V1");
                 c.DocumentTitle = "POI Swagger UI";
-                // Due to github issue https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/678
-                // you must include the trailing slash to get the swagger UI.
-                // Ex. http://localhost:8080/api/docs/poi/
                 c.RoutePrefix = "api/docs/poi";
             });
 
