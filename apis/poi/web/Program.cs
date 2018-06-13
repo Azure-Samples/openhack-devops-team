@@ -19,12 +19,6 @@ namespace poi
 
         }
 
-        public static IWebHost BuildWebHostOld(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-
-
         public static IWebHost BuildWebHost(string[] args) {
 
             //used to read env variables for host/port
