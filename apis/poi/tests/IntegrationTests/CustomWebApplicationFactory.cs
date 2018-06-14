@@ -3,15 +3,49 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using poi.Data;
 using IntegrationTests.Utilities;
+using System.IO;
 
 namespace IntegrationTests
 {
     public class CustomWebApplicationFactory<TStartup>
-        : WebApplicationFactory<poi.Startup>
+        : WebApplicationFactory<IntegrationTests.Startup>
     {
+        protected override IWebHostBuilder CreateWebHostBuilder(){
+            //used to read env variables for host/port
+            var configuration = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .Build();
+
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                //.UseContentRoot(Directory.GetCurrentDirectory())
+                .UseConfiguration(configuration)
+                .UseIISIntegration()
+                // .ConfigureLogging((hostingContext, logging) =>
+                // {
+                //     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                //     logging.AddConsole();
+                //     logging.AddDebug();
+                // })
+                // .ConfigureAppConfiguration((hostingContext, config) =>
+                // {
+                //     var env = hostingContext.HostingEnvironment;
+                //     config.SetBasePath(Directory.GetCurrentDirectory());
+                //     config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                //     config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                //     config.AddEnvironmentVariables();
+                //     //config.AddCommandLine(args);
+                // })
+                //.UseStartup<IntegrationTests.Startup>()
+                .UseUrls("http://localhost:8080");
+
+            return host;
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>

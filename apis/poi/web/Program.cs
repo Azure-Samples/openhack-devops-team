@@ -21,11 +21,14 @@ namespace poi
 
         public static IWebHost BuildWebHost(string[] args) {
 
+            return CreateWebHostBuilder(args).Build();
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) {
             //used to read env variables for host/port
             var configuration = new ConfigurationBuilder()
             .AddEnvironmentVariables()
             .Build();
-
 
             var host = new WebHostBuilder()
                 .UseKestrel()
@@ -48,10 +51,10 @@ namespace poi
                     config.AddCommandLine(args);
                 })
                 .UseStartup<Startup>()
-                .UseUrls(POIConfiguration.GetUri(configuration))
-                .Build();
+                .UseUrls(POIConfiguration.GetUri(configuration));
 
             return host;
+
         }
     }
 }
