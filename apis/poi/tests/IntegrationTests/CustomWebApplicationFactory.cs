@@ -12,7 +12,7 @@ using System.IO;
 namespace IntegrationTests
 {
     public class CustomWebApplicationFactory<TStartup>
-        : WebApplicationFactory<IntegrationTests.Startup>
+        : WebApplicationFactory<poi.Startup>
     {
         protected override IWebHostBuilder CreateWebHostBuilder(){
             //used to read env variables for host/port
@@ -22,25 +22,15 @@ namespace IntegrationTests
 
             var host = new WebHostBuilder()
                 .UseKestrel()
-                //.UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(configuration)
                 .UseIISIntegration()
-                // .ConfigureLogging((hostingContext, logging) =>
-                // {
-                //     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                //     logging.AddConsole();
-                //     logging.AddDebug();
-                // })
-                // .ConfigureAppConfiguration((hostingContext, config) =>
-                // {
-                //     var env = hostingContext.HostingEnvironment;
-                //     config.SetBasePath(Directory.GetCurrentDirectory());
-                //     config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                //     config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-                //     config.AddEnvironmentVariables();
-                //     //config.AddCommandLine(args);
-                // })
-                //.UseStartup<IntegrationTests.Startup>()
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
+                    logging.AddDebug();
+                })
+                .UseStartup<IntegrationTests.Startup>()
                 .UseUrls("http://localhost:8080");
 
             return host;
