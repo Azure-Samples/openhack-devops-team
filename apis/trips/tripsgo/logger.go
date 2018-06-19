@@ -1,6 +1,7 @@
 package tripsgo
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -14,7 +15,7 @@ func Logger(inner http.Handler, name string) http.Handler {
 
 		inner.ServeHTTP(w, r)
 
-		log.Printf(
+		fmt.Printf(
 			"%s %s %s %s",
 			r.Method,
 			r.RequestURI,
