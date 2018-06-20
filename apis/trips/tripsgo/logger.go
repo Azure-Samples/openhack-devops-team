@@ -2,11 +2,37 @@ package tripsgo
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
+
+//
+var (
+	Info  *log.Logger
+	Debug *log.Logger
+	Fatal *log.Logger
+)
+
+// InitLogging - Initialize logging for trips api
+func InitLogging(
+	infoHandle io.Writer,
+	debugHandle io.Writer,
+	fatalHandle io.Writer) {
+
+	Info = log.New(infoHandle,
+		"INFO: ",
+		log.Ldate|log.Ltime|log.Lshortfile)
+
+	Debug = log.New(debugHandle,
+		"DEBUG: ",
+		log.Ldate|log.Ltime|log.Lshortfile)
+
+	Fatal = log.New(fatalHandle,
+		"FATAL: ",
+		log.Ldate|log.Ltime|log.Lshortfile)
+}
 
 // Logger - basic console logger that writes request info to stdout
 func Logger(inner http.Handler, name string) http.Handler {
@@ -15,21 +41,21 @@ func Logger(inner http.Handler, name string) http.Handler {
 
 		inner.ServeHTTP(w, r)
 
-		fmt.Printf(
+		Info.Println(fmt.Sprintf(
 			"%s %s %s %s",
 			r.Method,
 			r.RequestURI,
 			name,
 			time.Since(start),
-		)
+		))
 	})
 }
 
-// LogToConsole - log a message to console if debug is enabled.
-func LogToConsole(message string) {
-	var debug, present = os.LookupEnv("DEBUG_LOGGING")
+func LogMessage(msg string) {
+	Info.Println(msg)
+}
 
-	if present && debug == "true" {
-		log.Printf(message)
-	}
+func LogError(err error, msg string) {
+	Info.Println(msg)
+	Debug.Println(err)
 }

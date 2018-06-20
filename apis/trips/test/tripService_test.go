@@ -2,7 +2,9 @@ package tripsgo
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
@@ -85,7 +87,14 @@ var apiTestList = []apiTestCase{
 
 func TestTrip(t *testing.T) {
 	router := tripSvc.NewRouter()
+	var debug, present = os.LookupEnv("DEBUG_LOGGING")
 
+	if present && debug == "true" {
+		tripSvc.InitLogging(os.Stdout, os.Stdout, os.Stdout)
+	} else {
+		// if debug env is not present or false, do not log debug output to console
+		tripSvc.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
+	}
 	runAPITests(t, router, apiTestList[0:4])
 
 	//setup update test (url, body, expected Response)
@@ -113,7 +122,7 @@ func GetUpdateTrip(tripCreate string, tripUpdate string) string {
 func TripFromStr(tripStr string) tripsgo.Trip {
 	trip := tripsgo.Trip{}
 
-	tripsgo.LogToConsole(tripStr)
+	tripsgo.Debug.Println(tripStr)
 
 	errCreate := json.Unmarshal([]byte(tripStr), &trip)
 	if errCreate != nil {

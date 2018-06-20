@@ -117,7 +117,7 @@ func UpdateTripQuery(trip Trip) string {
 		trip.Distance,
 		trip.ID)
 
-	LogToConsole("updateTripQuery: " + formattedQuery)
+	Debug.Println("updateTripQuery: " + formattedQuery)
 
 	return formattedQuery
 }
@@ -174,12 +174,12 @@ func createTripQuery(trip Trip) string {
 		trip.HardAccelerations,
 		trip.Distance)
 
-	LogToConsole("createTripQuery: " + formattedQuery)
+	Debug.Println("createTripQuery: " + formattedQuery)
 
 	return formattedQuery
 }
 
-func SelectTripPointsForTripQuery(tripID string) string {
+func selectTripPointsForTripQuery(tripID string) string {
 
 	var query = `SELECT
 		[Id],
@@ -208,7 +208,7 @@ func SelectTripPointsForTripQuery(tripID string) string {
 		query,
 		tripID)
 
-	LogToConsole("SelectTripPointsForTripQuery: " + formattedQuery)
+	Debug.Println("SelectTripPointsForTripQuery: " + formattedQuery)
 
 	return formattedQuery
 }
