@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
+	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -24,9 +24,18 @@ func getEnv(key, fallback string) string {
 
 func main() {
 
-	log.Printf(fmt.Sprintf("%s%s", "Trips Service Server started on port ", *webServerPort))
+	var debug, present = os.LookupEnv("DEBUG_LOGGING")
+
+	if present && debug == "true" {
+		sw.InitLogging(os.Stdout, os.Stdout, os.Stdout)
+	} else {
+		// if debug env is not present or false, do not log debug output to console
+		sw.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
+	}
+
+	sw.Info.Println(fmt.Sprintf("%s%s", "Trips Service Server started on port ", *webServerPort))
 
 	router := sw.NewRouter()
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s%s", ":", *webServerPort), router))
+	sw.Fatal.Println(http.ListenAndServe(fmt.Sprintf("%s%s", ":", *webServerPort), router))
 }

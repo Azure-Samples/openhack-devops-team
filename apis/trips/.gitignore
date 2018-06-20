@@ -17,3 +17,5 @@ debug
 launch.json
 .DS_Store
 .vscode/
+vendor/
+glide.lock

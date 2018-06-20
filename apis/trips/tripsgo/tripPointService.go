@@ -17,12 +17,14 @@ func getTripPoints(w http.ResponseWriter, r *http.Request) {
 
 	var tripID = params["tripID"]
 
-	var query = SelectTripPointsForTripQuery(tripID)
+	var query = selectTripPointsForTripQuery(tripID)
 
 	statement, err := ExecuteQuery(query)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while retrieving trip points from database"))
+		var msg = "Error while retrieving trip points from database"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -50,7 +52,9 @@ func getTripPoints(w http.ResponseWriter, r *http.Request) {
 			&tp.VIN)
 
 		if err != nil {
-			fmt.Fprintf(w, SerializeError(err, "Error scanning Trip Points"))
+			var msg = "Error scanning Trip Points"
+			LogError(err, msg)
+			fmt.Fprintf(w, SerializeError(err, msg))
 			return
 		}
 
@@ -72,7 +76,9 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 	row, err := FirstOrDefault(query)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while retrieving trip point from database"))
+		var msg = "Error while retrieving trip point from database"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -81,7 +87,9 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 	err = row.Scan(&tripPoint.ID, &tripPoint.TripID, &tripPoint.Latitude, &tripPoint.Longitude, &tripPoint.Speed, &tripPoint.RecordedTimeStamp, &tripPoint.Sequence, &tripPoint.RPM, &tripPoint.ShortTermFuelBank, &tripPoint.LongTermFuelBank, &tripPoint.ThrottlePosition, &tripPoint.RelativeThrottlePosition, &tripPoint.Runtime, &tripPoint.DistanceWithMalfunctionLight, &tripPoint.EngineLoad, &tripPoint.EngineFuelRate, &tripPoint.VIN)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Failed to scan a trip point"))
+		var msg = "Failed to scan a trip point"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -100,7 +108,9 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &tripPoint)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while decoding json"))
+		var msg = "Error while decoding json"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -159,7 +169,9 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while reading request body"))
+		var msg = "Error while reading request body"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -168,7 +180,9 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &tripPoint)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while decoding json"))
+		var msg = "Error while decoding json"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -198,7 +212,9 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 	result, err := ExecuteNonQuery(updateQuery)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while patching Trip Point on the database"))
+		var msg = "Error while patching Trip Point on the database"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -213,7 +229,9 @@ func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
 	result, err := ExecuteNonQuery(deleteTripPointQuery)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while deleting trip point from database"))
+		var msg = "Error while deleting trip point from database"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -230,7 +248,9 @@ func getMaxSequence(w http.ResponseWriter, r *http.Request) {
 	row, err := FirstOrDefault(query)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while querying Max Sequence"))
+		var msg = "Error while querying Max Sequence"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
@@ -239,7 +259,9 @@ func getMaxSequence(w http.ResponseWriter, r *http.Request) {
 	err = row.Scan(&MaxSequence)
 
 	if err != nil {
-		fmt.Fprintf(w, SerializeError(err, "Error while obtaining max sequence"))
+		var msg = "Error while obtaining max sequence"
+		LogError(err, msg)
+		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 

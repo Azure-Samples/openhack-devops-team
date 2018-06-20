@@ -69,8 +69,7 @@ func CreateDocsHandler(router *mux.Router, route Route) {
 
 	ui, err := swagui.New(&options)
 	if err != nil {
-
-		fmt.Fprintln(os.Stderr, err)
+		Info.Println(err)
 		os.Exit(1)
 	}
 
