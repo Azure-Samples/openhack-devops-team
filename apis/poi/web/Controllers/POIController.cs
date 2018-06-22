@@ -63,5 +63,11 @@ namespace poi.Controllers
             }
             return Ok(items);
         }
+
+        [HttpPost(Name = "CreatePOI")]
+        public IActionResult CreatePoi(POI poi)
+        {
+            return Ok(poi);
+        }
     }
 }

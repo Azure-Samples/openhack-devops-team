@@ -69,9 +69,9 @@ func getTripPoints(w http.ResponseWriter, r *http.Request) {
 func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	tripPointID := params["id"]
+	tripPointID := params["tripPointID"]
 
-	query := "SELECT [Id], [TripId], [Latitude], [Longitude], [Speed], [RecordedTimeStamp], [Sequence], [RPM], [ShortTermFuelBank], [LongTermFuelBank], [ThrottlePosition], [RelativeThrottlePosition], [Runtime], [DistanceWithMalfunctionLight], [EngineLoad], [EngineFuelRate], [VIN] FROM TripPoints WHERE Id = '" + tripPointID + "' AND Deleted = 0"
+	var query = selectTripPointsForTripQuery(tripPointID)
 
 	row, err := FirstOrDefault(query)
 
@@ -84,7 +84,24 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 
 	var tripPoint TripPoint
 
-	err = row.Scan(&tripPoint.ID, &tripPoint.TripID, &tripPoint.Latitude, &tripPoint.Longitude, &tripPoint.Speed, &tripPoint.RecordedTimeStamp, &tripPoint.Sequence, &tripPoint.RPM, &tripPoint.ShortTermFuelBank, &tripPoint.LongTermFuelBank, &tripPoint.ThrottlePosition, &tripPoint.RelativeThrottlePosition, &tripPoint.Runtime, &tripPoint.DistanceWithMalfunctionLight, &tripPoint.EngineLoad, &tripPoint.EngineFuelRate, &tripPoint.VIN)
+	err = row.Scan(
+		&tripPoint.ID,
+		&tripPoint.TripID,
+		&tripPoint.Latitude,
+		&tripPoint.Longitude,
+		&tripPoint.Speed,
+		&tripPoint.RecordedTimeStamp,
+		&tripPoint.Sequence,
+		&tripPoint.RPM,
+		&tripPoint.ShortTermFuelBank,
+		&tripPoint.LongTermFuelBank,
+		&tripPoint.ThrottlePosition,
+		&tripPoint.RelativeThrottlePosition,
+		&tripPoint.Runtime,
+		&tripPoint.DistanceWithMalfunctionLight,
+		&tripPoint.EngineLoad,
+		&tripPoint.EngineFuelRate,
+		&tripPoint.VIN)
 
 	if err != nil {
 		var msg = "Failed to scan a trip point"

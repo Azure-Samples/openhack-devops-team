@@ -202,13 +202,45 @@ func selectTripPointsForTripQuery(tripID string) string {
 	FROM [dbo].[TripPoints]
 	WHERE
 		TripId = '%s'
-		Deleted = 0`
+	AND Deleted = 0`
 
 	var formattedQuery = fmt.Sprintf(
 		query,
 		tripID)
 
-	Debug.Println("SelectTripPointsForTripQuery: " + formattedQuery)
+	Debug.Println("selectTripPointsForTripQuery: " + formattedQuery)
+
+	return formattedQuery
+}
+
+func selectTripPointsForTripPointIDQuery(tripPointID string) string {
+	var query = `SELECT
+		[Id],
+		[TripId],
+		[Latitude],
+		[Longitude],
+		[Speed],
+		[RecordedTimeStamp],
+		[Sequence],
+		[RPM],
+		[ShortTermFuelBank],
+		[LongTermFuelBank],
+		[ThrottlePosition],
+		[RelativeThrottlePosition],
+		[Runtime],
+		[DistanceWithMalfunctionLight],
+		[EngineLoad],
+		[EngineFuelRate],
+		[VIN]
+		FROM TripPoints
+		WHERE Id = '%s'
+		AND Deleted = 0`
+
+	var formattedQuery = fmt.Sprintf(
+		query,
+		tripPointID)
+
+	Debug.Println("selectTripPointsForTripPointIDQuery: " + formattedQuery)
 
 	return formattedQuery
 }
