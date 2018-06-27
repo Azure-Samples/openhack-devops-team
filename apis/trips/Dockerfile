@@ -1,8 +1,12 @@
-FROM golang:1.10.1 AS gobuild
-
-RUN go get -t github.com/Azure-Samples/openhack-devops-team/apis/trips
+FROM golang:1.10.3 AS gobuild
 
 WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
+
+RUN curl https://glide.sh/get | sh
+
+COPY . .
+
+RUN glide install --skip-test
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
