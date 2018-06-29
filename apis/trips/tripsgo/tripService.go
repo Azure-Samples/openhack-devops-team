@@ -25,7 +25,9 @@ func getTripByID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "getTripsByID - Error while retrieving trip from database"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		//fmt.Fprintf(w, )
+		http.Error(w, SerializeError(err, msg), http.StatusNotFound)
+		//http.NotFound(w, r)
 		return
 	}
 
@@ -51,7 +53,7 @@ func getTripByID(w http.ResponseWriter, r *http.Request) {
 	if errScan != nil {
 		var msg = fmt.Sprintf("No trip with ID '%s' found", params["tripID"])
 		LogMessage(msg)
-		w.WriteHeader(404)
+		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, msg)
 		return
 	}

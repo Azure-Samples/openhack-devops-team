@@ -244,3 +244,80 @@ func selectTripPointsForTripPointIDQuery(tripPointID string) string {
 
 	return formattedQuery
 }
+
+func createTripPointQuery(tripPoint TripPoint, tripID string) string {
+	var query = `DECLARE @tempReturn TABLE (TripPointId NVARCHAR(128));
+	INSERT INTO TripPoints (
+		[TripId],
+		[Latitude],
+		[Longitude],
+		[Speed],
+		[RecordedTimeStamp],
+		[Sequence],
+		[RPM],
+		[ShortTermFuelBank],
+		[LongTermFuelBank],
+		[ThrottlePosition],
+		[RelativeThrottlePosition],
+		[Runtime],
+		[DistanceWithMalfunctionLight],
+		[EngineLoad],
+		[EngineFuelRate],
+		[MassFlowRate],
+		[HasOBDData],
+		[HasSimulatedOBDData],
+		[VIN],
+		[Deleted])
+	OUTPUT
+		Inserted.ID
+	INTO @tempReturn
+	VALUES (
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		%d,
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'%s',
+		'false');
+	SELECT TripPointId
+	FROM @tempReturn`
+
+	var formattedQuery = fmt.Sprintf(
+		query,
+		tripID,
+		tripPoint.Latitude,
+		tripPoint.Longitude,
+		tripPoint.Speed,
+		tripPoint.RecordedTimeStamp,
+		tripPoint.Sequence,
+		tripPoint.RPM,
+		tripPoint.ShortTermFuelBank,
+		tripPoint.LongTermFuelBank,
+		tripPoint.ThrottlePosition,
+		tripPoint.RelativeThrottlePosition,
+		tripPoint.Runtime,
+		tripPoint.DistanceWithMalfunctionLight,
+		tripPoint.EngineLoad,
+		tripPoint.MassFlowRate,
+		tripPoint.EngineFuelRate,
+		strconv.FormatBool(tripPoint.HasOBDData),
+		strconv.FormatBool(tripPoint.HasSimulatedOBDData),
+		tripPoint.VIN)
+
+	Debug.Println("createTripPointQuery: " + formattedQuery)
+
+	return formattedQuery
+}

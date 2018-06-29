@@ -116,7 +116,9 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func createTripPoint(w http.ResponseWriter, r *http.Request) {
-	tripID := r.FormValue("tripId")
+	params := mux.Vars(r)
+
+	tripID := params["tripID"]
 
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -125,57 +127,41 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &tripPoint)
 
 	if err != nil {
-		var msg = "Error while decoding json"
+		var msg = "Error while decoding json for trip point"
 		LogError(err, msg)
+		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
 
-	tripPoint.TripID = tripID
+	var query = createTripPointQuery(tripPoint, tripID)
 
-	insertQuery := fmt.Sprintf("DECLARE @tempReturn TABLE (TripPointId NVARCHAR(128)); INSERT INTO TripPoints ([TripId], [Latitude], [Longitude], [Speed], [RecordedTimeStamp], [Sequence], [RPM], [ShortTermFuelBank], [LongTermFuelBank], [ThrottlePosition], [RelativeThrottlePosition], [Runtime], [DistanceWithMalfunctionLight], [EngineLoad], [EngineFuelRate], [MassFlowRate], [HasOBDData], [HasSimulatedOBDData], [VIN], [Deleted]) OUTPUT Inserted.ID INTO @tempReturn VALUES ('%s', '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', 'false'); SELECT TripPointId FROM @tempReturn",
-		tripPoint.TripID,
-		tripPoint.Latitude,
-		tripPoint.Longitude,
-		tripPoint.Speed,
-		tripPoint.RecordedTimeStamp,
-		tripPoint.Sequence,
-		tripPoint.RPM,
-		tripPoint.ShortTermFuelBank,
-		tripPoint.LongTermFuelBank,
-		tripPoint.ThrottlePosition,
-		tripPoint.RelativeThrottlePosition,
-		tripPoint.Runtime,
-		tripPoint.DistanceWithMalfunctionLight,
-		tripPoint.EngineLoad,
-		tripPoint.MassFlowRate,
-		tripPoint.EngineFuelRate,
-		strconv.FormatBool(tripPoint.HasOBDData),
-		strconv.FormatBool(tripPoint.HasSimulatedOBDData),
-		tripPoint.VIN)
+	var newTripPoint TripPoint
 
-	fmt.Fprintf(w, insertQuery)
+	result, err := ExecuteQuery(query)
 
-	// var newTripPoint NewTripPoint
+	if err != nil {
+		var msg = "Error while inserting Trip Point into database"
+		LogError(err, msg)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, SerializeError(err, msg))
+		return
+	}
 
-	// result, err := ExecuteQuery(insertQuery)
+	for result.Next() {
+		err = result.Scan(&newTripPoint.ID)
 
-	// if err != nil {
-	// 	fmt.Fprintf(w, SerializeError(err, "Error while inserting Trip Point onto database"))
-	// 	return
-	// }
+		if err != nil {
+			var msg = "Error retrieving trip point id"
+			LogError(err, msg)
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, SerializeError(err, msg))
+		}
+	}
 
-	// for result.Next() {
-	// 	err = result.Scan(&newTripPoint.Id)
+	serializedTripPoint, _ := json.Marshal(newTripPoint)
 
-	// 	if err != nil {
-	// 		fmt.Fprintf(w, SerializeError(err, "Error while retrieving last id"))
-	// 	}
-	// }
-
-	// serializedTripPoint, _ := json.Marshal(newTripPoint)
-
-	// fmt.Fprintf(w, string(serializedTripPoint))
+	fmt.Fprintf(w, string(serializedTripPoint))
 }
 
 func updateTripPoint(w http.ResponseWriter, r *http.Request) {
