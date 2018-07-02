@@ -194,7 +194,7 @@ func selectTripPointsForTripQuery(tripID string) string {
 		[LongTermFuelBank],
 		[ThrottlePosition],
 		[RelativeThrottlePosition],
-		Runtime],
+		[Runtime],
 		[DistanceWithMalfunctionLight],
 		[EngineLoad],
 		[EngineFuelRate],
@@ -267,30 +267,32 @@ func createTripPointQuery(tripPoint TripPoint, tripID string) string {
 		[HasOBDData],
 		[HasSimulatedOBDData],
 		[VIN],
+		[UpdatedAt],
 		[Deleted])
 	OUTPUT
 		Inserted.ID
 	INTO @tempReturn
 	VALUES (
 		'%s',
-		'%s',
-		'%s',
-		'%s',
+		%g,
+		%g,
+		%g,
 		'%s',
 		%d,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
+		%g,
 		'%s',
 		'%s',
 		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
+		GETDATE(),
 		'false');
 	SELECT TripPointId
 	FROM @tempReturn`
@@ -318,6 +320,71 @@ func createTripPointQuery(tripPoint TripPoint, tripID string) string {
 		tripPoint.VIN)
 
 	Debug.Println("createTripPointQuery: " + formattedQuery)
+
+	return formattedQuery
+}
+
+func updateTripPointQuery(tripPoint TripPoint) string {
+	var query = `UPDATE [TripPoints]
+			SET [TripId] = '%s',
+			[Latitude] = '%s',
+			[Longitude] = '%s',
+			[Speed] = '%s',
+			[RecordedTimeStamp] = '%s',
+			[Sequence] = %d,[RPM] = '%s',
+			[ShortTermFuelBank] = '%s',
+			[LongTermFuelBank] = '%s',
+			[ThrottlePosition] = '%s',
+			[RelativeThrottlePosition] = '%s',
+			[Runtime] = '%s',
+			[DistanceWithMalfunctionLight] = '%s',
+			[EngineLoad] = '%s',
+			[MassFlowRate] = '%s',
+			[EngineFuelRate] = '%s',
+			[HasOBDData] = '%s',
+			[HasSimulatedOBDData] = '%s',
+			[VIN] = '%s'
+		WHERE Id = '%s'`
+
+	var formattedQuery = fmt.Sprintf(
+		query,
+		tripPoint.TripID,
+		tripPoint.TripID,
+		tripPoint.Latitude,
+		tripPoint.Longitude,
+		tripPoint.Speed,
+		tripPoint.RecordedTimeStamp,
+		tripPoint.Sequence,
+		tripPoint.RPM,
+		tripPoint.ShortTermFuelBank,
+		tripPoint.LongTermFuelBank,
+		tripPoint.ThrottlePosition,
+		tripPoint.RelativeThrottlePosition,
+		tripPoint.Runtime,
+		tripPoint.DistanceWithMalfunctionLight,
+		tripPoint.EngineLoad,
+		tripPoint.MassFlowRate,
+		tripPoint.EngineFuelRate,
+		strconv.FormatBool(tripPoint.HasOBDData),
+		strconv.FormatBool(tripPoint.HasSimulatedOBDData),
+		tripPoint.VIN,
+		tripPoint.ID)
+
+	Debug.Println("updateTripPointQuery: " + formattedQuery)
+
+	return formattedQuery
+}
+
+func deleteTripPointQuery(tripPointID string) string {
+	var query = `UPDATE TripPoints
+		SET Deleted = 1
+		WHERE Id = '%s'`
+
+	var formattedQuery = fmt.Sprintf(
+		query,
+		tripPointID)
+
+	Debug.Println("deleteTripPointQuery: " + formattedQuery)
 
 	return formattedQuery
 }

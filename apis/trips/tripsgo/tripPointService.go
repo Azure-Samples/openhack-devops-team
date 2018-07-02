@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -71,7 +70,7 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 
 	tripPointID := params["tripPointID"]
 
-	var query = selectTripPointsForTripQuery(tripPointID)
+	var query = selectTripPointsForTripPointIDQuery(tripPointID)
 
 	row, err := FirstOrDefault(query)
 
@@ -136,8 +135,6 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	var query = createTripPointQuery(tripPoint, tripID)
 
-	var newTripPoint TripPoint
-
 	result, err := ExecuteQuery(query)
 
 	if err != nil {
@@ -149,7 +146,7 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for result.Next() {
-		err = result.Scan(&newTripPoint.ID)
+		err = result.Scan(&tripPoint.ID)
 
 		if err != nil {
 			var msg = "Error retrieving trip point id"
@@ -159,20 +156,22 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	serializedTripPoint, _ := json.Marshal(newTripPoint)
+	serializedTripPoint, _ := json.Marshal(tripPoint)
 
 	fmt.Fprintf(w, string(serializedTripPoint))
 }
 
 func updateTripPoint(w http.ResponseWriter, r *http.Request) {
-	tripPointID := r.FormValue("id")
+	params := mux.Vars(r)
+
+	tripPointID := params["tripPointID"]
 
 	body, err := ioutil.ReadAll(r.Body)
 
 	defer r.Body.Close()
 
 	if err != nil {
-		var msg = "Error while reading request body"
+		var msg = "Error while decoding json for trip point"
 		LogError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
@@ -189,30 +188,11 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updateQuery := fmt.Sprintf("UPDATE [TripPoints] SET [TripId] = '%s',[Latitude] = '%s',[Longitude] = '%s',[Speed] = '%s',[RecordedTimeStamp] = '%s',[Sequence] = %d,[RPM] = '%s',[ShortTermFuelBank] = '%s',[LongTermFuelBank] = '%s',[ThrottlePosition] = '%s',[RelativeThrottlePosition] = '%s',[Runtime] = '%s',[DistanceWithMalfunctionLight] = '%s',[EngineLoad] = '%s',[MassFlowRate] = '%s',[EngineFuelRate] = '%s',[HasOBDData] = '%s',[HasSimulatedOBDData] = '%s',[VIN] = '%s' WHERE Id = '%s'",
-		tripPoint.TripID,
-		tripPoint.TripID,
-		tripPoint.Latitude,
-		tripPoint.Longitude,
-		tripPoint.Speed,
-		tripPoint.RecordedTimeStamp,
-		tripPoint.Sequence,
-		tripPoint.RPM,
-		tripPoint.ShortTermFuelBank,
-		tripPoint.LongTermFuelBank,
-		tripPoint.ThrottlePosition,
-		tripPoint.RelativeThrottlePosition,
-		tripPoint.Runtime,
-		tripPoint.DistanceWithMalfunctionLight,
-		tripPoint.EngineLoad,
-		tripPoint.MassFlowRate,
-		tripPoint.EngineFuelRate,
-		strconv.FormatBool(tripPoint.HasOBDData),
-		strconv.FormatBool(tripPoint.HasSimulatedOBDData),
-		tripPoint.VIN,
-		tripPointID)
+	tripPoint.ID = tripPointID
 
-	result, err := ExecuteNonQuery(updateQuery)
+	var query = updateTripPointQuery(tripPoint)
+
+	result, err := ExecuteNonQuery(query)
 
 	if err != nil {
 		var msg = "Error while patching Trip Point on the database"
@@ -225,11 +205,13 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
-	tripPointID := r.FormValue("id")
+	params := mux.Vars(r)
 
-	deleteTripPointQuery := fmt.Sprintf("UPDATE TripPoints SET Deleted = 1 WHERE Id = '%s'", tripPointID)
+	tripPointID := params["tripPointID"]
 
-	result, err := ExecuteNonQuery(deleteTripPointQuery)
+	var query = deleteTripPointQuery(tripPointID)
+
+	result, err := ExecuteNonQuery(query)
 
 	if err != nil {
 		var msg = "Error while deleting trip point from database"
@@ -243,35 +225,33 @@ func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(serializedResult))
 }
 
-func getMaxSequence(w http.ResponseWriter, r *http.Request) {
-	tripID := r.FormValue("id")
+// func getMaxSequence(w http.ResponseWriter, r *http.Request) {
+// 	tripID := r.FormValue("id")
 
-	query := fmt.Sprintf("SELECT MAX(Sequence) as MaxSequence FROM TripPoints where tripid = '%s'", tripID)
+// 	query := fmt.Sprintf("SELECT MAX(Sequence) as MaxSequence FROM TripPoints where tripid = '%s'", tripID)
 
-	row, err := FirstOrDefault(query)
+// 	row, err := FirstOrDefault(query)
 
-	if err != nil {
-		var msg = "Error while querying Max Sequence"
-		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
-		return
-	}
+// 	if err != nil {
+// 		var msg = "Error while querying Max Sequence"
+// 		LogError(err, msg)
+// 		fmt.Fprintf(w, SerializeError(err, msg))
+// 		return
+// 	}
 
-	var MaxSequence string
+// 	var MaxSequence string
 
-	err = row.Scan(&MaxSequence)
+// 	err = row.Scan(&MaxSequence)
 
-	if err != nil {
-		var msg = "Error while obtaining max sequence"
-		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
-		return
-	}
+// 	if err != nil {
+// 		var msg = "Error while obtaining max sequence"
+// 		LogError(err, msg)
+// 		fmt.Fprintf(w, SerializeError(err, msg))
+// 		return
+// 	}
 
-	fmt.Fprintf(w, MaxSequence)
-}
-
-// End of Trip Point Service Methods
+// 	fmt.Fprintf(w, MaxSequence)
+// }
 
 type newTripPoint struct {
 	ID string

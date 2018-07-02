@@ -530,7 +530,7 @@
           "type": "number",
           "format": "float"
         },
-        "Created": {
+        "CreatedAt": {
           "type": "string",
           "format": "date-time"
         },
@@ -627,7 +627,7 @@
         "HasSimulatedOBDData": {
           "type": "boolean"
         },
-        "Created": {
+        "CreatedAt": {
           "type": "string",
           "format": "date-time"
         },

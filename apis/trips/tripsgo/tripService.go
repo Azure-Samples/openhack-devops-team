@@ -25,9 +25,7 @@ func getTripByID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "getTripsByID - Error while retrieving trip from database"
 		LogError(err, msg)
-		//fmt.Fprintf(w, )
-		http.Error(w, SerializeError(err, msg), http.StatusNotFound)
-		//http.NotFound(w, r)
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -53,8 +51,8 @@ func getTripByID(w http.ResponseWriter, r *http.Request) {
 	if errScan != nil {
 		var msg = fmt.Sprintf("No trip with ID '%s' found", params["tripID"])
 		LogMessage(msg)
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, msg)
+		// fmt.Fprintf(w, msg)
+		http.NotFound(w, r)
 		return
 	}
 
@@ -73,7 +71,7 @@ func getAllTrips(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "getAllTrips - Query Failed to Execute."
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -101,7 +99,7 @@ func getAllTrips(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			var msg = "GetAllTrips - Error scanning Trips"
 			LogError(err, msg)
-			fmt.Fprintf(w, SerializeError(err, msg))
+			http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 			return
 		}
 
@@ -124,7 +122,7 @@ func getAllTripsForUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "getAllTripsForUser - Error while retrieving trips from database"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -151,7 +149,7 @@ func getAllTripsForUser(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			var msg = "getAllTripsForUser - Error scanning Trips"
 			LogError(err, msg)
-			fmt.Fprintf(w, SerializeError(err, msg))
+			http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 			return
 		}
 
@@ -175,7 +173,7 @@ func deleteTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Error while deleting trip points from database"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -186,7 +184,7 @@ func deleteTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Error while deleting trip from database"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -212,7 +210,7 @@ func updateTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Update Trip - Error reading trip request body"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -221,7 +219,7 @@ func updateTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Update Trip - Error while decoding trip json"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -234,7 +232,7 @@ func updateTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Error updating trip on the database." + string(result)
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -256,7 +254,7 @@ func createTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Error while decoding json"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -269,7 +267,7 @@ func createTrip(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		var msg = "Error while inserting trip into database"
 		LogError(err, msg)
-		fmt.Fprintf(w, SerializeError(err, msg))
+		http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		return
 	}
 
@@ -279,7 +277,7 @@ func createTrip(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			var msg = "Error while retrieving last id"
 			LogError(err, msg)
-			fmt.Fprintf(w, SerializeError(err, msg))
+			http.Error(w, SerializeError(err, msg), http.StatusInternalServerError)
 		}
 	}
 

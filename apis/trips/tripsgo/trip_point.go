@@ -1,6 +1,7 @@
 package tripsgo
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -43,13 +44,13 @@ type TripPoint struct {
 
 	EngineFuelRate float32 `json:"EngineFuelRate,omitempty"`
 
-	VIN string `json:"VIN,omitempty"`
+	VIN sql.NullString `json:"VIN,omitempty"`
 
 	HasOBDData bool `json:"HasOBDData,omitempty"`
 
 	HasSimulatedOBDData bool `json:"HasSimulatedOBDData,omitempty"`
 
-	Created time.Time `json:"Created,omitempty"`
+	CreatedAt time.Time `json:"CreatedAt,omitempty"`
 
 	UpdatedAt time.Time `json:"UpdatedAt,omitempty"`
 
