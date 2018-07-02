@@ -57,5 +57,5 @@ func LogMessage(msg string) {
 
 func LogError(err error, msg string) {
 	Info.Println(msg)
-	Debug.Println(err)
+	Debug.Println(err.Error())
 }

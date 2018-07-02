@@ -377,7 +377,7 @@ definitions:
       Distance:
         type: "number"
         format: "float"
-      Created:
+      CreatedAt:
         type: "string"
         format: "date-time"
       UpdatedAt:
@@ -449,7 +449,7 @@ definitions:
         type: "boolean"
       HasSimulatedOBDData:
         type: "boolean"
-      Created:
+      CreatedAt:
         type: "string"
         format: "date-time"
       UpdatedAt:
