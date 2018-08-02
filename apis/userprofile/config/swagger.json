@@ -187,83 +187,83 @@
         "Profile": {
             "type": "object",
             "properties": {
-                "id": {
+                "Id": {
                     "type": "string",
                     "description": "User's unique identity"
                 },
-                "firstName": {
+                "FirstName": {
                     "type": "string",
                     "minLength": 0,
                     "maxLength": 50,
                     "pattern": "^[A-Za-z \u0000-][a-zA-Z \u0000-]*$"
                 },
-                "lastName": {
+                "LastName": {
                     "type": "string",
                     "minLength": 0,
                     "maxLength": 80,
                     "pattern": "^[A-Za-z \u0000-][a-zA-Z \u0000-]*$"
                 },
-                "userId": {
+                "UserId": {
                     "type": "string",
                     "description": "User's identity"
                 },
-                "profilePictureUri": {
+                "ProfilePictureUri": {
                     "type": "string",
                     "format": "binary",
                     "description": "User's Profile picture"
                 },
-                "rating": {
+                "Rating": {
                     "type": "integer",
                     "description": "User's rating"
                 },
-                "ranking": {
+                "Ranking": {
                     "type": "integer",
                     "description": "User's ranking"
                 },
-                "totalDistance": {
+                "TotalDistance": {
                     "type": "number",
                     "format": "float",
                     "description": "User's total distance traveled"
                 },
-                "totalTrips": {
+                "TotalTrips": {
                     "type": "integer",
                     "format": "long",
                     "description": "User's total number of trips"
                 },
-                "totalTime": {
+                "TotalTime": {
                     "type": "integer",
                     "format": "long",
                     "description": "User's total driving time"
                 },
-                "hardStops": {
+                "HardStops": {
                     "type": "integer",
                     "format": "long",
                     "description": "User's total number of hard stops"
                 },
-                "hardAccelerations": {
+                "HardAccelerations": {
                     "type": "integer",
                     "format": "long",
                     "description": "User's total number of hard accelerations"
                 },
-                "fuelConsumption": {
+                "FuelConsumption": {
                     "type": "number",
                     "format": "float",
                     "description": "User's amount of fuel consumed"
                 },
-                "maxSpeed": {
+                "MaxSpeed": {
                     "type": "number",
                     "format": "float",
                     "description": "User's maximum speed"
                 },
-                "createdAt": {
+                "CreatedAt": {
                     "type": "string",
                     "format": "date"
                 },
-                "updatedAt": {
+                "UpdatedAt": {
                     "type": "string",
                     "format": "date"
                 },
-                "deleted": {
+                "Deleted": {
                     "type": "boolean",
                     "description": "Whether the user has been deleted or not."
                 }
