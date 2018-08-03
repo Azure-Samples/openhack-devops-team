@@ -40,9 +40,9 @@ public class HealthcheckApiController implements HealthcheckApi {
 
     public ResponseEntity<Healthcheck> healthcheckUserGet() {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
+        if (accept != null) {
             try {
-                return new ResponseEntity<Healthcheck>(objectMapper.readValue("{  \"message\" : \"message\",  \"status\" : \"status\"}", Healthcheck.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Healthcheck>(objectMapper.readValue("{  \"message\" : \"healthcheck\",  \"status\" : \"healthy\"}", Healthcheck.class), HttpStatus.OK);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Healthcheck>(HttpStatus.INTERNAL_SERVER_ERROR);
