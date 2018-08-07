@@ -70,8 +70,10 @@ curl -X POST --header 'Content-Type: application/json' --header 'Accept: applica
 
 2.Go into the project root directory that has the pom.xml and run mvn clean install
 
-
 #Run only the tests
 Run mvn test
+
+#Run the application
+mvn spring-boot:run
 
   
