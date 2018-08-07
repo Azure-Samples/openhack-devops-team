@@ -17,3 +17,61 @@ http://localhost:8080/api/api-docs
 http://localhost:8080/api/swagger-ui.html 
 
 Change default port value in application.properties
+
+#POST API Example
+
+Request URL
+http://localhost:8080/api/user/1234
+
+Request Headers
+{
+  "Accept": "application/json"
+}
+
+Curl
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
+   "createdAt":"2018-08-07", \ 
+   "deleted": false, \ 
+   "firstName": "Hacker", \ 
+   "fuelConsumption": 0, \ 
+   "hardAccelerations": 0, \ 
+   "hardStops": 0, \ 
+   "id": "1234", \ 
+   "lastName": "Test", \ 
+   "maxSpeed": 0, \ 
+   "profilePictureUri": "https://pbs.twimg.com/profile_images/1003946090146693122/IdMjh-FQ_bigger.jpg", \ 
+   "ranking": 0, \ 
+   "rating": 0, \ 
+   "totalDistance": 0, \ 
+   "totalTime": 0, \ 
+   "totalTrips": 0, \ 
+   "updatedAt": "2018-08-07", \ 
+   "userId": "Hacker3" \ 
+ }' 'http://localhost:8080/api/user/1234'
+ 
+#PATCH API Example
+ 
+ Request URL
+ http://localhost:8080/api/user/1234
+ 
+ Request Headers
+ {
+   "Accept": "application/json"
+ }
+ 
+ Curl
+ curl -X PATCH --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ \ 
+  "fuelConsumption":20, \ 
+  "hardStops":74371 \ 
+  }
+  
+#Build the project
+1.Install Maven https://maven.apache.org/install.html and setup the environment path accordingly
+
+2.Go into the project root directory that has the pom.xml and run mvn clean install
+
+
+#Run only the tests
+Run mvn test
+
+  

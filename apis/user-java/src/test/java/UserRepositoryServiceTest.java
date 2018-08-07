@@ -1,5 +1,3 @@
-package tests;
-
 import io.swagger.model.Profile;
 import io.swagger.repository.UserRepository;
 import io.swagger.repository.UserRepositoryService;
