@@ -29,24 +29,24 @@ import java.util.List;
 public interface UserApi {
 
     @ApiOperation(value = "", nickname = "updateUser", notes = "Update User", response = Profile.class, tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "User Updated", response = Profile.class),
-        @ApiResponse(code = 404, message = "User profile not found"),
-        @ApiResponse(code = 200, message = "Unknown Error", response = ErrorResponseDefault.class) })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User Updated", response = Profile.class),
+            @ApiResponse(code = 404, message = "User profile not found"),
+            @ApiResponse(code = 200, message = "Unknown Error", response = ErrorResponseDefault.class) })
     @RequestMapping(value = "/user/{userID}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.PATCH)
-    ResponseEntity<Profile> updateUser(@ApiParam(value = "User's unique ID",required=true) @PathVariable("userID") String userID);
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.PATCH)
+    ResponseEntity<Profile> updateUser(@ApiParam(value = "User's unique ID",required=true) @PathVariable("userID") String userID,@ApiParam(value = "Details of the profile" ,required=true )  @Valid @RequestBody Profile profile);
 
     @ApiOperation(value = "", nickname = "userPOST", notes = "Declares and creates a new profile", response = Profile.class, tags={  })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Creation successful", response = Profile.class),
-        @ApiResponse(code = 200, message = "An error occurred", response = InlineResponseDefault.class) })
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Creation successful", response = Profile.class),
+            @ApiResponse(code = 200, message = "An error occurred", response = InlineResponseDefault.class) })
     @RequestMapping(value = "/user/{userID}",
-        produces = { "application/json" }, 
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
     ResponseEntity<Profile> userPOST(@ApiParam(value = "User's unique ID",required=true) @PathVariable("userID") String userID,@ApiParam(value = "Details of the profile" ,required=true )  @Valid @RequestBody Profile profile);
 
 }
