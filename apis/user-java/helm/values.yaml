@@ -21,16 +21,16 @@ ingress:
     endpoint:
       host: changeme
       paths:
-      - path: /api/user
+      - path: /api/user-profile
         serviceName: api-user-svc
         servicePort: 80
-      - path: /api/healthcheck/user
+      - path: /api/healthcheck/user-profile
         serviceName: api-user-svc
         servicePort: 80
-      - path: /api/docs/user
+      - path: /api/docs/user-profile
         serviceName: api-user-svc
         servicePort: 80
-      - path: /swagger/docs/user
+      - path: /swagger/docs/user-profile
         serviceName: api-user-svc
         servicePort: 80
   tls: []
