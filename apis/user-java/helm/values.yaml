@@ -22,16 +22,16 @@ ingress:
       host: changeme
       paths:
       - path: /api/user-profile
-        serviceName: api-user-svc
+        serviceName: api-user-profile-svc
         servicePort: 80
       - path: /api/healthcheck/user-profile
-        serviceName: api-user-svc
+        serviceName: api-user-profile-svc
         servicePort: 80
       - path: /api/docs/user-profile
-        serviceName: api-user-svc
+        serviceName: api-user-profile-svc
         servicePort: 80
       - path: /swagger/docs/user-profile
-        serviceName: api-user-svc
+        serviceName: api-user-profile-svc
         servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
