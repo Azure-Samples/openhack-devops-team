@@ -67,6 +67,10 @@ namespace poi.Controllers
         [HttpPost(Name = "CreatePOI")]
         public IActionResult CreatePoi(POI poi)
         {
+            poi.TripId = Guid.NewGuid();
+            _context.POIs.Add(poi);
+            _context.SaveChanges();
+
             return Ok(poi);
         }
     }
