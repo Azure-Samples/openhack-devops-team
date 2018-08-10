@@ -67,7 +67,7 @@ namespace poi.Controllers
         [HttpPost(Name = "CreatePOI")]
         public IActionResult CreatePoi(POI poi)
         {
-            poi.Id = Guid.NewGuid();
+            poi.Id = Guid.NewGuid().ToString();
             _context.POIs.Add(poi);
             _context.SaveChanges();
 
