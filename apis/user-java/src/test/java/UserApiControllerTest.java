@@ -63,7 +63,7 @@ public class UserApiControllerTest {
         when(httpServletRequest.getHeader("Accept")).thenReturn("accept,application/json;charset=UTF-8");
         when(userRepositoryService.save(profile)).thenReturn(profile);
         mockMvc.perform(
-                post("/user/2")
+                post("/user-java/2")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonBytes(profile))
@@ -76,7 +76,7 @@ public class UserApiControllerTest {
     @Test
     public void testSave_shouldNotImplemented() throws Exception {
         mockMvc.perform(
-                post("/user/2")
+                post("/user-java/2")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonBytes(profile))
@@ -87,7 +87,7 @@ public class UserApiControllerTest {
     @Test
     public void testUpdate_shouldNotImplemented() throws Exception {
         mockMvc.perform(
-                patch("/user/2")
+                patch("/user-java/2")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonBytes(profile))
@@ -102,7 +102,7 @@ public class UserApiControllerTest {
         when(httpServletRequest.getHeader("Accept")).thenReturn("accept,application/json;charset=UTF-8");
         when(userRepositoryService.update(profile)).thenReturn(profile);
         mockMvc.perform(
-                patch("/user/2")
+                patch("/user-java/2")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(convertObjectToJsonBytes(profile)))
                 .andExpect(MockMvcResultMatchers.status().isOk())

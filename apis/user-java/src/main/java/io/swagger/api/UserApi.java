@@ -33,7 +33,7 @@ public interface UserApi {
             @ApiResponse(code = 200, message = "User Updated", response = Profile.class),
             @ApiResponse(code = 404, message = "User profile not found"),
             @ApiResponse(code = 200, message = "Unknown Error", response = ErrorResponseDefault.class) })
-    @RequestMapping(value = "/user/{userID}",
+    @RequestMapping(value = "/user-java/{userID}",
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.PATCH)
@@ -43,7 +43,7 @@ public interface UserApi {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Creation successful", response = Profile.class),
             @ApiResponse(code = 200, message = "An error occurred", response = InlineResponseDefault.class) })
-    @RequestMapping(value = "/user/{userID}",
+    @RequestMapping(value = "/user-java/{userID}",
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
