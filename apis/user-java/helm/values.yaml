@@ -27,7 +27,7 @@ ingress:
       - path: /api/healthcheck/user-java
         serviceName: api-user-java-svc
         servicePort: 80
-      - path: /api/docs/user-java
+      - path: /api/documentation/user-java
         serviceName: api-user-java-svc
         servicePort: 80
   tls: []
