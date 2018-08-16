@@ -25,8 +25,8 @@ public class SwaggerDocumentationConfig extends WebMvcConfigurerAdapter {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("My Driving User Profile API")
-            .description("API for the user profile in the My Driving example app. https://github.com/Azure-Samples/openhack-devops-team")
+            .title("My Driving User Java API")
+            .description("API for the user in the My Driving example app. https://github.com/Azure-Samples/openhack-devops-team")
             .license("")
             .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")
@@ -55,6 +55,7 @@ public class SwaggerDocumentationConfig extends WebMvcConfigurerAdapter {
         registry.addRedirectViewController("/documentation/user-java/swagger-resources/configuration/security","/swagger-resources/configuration/security");
         registry.addRedirectViewController("/documentation/user-java/swagger-resources", "/swagger-resources");
         registry.addRedirectViewController("/documentation/user-java", "/documentation/user-java/swagger-ui.html");
+        registry.addRedirectViewController("/docs/user-java", "/documentation/user-java/swagger-ui.html");
     }
 
     @Override
