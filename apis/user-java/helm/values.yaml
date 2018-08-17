@@ -33,6 +33,13 @@ ingress:
       - path: /api/docs/user-java
         serviceName: api-user-java-svc
         servicePort: 80
+      - path: /api/swagger-resources
+        serviceName: api-user-java-svc
+        servicePort: 80
+      - path: /api/api-docs
+        serviceName: api-user-java-svc
+        servicePort: 80
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
