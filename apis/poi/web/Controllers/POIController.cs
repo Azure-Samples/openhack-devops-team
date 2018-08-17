@@ -19,16 +19,16 @@ namespace poi.Controllers
 
             if (_context.POIs.Count() == 0)
             {
-                _context.POIs.Add(new POI
-                {
-                    TripId = Guid.NewGuid().ToString(),
-                    Latitude = 0,
-                    Longitude = 0,
-                    PoiType = POIType.HardAcceleration,
-                    Timestamp = DateTime.Now,
-                    Deleted = false
-                });
-                _context.SaveChanges();
+               _context.POIs.Add(new POI
+               {
+                   TripId = Guid.NewGuid().ToString(),
+                   Latitude = 0,
+                   Longitude = 0,
+                   PoiType = POIType.HardAcceleration,
+                   Timestamp = DateTime.Now,
+                   Deleted = false
+               });
+               _context.SaveChanges();
             }
         }
 
@@ -65,13 +65,14 @@ namespace poi.Controllers
         }
 
         [HttpPost(Name = "CreatePOI")]
-        public IActionResult CreatePoi(POI poi)
+        public IActionResult CreatePoi([FromBody] POI poi)
         {
             poi.Id = Guid.NewGuid().ToString();
             _context.POIs.Add(poi);
             _context.SaveChanges();
 
             return Ok(poi);
+
         }
     }
 }
