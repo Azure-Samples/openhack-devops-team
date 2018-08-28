@@ -22,7 +22,8 @@ SQL_DBNAME="mydrivingDB" \
 WEB_PORT="8080" \
 WEB_SERVER_BASE_URI="http://0.0.0.0" \
 ASPNETCORE_ENVIRONMENT="Production" \
-WHOS_AWESOME="you"
+WHOS_AWESOME="you" \
+WHOS_ALSO_AWESOME="Damien"
 
 COPY --from=build-env /app/out .
 
