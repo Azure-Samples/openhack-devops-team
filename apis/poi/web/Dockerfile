@@ -21,7 +21,8 @@ SQL_SERVER="__SQLSERVER__.database.windows.net" \
 SQL_DBNAME="mydrivingDB" \
 WEB_PORT="8080" \
 WEB_SERVER_BASE_URI="http://0.0.0.0" \
-ASPNETCORE_ENVIRONMENT="Production"
+ASPNETCORE_ENVIRONMENT="Production" \
+WHOS_AWESOME="you"
 
 COPY --from=build-env /app/out .
 
