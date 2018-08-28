@@ -12,10 +12,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 FROM alpine:3.7 AS gorun
 
-ENV SQL_USER="YourUserName" \
-SQL_PASSWORD="changeme" \
-SQL_SERVER="changeme.database.windows.net" \
-SQL_DBNAME="mydrivingDB" \
+ENV SQL_USER="__SQLSERVERUSERNAME__" \
+SQL_PASSWORD="__SQLSERVERPASSWORD__" \
+SQL_SERVER="__SQLSERVERNAME__" \
+SQL_DBNAME="__SQLDBNAME__" \
 WEB_PORT="80" \
 WEB_SERVER_BASE_URI="http://0.0.0.0" \
 DOCS_URI="http://localhost" \

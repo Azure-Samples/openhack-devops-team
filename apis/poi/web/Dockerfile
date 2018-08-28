@@ -15,10 +15,10 @@ COPY ./appsettings.json /app/out/
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /app
 
-ENV SQL_USER="YourUserName" \
-SQL_PASSWORD="changeme" \
-SQL_SERVER="changeme.database.windows.net" \
-SQL_DBNAME="mydrivingDB" \
+ENV SQL_USER="__SQLSERVERUSERNAME__" \
+SQL_PASSWORD="__SQLSERVERPASSWORD__" \
+SQL_SERVER="__SQLSERVERNAME__" \
+SQL_DBNAME="__SQLDBNAME__" \
 WEB_PORT="8080" \
 WEB_SERVER_BASE_URI="http://0.0.0.0" \
 ASPNETCORE_ENVIRONMENT="Production"
