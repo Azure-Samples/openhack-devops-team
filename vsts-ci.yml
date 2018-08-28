@@ -5,8 +5,8 @@
 
 
 variables:
-  imageName: 'mydrive-poi:$(build.buildId)'
+  imageName: 'mydrive-user:$(build.buildId)'
 
 steps:
-- script: docker build -f ./apis/poi/web/Dockerfile -t $(imageName) .
+- script: docker build -f ./apis/poi/userprofile/Dockerfile -t $(imageName) ./apis/poi/userprofile/.
   displayName: 'docker build $(imageName)'
