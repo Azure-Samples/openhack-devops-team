@@ -6,6 +6,14 @@ node {
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], refspec: "+refs/pull/*:refs/remotes/origin/pr/*", doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/hattan/openhack-devops-team.git']]])
         }
         stage('Docker Login'){
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'dockerhubmani',
+          usernameVariable: 'ACR_USER',
+          passwordVariable: 'ACR_PASSWORD']])
+          {
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login -u ${ACR_USER} -p ${ACR_PASSWORD}"
+          }
             
         }
         stage('Build'){
