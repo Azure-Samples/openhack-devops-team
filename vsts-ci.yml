@@ -5,8 +5,8 @@
 
 
 variables:
-  imageName: 'your-container-image-name:$(build.buildId)'
+  imageName: 'mydrive-poi:$(build.buildId)'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
+- script: docker build -f ./apis/poi/web/Dockerfile -t $(imageName) .
   displayName: 'docker build $(imageName)'
