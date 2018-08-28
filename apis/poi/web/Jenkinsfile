@@ -8,7 +8,7 @@ node {
         stage('Docker Login'){
 
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhubmani',
+          credentialsId: 'acr-creds',
           usernameVariable: 'ACR_USER',
           passwordVariable: 'ACR_PASSWORD']])
           {
