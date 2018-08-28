@@ -1,0 +1,12 @@
+# Build a Docker image
+# Build a Docker image to run, deploy, or push to a container registry.
+# Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/docker
+
+
+variables:
+  imageName: 'mydrive-user:$(build.buildId)'
+
+steps:
+- script: docker build -f ./apis/poi/userprofile/Dockerfile -t $(imageName) ./apis/poi/userprofile/.
+  displayName: 'docker build $(imageName)'
