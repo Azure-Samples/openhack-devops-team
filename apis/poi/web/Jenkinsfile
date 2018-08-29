@@ -2,7 +2,7 @@ node {
         stage('Clone'){
             checkout([
                 $class: 'GitSCM', 
-                branches: [[name: "master"]],  
+                branches: [[name: "poi-web-helm"]],  
                 honorRefspec: true,
                 doGenerateSubmoduleConfigurations: false, 
                 extensions: [], 
