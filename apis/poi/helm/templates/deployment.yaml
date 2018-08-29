@@ -32,6 +32,13 @@ spec:
           - containerPort: 443
             name: https
             protocol: TCP
+        progressDeadlineSeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /api/healthcheck/poi
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /api/healthcheck/poi
