@@ -18,8 +18,5 @@ node {
             sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
           
         }
-        stage('Helm Install'){
-            sh "helm version --client"
-        }
 
 }
