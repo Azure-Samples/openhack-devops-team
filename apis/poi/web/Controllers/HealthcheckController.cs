@@ -27,8 +27,6 @@ namespace poi.Controllers
         [Produces("application/json", Type = typeof(Healthcheck))]
         public IActionResult Get()
         {
-            throw new Exception("poop");
-
             _logger.LogInformation(LoggingEvents.Healthcheck, "Healthcheck Requested");
             return Ok(new Healthcheck());
         }
