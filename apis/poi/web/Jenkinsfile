@@ -7,7 +7,10 @@ stages
     {
         steps
         {
-            git branch: 'feature-d', credentialsId: 'c018860d-89a7-4e2e-ada5-d79677da19f1', url: 'https://github.com/hattan/openhack-devops-team'
+            deleteDir()
+
+            echo "copying source from ${workspace}@script"
+            sh "cp -R  ${workspace}@script/* ."
         }
     }
     stage('setup')
@@ -46,7 +49,6 @@ stages
             sh "helm version --client"
             sh "helm version"
             sh "helm upgrade --install api-poi $WORKSPACE/apis/poi/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-poi --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
-            sh "helm status api-poi"
         }
     }
 }
