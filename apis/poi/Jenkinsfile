@@ -1,7 +1,5 @@
 node {    
-        stage('Reset'){
-            deleteDir()
-        }
+
         stage('Docker Login'){
             
         }
