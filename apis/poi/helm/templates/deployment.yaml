@@ -33,6 +33,12 @@ spec:
           - containerPort: 443
             name: https
             protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /api/healthcheck/poi
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 3
         env:
           - name: SQL_USER
             valueFrom:
