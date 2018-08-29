@@ -1,0 +1,29 @@
+node {    
+        stage('Reset'){
+            deleteDir()
+        }
+        stage('Clone'){
+            checkout([
+                $class: 'GitSCM', 
+                branches: [[name: "${params.sha1}"]],  
+                honorRefspec: true,
+                refspec: "+refs/pull/*:refs/remotes/origin/pr/*", 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/hattan/openhack-devops-team.git']]])
+        }
+        stage('Docker Login'){
+            
+        }
+        stage('Build'){
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t team4-poi $WORKSPACE/apis/poi/web"
+        }
+        stage('Push'){
+            
+        }
+        stage('Helm Install'){
+            
+        }
+
+}
