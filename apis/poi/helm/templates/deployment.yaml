@@ -5,6 +5,7 @@ metadata:
   labels:
     deploy: {{ .Values.image.label }}
 spec:
+  progressDeadlineSeconds: 60
   replicas: {{ .Values.replicaCount }}
   strategy:
     rollingUpdate:
@@ -32,7 +33,6 @@ spec:
           - containerPort: 443
             name: https
             protocol: TCP
-        progressDeadlineSeconds: 60
         livenessProbe:
           httpGet:
             path: /api/healthcheck/poi
