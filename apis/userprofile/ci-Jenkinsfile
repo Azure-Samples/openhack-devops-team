@@ -20,17 +20,17 @@ node {
           usernameVariable: 'ACR_USER',
           passwordVariable: 'ACR_PASSWORD']])
           {
-            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+            sh  "docker -H ${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
           }
             
         }
         stage('build')
         {
-            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/user"
+            sh "docker -H ${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/userprofile"
         }
         stage('push')
         {
-            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-user:${BUILD_TAG}"
+            sh  "docker -H ${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-user:${BUILD_TAG}"
         }
         stage('Helm Install'){
             sh "export KUBECONFIG=/var/jenkins_home/.kube/config"

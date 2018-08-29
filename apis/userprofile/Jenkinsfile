@@ -22,7 +22,7 @@ stages
             usernameVariable: 'ACR_USER',
             passwordVariable: 'ACR_PASSWORD']])
             {
-                sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+                sh  "docker -H ${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
             }       
         }
     }
@@ -30,7 +30,7 @@ stages
     {
         steps
         {
-            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/user"
+            sh "docker -H ${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/userprofile"
         }
     }
 }
