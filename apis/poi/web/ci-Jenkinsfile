@@ -1,0 +1,42 @@
+node {    
+        stage('Reset'){
+            deleteDir()
+        }
+        stage('Clone'){
+            checkout([
+                $class: 'GitSCM', 
+                branches: [[name: "master"]],  
+                honorRefspec: true,
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/hattan/openhack-devops-team.git']]])
+        }
+
+        stage('Docker Login'){
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'acr-creds',
+          usernameVariable: 'ACR_USER',
+          passwordVariable: 'ACR_PASSWORD']])
+          {
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+          }
+            
+        }
+        stage('build')
+        {
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
+        }
+        stage('push')
+        {
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
+        }
+        stage('Helm Install'){
+            sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
+            sh "helm version --client"
+            sh "helm version"
+            sh "helm upgrade --install api-poi $WORKSPACE/apis/poi/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-poi --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
+        }
+
+}

@@ -5,11 +5,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "chart.fullname" . }}
+  name: api-poi-mydrive-poi
   labels:
     app: {{ template "chart.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}

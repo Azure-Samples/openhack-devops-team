@@ -1,0 +1,50 @@
+pipeline{
+      agent  { node { label 'master' } }
+
+stages
+{
+    stage('checkout')
+    {
+        steps
+        {
+            deleteDir()
+
+            echo "copying source from ${workspace}@script"
+            sh "cp -R  ${workspace}@script/* ."
+        }
+    }
+    stage('setup')
+    {
+        steps
+        {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+            credentialsId: 'acr-creds',
+            usernameVariable: 'ACR_USER',
+            passwordVariable: 'ACR_PASSWORD']])
+            {
+                sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+            }       
+        }
+    }
+    stage('build')
+    {
+        steps
+        {
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
+        }
+    }
+}
+    post { 
+        always { 
+            echo 'Post Build Results'
+                                  script {
+    properties([[$class: 'GithubProjectProperty',
+                projectUrlStr: 'https://github.com/hattan/openhack-devops-team']])
+}
+step([$class: 'GitHubIssueNotifier',
+      issueAppend: true,
+      issueLabel: '',
+      issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
+        }
+    }
+}
