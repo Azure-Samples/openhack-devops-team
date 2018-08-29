@@ -33,24 +33,6 @@ stages
             sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
         }
     }
-        stage('push')
-    {
-        steps
-        {
-            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
-            
-        }
-    }
-    stage('deploy helm install')
-    {
-        steps
-        {
-            sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
-            sh "helm version --client"
-            sh "helm version"
-            sh "helm upgrade --install api-poi $WORKSPACE/apis/poi/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-poi --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
-        }
-    }
 }
     post { 
         always { 
