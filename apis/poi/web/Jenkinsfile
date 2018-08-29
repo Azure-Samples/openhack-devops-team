@@ -7,7 +7,6 @@ stages
     {
         steps
         {
-            git credentialsId: 'c018860d-89a7-4e2e-ada5-d79677da19f1', url: 'https://github.com/hattan/openhack-devops-team'
             withCredentials([[$class: 'UsernamePasswordMultiBinding',
             credentialsId: 'acr-creds',
             usernameVariable: 'ACR_USER',
