@@ -38,11 +38,15 @@ stages
             
         }
     }
-    stage('helm install')
+    stage('deploy helm install')
     {
         steps
         {
-           sh "helm version --client"
+            sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
+            sh "helm version --client"
+            sh "helm version"
+            sh "helm upgrade --install api-poi $WORKSPACE/apis/poi/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-poi --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
+            sh "helm status api-poi"
         }
     }
 }
