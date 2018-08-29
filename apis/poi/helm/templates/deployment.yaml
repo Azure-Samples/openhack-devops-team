@@ -36,7 +36,8 @@ spec:
         readinessProbe:
           httpGet:
             path: /api/healthcheck/poi
-          initialDelaySeconds: 6
+            port: 8080
+          initialDelaySeconds: 5
           periodSeconds: 3
         env:
           - name: SQL_USER
