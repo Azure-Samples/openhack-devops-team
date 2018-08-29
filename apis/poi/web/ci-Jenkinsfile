@@ -1,0 +1,36 @@
+node {    
+        stage('Clone'){
+            checkout([
+                $class: 'GitSCM', 
+                branches: [[name: "master"]],  
+                honorRefspec: true,
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/hattan/openhack-devops-team.git']]])
+        }
+
+        stage('Docker Login'){
+
+            withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'acr-creds',
+          usernameVariable: 'ACR_USER',
+          passwordVariable: 'ACR_PASSWORD']])
+          {
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} login ${ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+          }
+            
+        }
+        stage('Build'){
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi/web"
+        }
+        stage('Push'){
+           
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
+          
+        }
+        stage('Helm Install'){
+            sh "helm version --client"
+        }
+
+}
