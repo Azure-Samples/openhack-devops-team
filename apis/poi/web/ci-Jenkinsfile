@@ -26,17 +26,11 @@ node {
         }
         stage('build')
         {
-            steps
-            {
-                sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
-            }
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
         }
         stage('push')
         {
-            steps
-            {
-                sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
-            }
+            sh  "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} push ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG}"
         }
         stage('Helm Install'){
             sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
