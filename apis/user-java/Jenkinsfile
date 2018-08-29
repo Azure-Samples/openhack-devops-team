@@ -3,6 +3,7 @@ pipeline{
 
 stages
 {
+    echo "*** starting jenkins file ***"
     stage('checkout')
     {
         steps
