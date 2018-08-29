@@ -19,7 +19,9 @@ node {
           
         }
         stage('Helm Install'){
+            sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
             sh "helm version --client"
+            sh "helm version"
         }
 
 }

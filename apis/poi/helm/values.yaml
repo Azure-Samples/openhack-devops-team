@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 2
+rollingUpdate:
+  maxUnavailablePercentage: 0%
+  maxSurgePercentage: 25%
 repository:
   image: acrreplace.azurecr.io/devopsoh/imagereplace
   tag: latest
