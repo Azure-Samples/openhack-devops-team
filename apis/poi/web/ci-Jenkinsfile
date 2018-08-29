@@ -1,4 +1,7 @@
 node {    
+        stage('Reset'){
+            deleteDir()
+        }
         stage('Clone'){
             checkout([
                 $class: 'GitSCM', 
