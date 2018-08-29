@@ -30,7 +30,7 @@ stages
     {
         steps
         {
-            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/user"
         }
     }
 }
