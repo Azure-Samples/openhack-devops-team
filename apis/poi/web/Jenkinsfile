@@ -27,7 +27,8 @@ stages
     {
         steps
         {
-           sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi -f web/Dockerfile ."
+            sh "cd $WORKSPACE/apis/poi"
+            sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} -f web/Dockerfile ."
         }
     }
         stage('push')
