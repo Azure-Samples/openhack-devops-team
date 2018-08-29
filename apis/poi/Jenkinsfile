@@ -2,17 +2,6 @@ node {
         stage('Reset'){
             deleteDir()
         }
-        stage('Clone'){
-            checkout([
-                $class: 'GitSCM', 
-                branches: [[name: "${params.sha1}"]],  
-                honorRefspec: true,
-                refspec: "+refs/pull/*:refs/remotes/origin/pr/*", 
-                doGenerateSubmoduleConfigurations: false, 
-                extensions: [], 
-                submoduleCfg: [], 
-                userRemoteConfigs: [[url: 'https://github.com/hattan/openhack-devops-team.git']]])
-        }
         stage('Docker Login'){
             
         }
