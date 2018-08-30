@@ -32,7 +32,7 @@ stages
     {
         steps
         {
-            sh "docker -H ${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/userprofile"
+            sh "docker -H ${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-user:${BUILD_TAG} $WORKSPACE/apis/user-java"
         }
     }
 }
