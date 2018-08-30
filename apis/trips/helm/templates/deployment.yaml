@@ -35,13 +35,13 @@ spec:
             protocol: TCP
         livenessProbe:
           tcpSocket:
-            port: 8080
+            port: {{ .Values.image.containerPort }}
           initialDelaySeconds: 10
           periodSeconds: 5
         readinessProbe:
           httpGet:
             path: /api/healthcheck/trips
-            port: 8080
+            port: {{ .Values.image.containerPort }}
           initialDelaySeconds: 5
           periodSeconds: 3
         env:
