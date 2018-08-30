@@ -38,7 +38,7 @@ spec:
           periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: /api/healthcheck/user
+            path: /api/healthcheck/user-java
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 3
