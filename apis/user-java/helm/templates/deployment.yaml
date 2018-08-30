@@ -5,7 +5,13 @@ metadata:
   labels:
     deploy: {{ .Values.image.label }}
 spec:
+  progressDeadlineSeconds: 60
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: {{ .Values.rollingUpdate.maxUnavailablePercentage}}
+      maxSurge: {{ .Values.rollingUpdate.maxSurgePercentage}}
+    type: RollingUpdate
   selector:
     matchLabels:
       app: {{ .Values.image.label }}
@@ -25,6 +31,17 @@ spec:
           - containerPort: 443
             name: https
             protocol: TCP
+	      livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /api/healthcheck/user
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
         env:
           - name: SQL_USER
             valueFrom:
