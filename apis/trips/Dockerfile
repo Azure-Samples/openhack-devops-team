@@ -1,6 +1,6 @@
 FROM golang:1.10.3 AS gobuild
 
-WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
+WORKDIR /go/src/github.com/hattan/openhack-devops-team/apis/trips
 
 RUN curl https://glide.sh/get | sh
 
@@ -26,7 +26,7 @@ WORKDIR /app
 RUN apk add --update \
   ca-certificates
 
-COPY --from=gobuild /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips/main .
-COPY --from=gobuild /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips/api ./api/
+COPY --from=gobuild /go/src/github.com/hattan/openhack-devops-team/apis/trips/main .
+COPY --from=gobuild /go/src/github.com/hattan/openhack-devops-team/apis/trips/api ./api/
 
 CMD ["./main"]
