@@ -1,7 +1,7 @@
 FROM microsoft/dotnet:2.1-sdk AS build-env
 WORKDIR /app
 COPY . ./
-RUN ls
+
 # copy csproj and restore as distinct layers
 RUN dotnet restore tests/UnitTests/UnitTests.csproj
 
@@ -10,7 +10,7 @@ RUN dotnet restore tests/UnitTests/UnitTests.csproj
 #Unit Test
 RUN ls
 RUN dotnet test tests/UnitTests/UnitTests.csproj
-RUN dotnet publish web/ -c Release -o out
+RUN dotnet publish web/ -c Release -o /app/out
 COPY ./web/appsettings.*.json /app/out/
 COPY ./web/appsettings.json /app/out/
 
