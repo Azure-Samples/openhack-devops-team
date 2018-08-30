@@ -3,11 +3,12 @@ pipeline{
 
 stages
 {
-    echo "*** starting jenkins file ***"
+   
     stage('checkout')
     {
         steps
         {
+             echo "*** starting jenkins file ***"
             deleteDir()
 
             echo "copying source from ${workspace}@script"
