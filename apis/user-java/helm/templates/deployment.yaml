@@ -39,7 +39,7 @@ spec:
           failureThreshold: 10
         readinessProbe:
           httpGet:
-            path: /api/healthcheck/user-java
+            path: "/api/healthcheck/user-java"
             port: 8080
           initialDelaySeconds: 100
           periodSeconds: 10
