@@ -5,7 +5,7 @@ metadata:
   labels:
     deploy: {{ .Values.image.label }}
 spec:
-  progressDeadlineSeconds: 600
+  progressDeadlineSeconds: 60
   replicas: {{ .Values.replicaCount }}
   strategy:
     rollingUpdate:
@@ -34,9 +34,9 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 8080
-          initialDelaySeconds: 200
-          periodSeconds: 10
-          failureThreshold: 10
+          initialDelaySeconds: 60
+          periodSeconds: 3
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: "/api/healthcheck/user-java"
@@ -44,8 +44,8 @@ spec:
             httpHeaders:
             - name: "Accept"
               value: "*/*"
-          initialDelaySeconds: 100
-          periodSeconds: 10
+          initialDelaySeconds: 60
+          periodSeconds: 3
         env:
           - name: SQL_USER
             valueFrom:
