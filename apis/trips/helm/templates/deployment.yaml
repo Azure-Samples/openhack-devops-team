@@ -33,7 +33,7 @@ spec:
           - containerPort: 443
             name: https
             protocol: TCP
-	      livenessProbe:
+        livenessProbe:
           tcpSocket:
             port: 8080
           initialDelaySeconds: 10
