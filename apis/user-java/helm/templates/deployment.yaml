@@ -5,7 +5,7 @@ metadata:
   labels:
     deploy: {{ .Values.image.label }}
 spec:
-  progressDeadlineSeconds: 60
+  progressDeadlineSeconds: 600
   replicas: {{ .Values.replicaCount }}
   strategy:
     rollingUpdate:
