@@ -36,7 +36,7 @@ node {
             sh "export KUBECONFIG=/var/jenkins_home/.kube/config"
             sh "helm version --client"
             sh "helm version"
-            sh "helm upgrade --install api-trips $WORKSPACE/apis/trips/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-user --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
+            sh "helm upgrade --install api-trip $WORKSPACE/apis/trips/helm  --namespace default --set repository.image=${ACR_ENDPOINT}/team4-user --set repository.tag=${BUILD_TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='10%' --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
         }
 
 }
