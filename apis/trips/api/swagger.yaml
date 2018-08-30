@@ -2,7 +2,6 @@ swagger: '2.0'
 info:
   version: 0.0.1
   title: "MyDriving Trips API"
-host: 'localhost:8080'
 basePath: /api
 schemes:
   - http
