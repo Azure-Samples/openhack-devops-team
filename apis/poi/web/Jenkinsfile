@@ -33,6 +33,14 @@ stages
             sh "docker -H tcp://${DOCKER_BUILD_PUSH_HOST} build -t ${ACR_ENDPOINT}/team4-poi:${BUILD_TAG} $WORKSPACE/apis/poi"
         }
     }
+    stage('integration-test')
+    {
+        sh "docker -H ${DOCKER_BUILD_PUSH_HOST} build --target build-env -t poi-integration-test $WORKSPACE/apis/poi"
+        IF (sh "rtn = $(docker -H ${DOCKER_BUILD_PUSH_HOST} run poi-integration-test /bin/bash -c 'dotnet res
+tore tests/UnitTests/UnitTests.csproj >> /dev/null; dotnet test tests/UnitTests/UnitTests.csproj') | grep  -i 'Test Run Failed.'" == "Test Run Failed.") {
+            error("Build failed due to integration tests!")
+        }
+    }
 }
     post { 
         always { 
