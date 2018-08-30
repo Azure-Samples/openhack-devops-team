@@ -41,6 +41,9 @@ spec:
           httpGet:
             path: "/api/healthcheck/user-java"
             port: 8080
+            httpHeaders:
+            - name: "Accept"
+              value: "*/*"
           initialDelaySeconds: 100
           periodSeconds: 10
         env:
