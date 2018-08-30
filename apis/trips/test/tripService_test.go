@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
+	"github.com/hattan/openhack-devops-team/apis/trips/tripsgo"
 
-	tripSvc "github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
+	tripSvc "github.com/hattan/openhack-devops-team/apis/trips/tripsgo"
 )
 
 var tripID string
