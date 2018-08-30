@@ -34,14 +34,14 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 8080
-          initialDelaySeconds: 120
+          initialDelaySeconds: 200
           periodSeconds: 10
           failureThreshold: 10
         readinessProbe:
           httpGet:
             path: /api/healthcheck/user-java
             port: 8080
-          initialDelaySeconds: 120
+          initialDelaySeconds: 100
           periodSeconds: 10
         env:
           - name: SQL_USER
