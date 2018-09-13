@@ -8,21 +8,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
-
 	tripSvc "github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
 )
 
 var tripID string
 
 var apiTestList = []apiTestCase{
-	{
-		tag:              "t0 - healthcheck",
-		method:           "GET",
-		url:              "/api/healthcheck/trips",
-		status:           200,
-		expectedResponse: `{"message": "Trip Service Healthcheck","status": "Healthy"}`,
-	},
 	{
 		tag:    "t1 - Get all trips",
 		method: "GET",
@@ -167,7 +158,7 @@ func TestTrip(t *testing.T) {
 		// if debug env is not present or false, do not log debug output to console
 		tripSvc.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
-	runAPITests(t, router, apiTestList[0:4])
+	RunAPITests(t, router, apiTestList[0:4])
 
 	// setup update trip test (url, body, expected Response)
 	apiTestList[4].url = strings.Replace(apiTestList[4].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
@@ -179,7 +170,7 @@ func TestTrip(t *testing.T) {
 	apiTestList[5].body = strings.Replace(apiTestList[5].body, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
 
 	// run update trip and create trip point tests
-	runAPITests(t, router, apiTestList[4:6])
+	RunAPITests(t, router, apiTestList[4:6])
 
 	// setup update trip point test
 	apiTestList[6].url = strings.Replace(apiTestList[6].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
@@ -201,7 +192,7 @@ func TestTrip(t *testing.T) {
 	// setup delete test (url)
 	apiTestList[10].url = strings.Replace(apiTestList[10].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
 	// run update test
-	runAPITests(t, router, apiTestList[6:10])
+	RunAPITests(t, router, apiTestList[6:10])
 }
 
 func GetUpdateTrip(tripCreate string, tripUpdate string) string {
@@ -227,10 +218,10 @@ func GetUpdateTripPoint(tripPointCreate string, tripPointUpdate string) string {
 	return string(serializedTripUpdate)
 }
 
-func TripFromStr(tripStr string) tripsgo.Trip {
-	trip := tripsgo.Trip{}
+func TripFromStr(tripStr string) tripSvc.Trip {
+	trip := tripSvc.Trip{}
 
-	tripsgo.Debug.Println(tripStr)
+	tripSvc.Debug.Println(tripStr)
 
 	errCreate := json.Unmarshal([]byte(tripStr), &trip)
 	if errCreate != nil {
@@ -241,8 +232,8 @@ func TripFromStr(tripStr string) tripsgo.Trip {
 	return trip
 }
 
-func TripPointFromStr(tripPointStr string) tripsgo.TripPoint {
-	tripPoint := tripsgo.TripPoint{}
+func TripPointFromStr(tripPointStr string) tripSvc.TripPoint {
+	tripPoint := tripSvc.TripPoint{}
 
 	errCreate := json.Unmarshal([]byte(tripPointStr), &tripPoint)
 	if errCreate != nil {
@@ -250,7 +241,7 @@ func TripPointFromStr(tripPointStr string) tripsgo.TripPoint {
 		log.Fatal(errCreate)
 	}
 
-	tripsgo.Debug.Println(tripPointStr)
+	tripSvc.Debug.Println(tripPointStr)
 
 	return tripPoint
 }

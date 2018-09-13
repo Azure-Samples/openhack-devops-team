@@ -35,7 +35,7 @@ func testAPI(router *mux.Router, method, URL, body string) *httptest.ResponseRec
 	return res
 }
 
-func runAPITests(t *testing.T, router *mux.Router, tests []apiTestCase) {
+func RunAPITests(t *testing.T, router *mux.Router, tests []apiTestCase) {
 	for i := 0; i < len(tests); i++ {
 		res := testAPI(router, tests[i].method, tests[i].url, tests[i].body)
 		tests[i].actualResponse = res.Body.String()
