@@ -22,7 +22,7 @@ func getTripPoints(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while retrieving trip points from database"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -52,7 +52,7 @@ func getTripPoints(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			var msg = "Error scanning Trip Points"
-			LogError(err, msg)
+			logError(err, msg)
 			fmt.Fprintf(w, SerializeError(err, msg))
 			return
 		}
@@ -76,7 +76,7 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while retrieving trip point from database"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -104,7 +104,7 @@ func getTripPointByID(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Failed to scan a trip point"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -127,7 +127,7 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while decoding json for trip point"
-		LogError(err, msg)
+		logError(err, msg)
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
@@ -139,7 +139,7 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while inserting Trip Point into database"
-		LogError(err, msg)
+		logError(err, msg)
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
@@ -150,7 +150,7 @@ func createTripPoint(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			var msg = "Error retrieving trip point id"
-			LogError(err, msg)
+			logError(err, msg)
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprintf(w, SerializeError(err, msg))
 		}
@@ -172,7 +172,7 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while decoding json for trip point"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -183,7 +183,7 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while decoding json"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -196,7 +196,7 @@ func updateTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while patching Trip Point on the database"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -215,7 +215,7 @@ func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg = "Error while deleting trip point from database"
-		LogError(err, msg)
+		logError(err, msg)
 		fmt.Fprintf(w, SerializeError(err, msg))
 		return
 	}
@@ -234,7 +234,7 @@ func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
 
 // 	if err != nil {
 // 		var msg = "Error while querying Max Sequence"
-// 		LogError(err, msg)
+// 		logError(err, msg)
 // 		fmt.Fprintf(w, SerializeError(err, msg))
 // 		return
 // 	}
@@ -245,7 +245,7 @@ func deleteTripPoint(w http.ResponseWriter, r *http.Request) {
 
 // 	if err != nil {
 // 		var msg = "Error while obtaining max sequence"
-// 		LogError(err, msg)
+// 		logError(err, msg)
 // 		fmt.Fprintf(w, SerializeError(err, msg))
 // 		return
 // 	}

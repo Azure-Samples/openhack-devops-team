@@ -19,3 +19,4 @@ launch.json
 .vscode/
 vendor/
 glide.lock
+go.sum
