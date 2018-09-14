@@ -8,17 +8,17 @@ import (
 	tripSvc "github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo"
 )
 
-var testHealthRoute = []apiTestCase{
+var healthRouteTests = []tripSvc.APITestCase{
 	{
-		tag:              "t0 - healthcheck",
-		method:           "GET",
-		url:              "/api/healthcheck/trips",
-		status:           200,
-		expectedResponse: `{"message": "Trip Service Healthcheck","status": "Healthy"}`,
+		Tag:              "t0 - healthcheck",
+		Method:           "GET",
+		URL:              "/api/healthcheck/trips",
+		Status:           200,
+		ExpectedResponse: `{"message": "Trip Service Healthcheck","status": "Healthy"}`,
 	},
 }
 
-func TestHealth(t *testing.T) {
+func TestHealthRoute(t *testing.T) {
 	router := tripSvc.NewRouter()
 	var debug, present = os.LookupEnv("DEBUG_LOGGING")
 
@@ -28,6 +28,6 @@ func TestHealth(t *testing.T) {
 		// if debug env is not present or false, do not log debug output to console
 		tripSvc.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
-	RunAPITests(t, router, testHealthRoute[0:1])
+	tripSvc.RunAPITests(t, router, healthRouteTests[0:1])
 
 }

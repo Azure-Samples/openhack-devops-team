@@ -1,0 +1,48 @@
+package tripsgo
+
+import (
+	"bytes"
+	"net/http"
+	"net/http/httptest"
+	"strconv"
+	"testing"
+
+	"github.com/gorilla/mux"
+	"github.com/stretchr/testify/assert"
+)
+
+type APITestCase struct {
+	Tag              string
+	Method           string
+	URL              string
+	Body             string
+	Status           int
+	ExpectedResponse string
+	ActualResponse   string
+}
+
+func newRouter() *mux.Router {
+	router := NewRouter()
+	return router
+}
+
+func testAPI(router *mux.Router, method, URL, body string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, URL, bytes.NewBufferString(body))
+	req.Header.Set("Content-Type", "application/json")
+	res := httptest.NewRecorder()
+	router.ServeHTTP(res, req)
+	return res
+}
+
+func RunAPITests(t *testing.T, router *mux.Router, tests []APITestCase) {
+	for i := 0; i < len(tests); i++ {
+		res := testAPI(router, tests[i].Method, tests[i].URL, tests[i].Body)
+		tests[i].ActualResponse = res.Body.String()
+		Debug.Println(tests[i].ActualResponse)
+		assert.Equal(t, tests[i].Status, res.Code, tests[i].Tag)
+		Info.Println(tests[i].Tag + "- Response Code:" + strconv.Itoa(res.Code))
+		if tests[i].ExpectedResponse != "" {
+			assert.JSONEq(t, tests[i].ExpectedResponse, res.Body.String(), tests[i].Tag)
+		}
+	}
+}

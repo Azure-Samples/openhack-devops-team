@@ -13,24 +13,24 @@ import (
 
 var tripID string
 
-var apiTestList = []apiTestCase{
+var apiTestList = []tripSvc.APITestCase{
 	{
-		tag:    "t1 - Get all trips",
-		method: "GET",
-		url:    "/api/trips",
-		status: 200,
+		Tag:    "t1 - Get all trips",
+		Method: "GET",
+		URL:    "/api/trips",
+		Status: 200,
 	},
 	{
-		tag:    "t2 - Get a nonexistent trip",
-		method: "GET",
-		url:    "/api/trips/99999",
-		status: 404,
+		Tag:    "t2 - Get a nonexistent trip",
+		Method: "GET",
+		URL:    "/api/trips/99999",
+		Status: 404,
 	},
 	{
-		tag:    "t3 - Create a Trip",
-		method: "POST",
-		url:    "/api/trips",
-		body: `{
+		Tag:    "t3 - Create a Trip",
+		Method: "POST",
+		URL:    "/api/trips",
+		Body: `{
 			"Name":"Trip CREATE TEST",
 			"UserId":"GO_TEST",
 			"RecordedTimeStamp": "2018-04-19T19:08:16.03Z",
@@ -46,13 +46,13 @@ var apiTestList = []apiTestCase{
 			"CreatedAt":"2018-01-01T12:00:00Z",
 			"UpdatedAt":"2001-01-01T12:00:00Z"
 		}`,
-		status: 200,
+		Status: 200,
 	},
 	{
-		tag:    "t4 - Update a trip",
-		method: "PATCH",
-		url:    "/api/trips/{tripID}",
-		body: `{
+		Tag:    "t4 - Update a trip",
+		Method: "PATCH",
+		URL:    "/api/trips/{tripID}",
+		Body: `{
 			"Name":"Trip UPDATE TEST",
 			"UserId":"GO_TEST",
 			"RecordedTimeStamp": "2018-04-19T19:08:16.03Z",
@@ -68,13 +68,13 @@ var apiTestList = []apiTestCase{
 			"CreatedAt":"2018-01-01T12:00:00Z",
 			"UpdatedAt":"2001-01-01T12:00:00Z"
 		}`,
-		status: 200,
+		Status: 200,
 	},
 	{
-		tag:    "t5 - Create Trip Point",
-		method: "POST",
-		url:    "/api/trips/{tripID}/trippoints",
-		body: `{
+		Tag:    "t5 - Create Trip Point",
+		Method: "POST",
+		URL:    "/api/trips/{tripID}/trippoints",
+		Body: `{
 			"TripId": "{tripID}",
 			"Latitude": 47.67598,
 			"Longitude": -122.10612,
@@ -93,13 +93,13 @@ var apiTestList = []apiTestCase{
 			"CreatedAt": "0001-01-01T00:00:00Z",
 			"UpdatedAt": "0001-01-01T00:00:00Z"
 			}`,
-		status: 200,
+		Status: 200,
 	},
 	{
-		tag:    "t6 - Update Trip Point",
-		method: "PATCH",
-		url:    "/api/trips/{tripID}/trippoints/{tripPointID}",
-		body: `{
+		Tag:    "t6 - Update Trip Point",
+		Method: "PATCH",
+		URL:    "/api/trips/{tripID}/trippoints/{tripPointID}",
+		Body: `{
 			"Id": "{tripPointID}",
 			"TripId": "{tripID}",
 			"Latitude": 47.67598,
@@ -119,32 +119,32 @@ var apiTestList = []apiTestCase{
 			"Created": "0001-01-01T00:00:00Z",
 			"UpdatedAt": "0001-01-01T00:00:00Z"
 			}`,
-		expectedResponse: "",
-		status:           200,
+		ExpectedResponse: "",
+		Status:           200,
 	},
 	{
-		tag:    "t7 - Read Trip Points for Trip",
-		method: "GET",
-		url:    "/api/trips/{tripID}/trippoints",
-		status: 200,
+		Tag:    "t7 - Read Trip Points for Trip",
+		Method: "GET",
+		URL:    "/api/trips/{tripID}/trippoints",
+		Status: 200,
 	},
 	{
-		tag:    "t8 - Read Trip Points By Trip Point ID",
-		method: "GET",
-		url:    "/api/trips/{tripID}/trippoints/{tripPointID}",
-		status: 200,
+		Tag:    "t8 - Read Trip Points By Trip Point ID",
+		Method: "GET",
+		URL:    "/api/trips/{tripID}/trippoints/{tripPointID}",
+		Status: 200,
 	},
 	{
-		tag:    "t9 - Delete Trip Point",
-		method: "DELETE",
-		url:    "/api/trips/{tripID}/trippoints/{tripPointID}",
-		status: 200,
+		Tag:    "t9 - Delete Trip Point",
+		Method: "DELETE",
+		URL:    "/api/trips/{tripID}/trippoints/{tripPointID}",
+		Status: 200,
 	},
 	{
-		tag:    "t10 - Delete a Trip",
-		method: "DELETE",
-		url:    "/api/trips/{tripID}",
-		status: 200,
+		Tag:    "t10 - Delete a Trip",
+		Method: "DELETE",
+		URL:    "/api/trips/{tripID}",
+		Status: 200,
 	},
 }
 
@@ -158,41 +158,41 @@ func TestTrip(t *testing.T) {
 		// if debug env is not present or false, do not log debug output to console
 		tripSvc.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
-	RunAPITests(t, router, apiTestList[0:4])
+	tripSvc.RunAPITests(t, router, apiTestList[0:4])
 
-	// setup update trip test (url, body, expected Response)
-	apiTestList[4].url = strings.Replace(apiTestList[4].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
-	apiTestList[4].body = GetUpdateTrip(apiTestList[3].actualResponse, apiTestList[4].body)
-	apiTestList[4].expectedResponse = apiTestList[4].body
+	// setup update trip test (URL, Body, expected Response)
+	apiTestList[4].URL = strings.Replace(apiTestList[4].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	apiTestList[4].Body = GetUpdateTrip(apiTestList[3].ActualResponse, apiTestList[4].Body)
+	apiTestList[4].ExpectedResponse = apiTestList[4].Body
 
 	// setup create trip point test
-	apiTestList[5].url = strings.Replace(apiTestList[5].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
-	apiTestList[5].body = strings.Replace(apiTestList[5].body, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
+	apiTestList[5].URL = strings.Replace(apiTestList[5].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	apiTestList[5].Body = strings.Replace(apiTestList[5].Body, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
 
 	// run update trip and create trip point tests
-	RunAPITests(t, router, apiTestList[4:6])
+	tripSvc.RunAPITests(t, router, apiTestList[4:6])
 
 	// setup update trip point test
-	apiTestList[6].url = strings.Replace(apiTestList[6].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
-	apiTestList[6].url = strings.Replace(apiTestList[6].url, "{tripPointID}", TripPointFromStr(apiTestList[5].actualResponse).ID, 1)
-	apiTestList[6].body = GetUpdateTripPoint(apiTestList[5].actualResponse, apiTestList[6].body)
-	//apiTestList[6].expectedResponse = apiTestList[6].body
+	apiTestList[6].URL = strings.Replace(apiTestList[6].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	apiTestList[6].URL = strings.Replace(apiTestList[6].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
+	apiTestList[6].Body = GetUpdateTripPoint(apiTestList[5].ActualResponse, apiTestList[6].Body)
+	//apiTestList[6].ExpectedResponse = apiTestList[6].Body
 
 	// setup read trip points for trip test
-	apiTestList[7].url = strings.Replace(apiTestList[7].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
+	apiTestList[7].URL = strings.Replace(apiTestList[7].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
 
 	// setup ready trip points by trip point id test
-	apiTestList[8].url = strings.Replace(apiTestList[8].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
-	apiTestList[8].url = strings.Replace(apiTestList[8].url, "{tripPointID}", TripPointFromStr(apiTestList[5].actualResponse).ID, 1)
+	apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
 
 	//setup delete trip point test
-	apiTestList[9].url = strings.Replace(apiTestList[9].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
-	apiTestList[9].url = strings.Replace(apiTestList[9].url, "{tripPointID}", TripPointFromStr(apiTestList[5].actualResponse).ID, 1)
+	apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
 
-	// setup delete test (url)
-	apiTestList[10].url = strings.Replace(apiTestList[10].url, "{tripID}", TripFromStr(apiTestList[3].actualResponse).ID, 1)
+	// setup delete test (URL)
+	apiTestList[10].URL = strings.Replace(apiTestList[10].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
 	// run update test
-	RunAPITests(t, router, apiTestList[6:10])
+	tripSvc.RunAPITests(t, router, apiTestList[6:10])
 }
 
 func GetUpdateTrip(tripCreate string, tripUpdate string) string {
