@@ -11,6 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// APITestCase needs to be exported to be accessed for test dir
 type APITestCase struct {
 	Tag              string
 	Method           string
@@ -34,6 +35,7 @@ func testAPI(router *mux.Router, method, URL, body string) *httptest.ResponseRec
 	return res
 }
 
+// RunAPITests needs to be exported to be accessed for test dir
 func RunAPITests(t *testing.T, router *mux.Router, tests []APITestCase) {
 	for i := 0; i < len(tests); i++ {
 		res := testAPI(router, tests[i].Method, tests[i].URL, tests[i].Body)
