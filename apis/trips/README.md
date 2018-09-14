@@ -14,3 +14,18 @@ To run the server, follow these simple steps:
 go run main.go
 ```
 
+## Testing
+
+To run unit tests, execute:
+
+```shell
+go test ./test
+```
+
+To run integration tests, execute:
+
+```shell
+go test ./test/integration
+```
+
+> Note: this requires an actual database connection, so the required ENV variables need to be present.
