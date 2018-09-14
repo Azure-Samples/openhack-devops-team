@@ -63,12 +63,12 @@ func ExecuteNonQuery(query string) (string, error) {
 func ExecuteQuery(query string) (*sql.Rows, error) {
 	connString := fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", *server, *database, *user, *password, *port)
 
-	Debug.Println("connString:%s\n", connString)
+	// Debug.Println("connString:%s\n", connString)
 
 	conn, err := sql.Open("mssql", connString)
 
 	if err != nil {
-		LogError(err, "Failed to connect to database.")
+		logError(err, "Failed to connect to database.")
 		return nil, err
 
 	}

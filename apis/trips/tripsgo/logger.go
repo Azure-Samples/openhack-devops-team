@@ -51,11 +51,11 @@ func Logger(inner http.Handler, name string) http.Handler {
 	})
 }
 
-func LogMessage(msg string) {
+func logMessage(msg string) {
 	Info.Println(msg)
 }
 
-func LogError(err error, msg string) {
+func logError(err error, msg string) {
 	Info.Println(msg)
 	Debug.Println(err.Error())
 }
