@@ -12,8 +12,17 @@ namespace poi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
+
+            int delay = 10 * 1000;
+            int count = 20;
+
+            for (int i = 0; i <= count;i++){
+
+                await Task.Delay(delay);
+                Console.WriteLine("Warming Cache {0}% Complete - {1}", i*5, DateTime.Now.ToString());
+            }
 
             BuildWebHost(args).Run();
 
