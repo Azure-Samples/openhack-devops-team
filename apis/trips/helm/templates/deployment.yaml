@@ -14,8 +14,6 @@ spec:
       labels:
         app: {{ .Values.image.label }}
     spec:
-      imagePullSecrets:
-        - name: acrsecret
       containers:
       - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag }}"
         imagePullPolicy: {{ .Values.repository.pullPolicy }}
