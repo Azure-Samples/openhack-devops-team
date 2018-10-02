@@ -16,7 +16,8 @@ pipeline {
 steps {
 script {
 docker.withServer("tcp://10.0.0.4:4243") {
-                    docker.build("user-java-test:latest", "apis/user-java")
+                    def img = docker.build("user-java-test:latest", "apis/user-java")
+                    img.push()
 }
 }
 }
