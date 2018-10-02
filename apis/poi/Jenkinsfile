@@ -14,7 +14,7 @@ pipeline {
         script { 
           image = "${registry}/poi:${env.BRANCH_NAME}-${BUILD_NUMBER}"
         }
-        sh "docker build -t ${image} web"
+        sh "docker build -t ${image} ./web/Dockerfile"
         sh "docker push ${image}"
       }
     }
