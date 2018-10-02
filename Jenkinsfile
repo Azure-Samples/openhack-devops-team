@@ -15,7 +15,6 @@ pipeline {
         stage('user-java') {
 docker.withServer("tcp://10.0.0.4:4243") {
                     docker.build("user-java-test:latest", "apis/user-java")
-                }
 }
         }
         stage('userprofile') {
