@@ -15,7 +15,9 @@ pipeline {
         stage('user-java') {
             steps {
                 echo 'user-java'
-                docker.build("user-java-test:latest", "apis/user-java")
+                node {
+                    docker.build("user-java-test:latest", "apis/user-java")
+                }
             }
         }
         stage('userprofile') {
