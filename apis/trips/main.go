@@ -34,6 +34,7 @@ func main() {
 
 
 
+
 		sw.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
 
