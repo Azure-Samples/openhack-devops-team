@@ -2,20 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('poi') {
             steps {
-                echo 'Building..'
+                echo 'poi'
             }
         }
-        stage('Test') {
+        stage('trips') {
             steps {
-                echo 'Testing..'
+                echo 'trips'
             }
         }
-        stage('Deploy') {
+        stage('user-java') {
             steps {
-                echo 'Deploying....'
+                echo 'user-java'
             }
         }
+        stage('userprofile') {
+             steps {
+                 echo 'userprofile'
+             }
+         }
     }
 }
