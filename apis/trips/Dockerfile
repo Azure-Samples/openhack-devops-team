@@ -8,7 +8,7 @@ ENV GO111MODULE=on
 
 RUN go mod vendor
 
-RUN go test ./...
+RUN go test `go list ./... | grep -v integration`
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
