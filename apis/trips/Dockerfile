@@ -8,7 +8,9 @@ ENV GO111MODULE=on
 
 RUN go mod vendor
 
-RUN go test `go list ./... | grep -v integration`
+RUN go test -race -coverprofile=coverage.txt -covermode=atomic `go list ./... | grep -v integration`
+
+RUN bash <(curl -s https://codecov.io/bash)
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
