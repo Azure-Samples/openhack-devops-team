@@ -32,14 +32,6 @@ pipeline {
                     img.push()
                 }
             }
-            post {
-                success {
-                    githubNotify status: "SUCCESS", description: "Success", credentialsId: "607c442b-27a1-4298-93b8-e74a46007bf9", account: "Mimetis", repo: "openhack-devops-team"
-                }
-                failure {
-                    githubNotify status: "FAILURE", description: "Failure", credentialsId: "607c442b-27a1-4298-93b8-e74a46007bf9", account: "Mimetis", repo: "openhack-devops-team"
-                }
-            }
         }
         stage('userprofile') {
             when {
