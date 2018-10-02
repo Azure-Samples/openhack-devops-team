@@ -16,7 +16,7 @@ pipeline {
 steps {
 script {
 docker.withServer("tcp://10.0.0.4:4243", "AzureDockerRegistry") {
-                    def img = docker.build("user-java-test:latest", "apis/user-java")
+                    def img = docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-user-java:1", "apis/user-java")
                     img.push()
 }
 }
