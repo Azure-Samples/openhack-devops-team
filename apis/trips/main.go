@@ -31,8 +31,6 @@ func main() {
 	} else {
 		// if debug env is not present or false, do not log debug output to console
 
-
-
 		sw.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
 
