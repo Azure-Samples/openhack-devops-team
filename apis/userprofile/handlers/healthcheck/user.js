@@ -13,6 +13,8 @@ module.exports = {
      */
     get: function (req, res, next) {
 
+
+
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.
