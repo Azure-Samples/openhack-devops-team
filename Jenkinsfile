@@ -3,11 +3,17 @@ pipeline {
 
     stages {
         stage('poi') {
+            when {
+                changeset "apis/poi/**"
+            }
             steps {
                 echo 'poi'
             }
         }
         stage('trips') {
+            when {
+                changeset "apis/trips/**"
+            }
             steps {
                 echo 'trips'
             }
@@ -26,9 +32,12 @@ pipeline {
             }
         }
         stage('userprofile') {
-             steps {
-                 echo 'userprofile'
-             }
+            when {
+                changeset "apis/userprofile/**"
+            }
+            steps {
+                echo 'userprofile'
+            }
          }
     }
 }
