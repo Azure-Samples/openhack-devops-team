@@ -5,6 +5,7 @@ pipeline {
         stage('poi') {
             steps {
                 echo 'poi'
+                echo 'build'
             }
         }
         stage('trips') {
