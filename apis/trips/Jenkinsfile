@@ -3,6 +3,11 @@ pipeline {
     label "docker"
   }
   stages {
+    stage('test') {
+      steps {
+        sh "go test apis/trips/..."
+      }
+    }
     stage('build') {
       steps {
         script {
