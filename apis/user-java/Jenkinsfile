@@ -1,22 +1,40 @@
 pipeline {
-  agent {
-    label "docker"
-  }
-  stages {
-    stage('build') {
-      steps {
-        script {
-          registry =  "openhackiva6acr.azurecr.io"
-        }
-        withCredentials([usernamePassword(credentialsId: '6f81a13c-2f1b-4547-b66b-5968150d8add', passwordVariable: 'PASSWORD_REGISTRY', usernameVariable: 'USERNAME_REGISTRY')]) {
-          sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
-        }
-        script { 
-          image = "${registry}/user-java:${env.BRANCH_NAME}-${BUILD_NUMBER}"
-        }
-        sh "docker build -t ${image} apis/user-java"
-        sh "docker push ${image}"
-      }
+	agent {
+		label "docker"
+	}
+    tools {
+        jdk 'Java 8' 
     }
-  }
+	stages {
+		stage('build') {
+			steps {
+				script{
+					try {
+						sh "cd ./apis/user-java && mvn clean verify"
+					}
+					catch(any) {
+						step([$class: 'GitHubIssueNotifier',
+							issueAppend: true,
+							issueLabel: '',
+							issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
+					}				
+				}					
+				script {
+					properties([[$class: 'GithubProjectProperty',
+								projectUrlStr: '<GitHub repo URL>']])
+				}
+				script {
+					registry =  "openhackiva6acr.azurecr.io"
+				}
+				withCredentials([usernamePassword(credentialsId: '6f81a13c-2f1b-4547-b66b-5968150d8add', passwordVariable: 'PASSWORD_REGISTRY', usernameVariable: 'USERNAME_REGISTRY')]) {
+					sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
+				}
+				script { 
+					image = "${registry}/user-java:${env.BRANCH_NAME}-${BUILD_NUMBER}"
+				}
+				sh "docker build -t ${image} apis/user-java"
+				sh "docker push ${image}"
+			}	
+		}
+	}
 }
