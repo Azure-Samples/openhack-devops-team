@@ -47,17 +47,24 @@ pipeline {
              }
 
         }
-//        stage('user-java SonarQube Analysis') {
-//            when {
-//                changeset "apis/user-java/**"
-//            }
-////            agent {
-//                docker { image 'sonarqube' }
-//            }
-//            steps {
-//                    sh 'mvn clean package sonar:sonar'
-//             }
-//        }
+        stage('user-java SonarQube Analysis') {
+            when {                changeset "apis/user-java/**"
+            }
+            agent {
+                docker { image 'newtmitch/sonar-scanner' }
+            }
+            steps {
+                    sh  """sonar-scanner \
+                          -Dsonar.projectKey=Mimetis_openhack-devops-team \
+                          -Dsonar.organization=mimetis-github \
+                          -Dsonar.projectName=userprofile \
+                          -Dsonar.projectBaseDir=/workspace/apis/userprofile \
+                          -Dsonar.sources=apis/user-java \
+                          -Dsonar.host.url=https://sonarcloud.io \
+                          -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd \
+                          -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/* """
+             }
+        }
         stage('user-java build Image and Push') {
              when {
                  changeset "apis/user-java/**"
