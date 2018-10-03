@@ -56,6 +56,7 @@ pipeline {
             when {
                 changeset "apis/user-java/**"
             }
+
             agent {
                 docker { image 'maven:3-alpine' }
             }
@@ -64,7 +65,13 @@ pipeline {
             }
 
             post {
+
                 always {
+                    script {
+                            properties([[$class: 'GithubProjectProperty',
+                                        projectUrlStr: 'https://github.com/Mimetis/openhack-devops-team']])
+                    }
+
                     junit '**/target/*-reports/TEST-*.xml'
                     step([$class: 'JacocoPublisher',
                           execPattern: 'apis/user-java/target/*.exec',
@@ -72,6 +79,10 @@ pipeline {
                           sourcePattern: 'apis/user-java/src/main/java',
                           exclusionPattern: 'apis/user-java/src/test*'
                     ])
+                    step([$class: 'GitHubIssueNotifier',
+                          issueAppend: true,
+                          issueLabel: '',
+                          issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
 
                 }
              }
