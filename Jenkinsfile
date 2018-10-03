@@ -35,7 +35,6 @@ pipeline {
              }
              steps {
                   script {
-                        docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}", "apis/trips")
                         sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-trip:4 apis/trips && docker push openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}'
                   }
              }
