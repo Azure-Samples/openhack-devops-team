@@ -48,8 +48,10 @@ pipeline {
                 docker { image 'maven:3-alpine' }
             }
             steps {
-                sh 'mvn -f apis/user-java/pom.xml test'
-            }
+                 withSonarQubeEnv('My SonarQube Server') {
+                    sh 'mvn clean package sonar:sonar'
+                  }
+             }
         }
         stage('user-java build Image and Push') {
              when {
