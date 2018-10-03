@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        sh "export GO111MODULE=on &&  go mod vendor && cd apis/trips && go test -race -coverprofile=coverage.txt -covermode=atomic ./test && go tool cover -html=coverage.out"
+        sh "export GO111MODULE=on &&  go mod vendor && cd apis/trips && go test -race -coverprofile=coverage.out -covermode=atomic ./test && go tool cover -html=coverage.out"
       }
     }
     stage('build') {
