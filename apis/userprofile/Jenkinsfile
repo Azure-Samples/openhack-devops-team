@@ -10,9 +10,18 @@ tools {
         stage('test') {
             steps {
                 dir ('apis/userprofile'){
+		script {
+		try{
                     sh 'npm install'
                     sh 'npm run test'
                     sh 'npm run cover'
+		} catch (any) {
+			throw any
+		} finally {
+			                        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'NPM cover', reportTitles: ''])
+                        archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/'
+		}
+		}
                 }
             }
         }
@@ -31,14 +40,6 @@ tools {
         sh "docker build -t ${image} apis/userprofile"
         sh "docker push ${image}"
       }
-    }
-    stage('reports'){
-       steps {
-                dir ('apis/userprofile'){
-			publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'NPM cover', reportTitles: ''])
-			archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/'
-                }
-            }
     }
   }
 }
