@@ -3,7 +3,7 @@ pipeline {
     label "docker"
   }
   tools {
-        go 'go1.11.1' 
+        go 'go1.11' 
     }
   stages {
     stage('test') {
