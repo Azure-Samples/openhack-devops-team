@@ -29,7 +29,7 @@
     },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
-        "cover": "istanbul  cover tape -- 'tests/**/*.js' && istanbul check-coverage --lines 99" ,
+        "cover": "istanbul  cover tape -- 'tests/**/*.js' && istanbul check-coverage --lines 20" ,
         "lint": "eslint .",
         "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.json'"
     },
