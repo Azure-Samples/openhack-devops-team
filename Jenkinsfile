@@ -43,10 +43,7 @@ pipeline {
             when {
                 changeset "apis/user-java/**"
             }
-            script {
-                properties([[$class: 'GithubProjectProperty',
-                            projectUrlStr: 'https://github.com/Mimetis/openhack-devops-team']])
-            }
+
             agent {
                 docker { image 'maven:3-alpine' }
             }
@@ -55,7 +52,13 @@ pipeline {
             }
 
             post {
+
                 always {
+                    script {
+                            properties([[$class: 'GithubProjectProperty',
+                                        projectUrlStr: 'https://github.com/Mimetis/openhack-devops-team']])
+                    }
+
                     junit '**/target/*-reports/TEST-*.xml'
                     step([$class: 'JacocoPublisher',
                           execPattern: 'apis/user-java/target/*.exec',
