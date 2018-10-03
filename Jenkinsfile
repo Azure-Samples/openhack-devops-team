@@ -50,11 +50,25 @@ pipeline {
         stage('user-java SonarQube Analysis') {
             when {                changeset "apis/user-java/**"
             }
-            agent {
-                docker { image 'newtmitch/sonar-scanner' }
-            }
+          //  agent {
+          //      docker { image 'newtmitch/sonar-scanner' }
+          //  }
             steps {
-                    sh  'sonar-scanner -X'
+                sh """docker run --rm \
+                      --mount type=bind,source="${env.WORKSPACE}",target=/workspace \
+                      -w "/workspace/apis/user-java" \
+                      newtmitch/sonar-scanner sonar-scanner \
+                      -Dsonar.projectKey=Mimetis_openhack-devops-team \
+                      -Dsonar.organization=mimetis-github \
+                      -Dsonar.projectName=user-java \
+                      -Dsonar.projectBaseDir=/workspace/apis/user-java \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=https://sonarcloud.io \
+                      -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd \
+                      -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/* """
+
+               //     sh  'bash ls -la /root'
+                    //sonar-scanner -X'
                        //-Dsonar.projectKey=Mimetis_openhack-devops-team   -Dsonar.organization=mimetis-github  -Dsonar.projectName=user-java -Dsonar.projectBaseDir=/workspace/apis/user-java   -Dsonar.sources=apis/user-java  -Dsonar.host.url=https://sonarcloud.io    -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd  -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/*'
              }
         }
