@@ -21,18 +21,18 @@ pipeline {
             }
         }
         stage('poi build docker image and push') {
-            when {
-                changeset "apis/poi/**"
-            }
+            //when {
+            //    changeset "apis/poi/**"
+            //}
             steps {
-                sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID apis/poi && docker push openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID'
+                sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID apis/poi/web && docker push openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID'
             }
         }
         stage('poi helm') {
              when {
                 allOf {
-                  changeset "apis/poi/**"
-                  branch 'master'
+                  //changeset "apis/poi/**"
+                  //branch 'master'
                 }
              }
              steps {
