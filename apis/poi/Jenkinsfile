@@ -3,7 +3,7 @@ pipeline {
     label "docker"
   }
   stages {
-    stage('build') {
+    stage('test') {
       steps {
           sh "bash test.sh"
       }
