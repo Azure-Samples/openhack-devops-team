@@ -30,7 +30,7 @@ pipeline {
 					sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
 				}
 				script { 
-					image = "${registry}/user-java:${env.BRANCH_NAME}-${BUILD_NUMBER}"
+					image = "${registry}/user-java:${BUILD_NUMBER}"
 				}
 				sh "docker build -t ${image} apis/user-java"
 				sh "docker push ${image}"

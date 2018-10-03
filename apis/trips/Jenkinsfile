@@ -20,7 +20,7 @@ pipeline {
           sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
         }
         script { 
-          image = "${registry}/trips:${env.BRANCH_NAME}-${BUILD_NUMBER}"
+          image = "${registry}/trips:${BUILD_NUMBER}"
         }
         sh "docker build -t ${image} apis/trips"
         sh "docker push ${image}"
