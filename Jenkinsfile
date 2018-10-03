@@ -19,12 +19,13 @@ pipeline {
           //      changeset "apis/trips/**"
           //  }
             agent {
-                docker { image 'golang:1.11.0' }
+                docker {
+                    image 'jenkinsxio/builder-go'
+                    args '-v $HOME/.cache:/.cache'
+                }
             }
             steps {
-              withEnv(["GOPATH=${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"]) {
                   sh 'cd apis/trips/ && go mod vendor && go test ./test'
-              }
 
             }
         }
