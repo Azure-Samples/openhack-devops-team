@@ -8,6 +8,8 @@ import (
 // TripPoint - Represents a single point record in a trip
 type TripPoint struct {
 
+
+
 	// Trip Point ID
 	ID string `json:"Id,omitempty"`
 

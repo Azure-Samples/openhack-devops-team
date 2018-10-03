@@ -35,10 +35,8 @@ pipeline {
                  changeset "apis/trips/**"
              }
              steps {
-                  script {
-                        def img_trip = docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}", "apis/trips")
-                        img_trip.push()
-                  }
+                        sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-trip:$BUILD_ID apis/trips && docker push openhacks3n5acr.azurecr.io/devopsoh/api-trip:$BUILD_ID'
+
              }
         }
         stage('user-java Tests Run') {
