@@ -10,10 +10,9 @@ tools {
         stage('test') {
             steps {
                 dir ('apis/userprofile'){
-                    sh 'pwd'
-                    sh 'ls -l '
                     sh 'npm install'
                     sh 'npm run test'
+                    sh 'npm run cover'
                 }
             }
         }
@@ -32,6 +31,14 @@ tools {
         sh "docker build -t ${image} apis/userprofile"
         sh "docker push ${image}"
       }
+    }
+    staget('reports'){
+       steps {
+                dir ('apis/userprofile'){
+			publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'NPM cover', reportTitles: ''])
+			archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/'
+                }
+            }
     }
   }
 }
