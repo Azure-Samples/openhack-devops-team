@@ -40,5 +40,12 @@ pipeline {
         sh "docker push ${image}"
       }
     }
+stage('deploy'){
+        steps {
+            dir ('apis/userprofile'){
+                sh "helm upgrade --set repository.image=openhackiva6acr.azurecr.io/userprofile --set repository.tag=${BUILD_NUMBER}  api-user ./helm"
+            }
+        }
+    }
   }
 }
