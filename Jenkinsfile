@@ -15,14 +15,17 @@ pipeline {
             }
         }
         stage('trips Tests run') {
-            when {
-                changeset "apis/trips/**"
-            }
+          //  when {
+          //      changeset "apis/trips/**"
+          //  }
             agent {
                 docker { image 'golang:1.11.0' }
             }
             steps {
-                sh 'cd apis/trips/ && go mod vendor && go test ./test'
+              withEnv(["GOPATH=${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}"]) {
+                  sh 'cd apis/trips/ && go mod vendor && go test ./test'
+              }
+
             }
         }
         stage('trips build Image and Push') {
