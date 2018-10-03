@@ -21,20 +21,20 @@ pipeline {
             }
         }
         stage('poi build docker image and push') {
-            //when {
-            //    changeset "apis/poi/**"
-            //}
+            when {
+                changeset "apis/poi/**"
+            }
             steps {
                 sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID apis/poi/web && docker push openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID'
             }
         }
         stage('poi helm') {
-             //when {
-                //allOf {
-                  //changeset "apis/poi/**"
-                  //branch 'master'
-                //}
-             //}
+             when {
+                allOf {
+                  changeset "apis/poi/**"
+                  branch 'master'
+                }
+             }
              steps {
                   script {
                     sh 'helm upgrade api-poi $WORKSPACE/apis/poi/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-poi,repository.tag=$BUILD_ID,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
