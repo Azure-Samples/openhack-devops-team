@@ -34,9 +34,8 @@ pipeline {
                  changeset "apis/trips/**"
              }
              steps {
-                  script {
-                          def img = docker.build("penhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}", "apis/trips")
-                          img.push()
+
+                        sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID} apis/trips && docker push openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}'
                   }
              }
         }
