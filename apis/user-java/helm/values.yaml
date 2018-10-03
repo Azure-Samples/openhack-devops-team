@@ -19,7 +19,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     endpoint:
-      host: changeme
+      host: akstraefikopenhackiva6.westeurope.cloudapp.azure.com
       paths:
       - path: /api/user-java
         serviceName: api-user-java-svc
