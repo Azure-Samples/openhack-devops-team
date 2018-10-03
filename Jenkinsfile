@@ -14,13 +14,27 @@ pipeline {
                 echo 'poi'
             }
         }
-        stage('trips') {
+        stage('trips Tests run') {
             when {
                 changeset "apis/trips/**"
             }
-            steps {
-                echo 'trips'
+            agent {
+                docker { image 'golang:1.11.0' }
             }
+            steps {
+                sh 'cd apis/trips/ && go mod vendor && go test ./test'
+            }
+        }
+        stage('trips build Image and Push') {
+             when {
+                 changeset "apis/trips/**"
+             }
+             steps {
+                  script {
+                        def img = docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_NUMBER}", "apis/trips")
+                        img.push()
+                  }
+             }
         }
         stage('user-java Tests Run') {
             when {
@@ -55,4 +69,3 @@ pipeline {
          }
     }
 }
-
