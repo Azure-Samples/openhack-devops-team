@@ -32,7 +32,7 @@ tools {
         sh "docker push ${image}"
       }
     }
-    staget('reports'){
+    stage('reports'){
        steps {
                 dir ('apis/userprofile'){
 			publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'NPM cover', reportTitles: ''])
