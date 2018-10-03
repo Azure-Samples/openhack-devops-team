@@ -3,6 +3,13 @@ pipeline {
     label "docker"
   }
   stages {
+    stage('test') {
+      steps {
+        dir('apis/poi/'){
+          sh "bash test.sh"
+        }
+      }
+    }
     stage('build') {
       steps {
         script {
