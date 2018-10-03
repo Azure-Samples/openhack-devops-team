@@ -11,6 +11,7 @@ import (
 
 // TripPoint Service Methods
 
+
 func getTripPoints(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
