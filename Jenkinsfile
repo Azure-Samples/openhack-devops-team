@@ -43,6 +43,10 @@ pipeline {
             when {
                 changeset "apis/user-java/**"
             }
+            script {
+                properties([[$class: 'GithubProjectProperty',
+                            projectUrlStr: 'https://github.com/Mimetis/openhack-devops-team']])
+            }
             agent {
                 docker { image 'maven:3-alpine' }
             }
@@ -59,6 +63,10 @@ pipeline {
                           sourcePattern: 'apis/user-java/src/main/java',
                           exclusionPattern: 'apis/user-java/src/test*'
                     ])
+                    step([$class: 'GitHubIssueNotifier',
+                          issueAppend: true,
+                          issueLabel: '',
+                          issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
 
                 }
              }
