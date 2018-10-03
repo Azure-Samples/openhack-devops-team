@@ -11,6 +11,8 @@ func SerializeError(e error, customMessage string) string {
 		Message string
 	}
 
+	
+
 	if customMessage != "" {
 		message := []string{customMessage, e.Error()}
 		errorMessage.Message = strings.Join(message, ": ")
