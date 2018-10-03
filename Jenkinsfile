@@ -66,17 +66,29 @@ pipeline {
              }
 
         }
-//        stage('user-java SonarQube Analysis') {
-//            when {
-//                changeset "apis/user-java/**"
-//            }
-////            agent {
-//                docker { image 'sonarqube' }
-//            }
-//            steps {
-//                    sh 'mvn clean package sonar:sonar'
-//             }
-//        }
+        stage('user-java SonarQube Analysis') {
+            when {
+                 changeset "apis/user-java/**"
+            }
+
+            steps {
+                sh """docker run --rm \
+                      --mount type=bind,source="${env.WORKSPACE}",target=/workspace \
+                      -w "/workspace/apis/user-java" \
+                      newtmitch/sonar-scanner sonar-scanner \
+                      -Dsonar.projectKey=Mimetis_openhack-devops-team-use-user-java \
+                      -Dsonar.organization=mimetis-github \
+                      -Dsonar.projectName=user-java \
+                      -Dsonar.projectBaseDir=/workspace/apis/user-java \
+                      -Dsonar.sources= \
+                      -Dsonar.java.binaries=/workspace/apis/user-java/target/classes \
+                      -Dsonar.host.url=https://sonarcloud.io \
+                      -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd \
+                      -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/* && sudo chown -R 1000:1000 "${env.WORKSPACE}/apis/user-java" """
+
+                sh """sleep 10 && curl -s -u dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd: \$(cat ./apis/user-java/.scannerwork/report-task.txt | grep ceTaskUrl | cut -d'=' -f2,3) | grep SUCCESS"""
+            }
+        }
         stage('user-java build Image and Push') {
              when {
                  changeset "apis/user-java/**"
