@@ -8,7 +8,6 @@ tools {
         nodejs 'nodejs8_12_0'
     }
     
-    stages {
         stage('test') {
             steps {
                 dir ('apis/userprofile'){
@@ -19,7 +18,6 @@ tools {
                 }
             }
         }
-    }
 
     stage('build') {
       steps {
