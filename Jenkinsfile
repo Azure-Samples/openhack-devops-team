@@ -34,9 +34,8 @@ pipeline {
                  changeset "apis/trips/**"
              }
              steps {
-
                         sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID} apis/trips && docker push openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}'
-                  }
+            
              }
         }
         stage('user-java Tests Run') {
