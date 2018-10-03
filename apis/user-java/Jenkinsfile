@@ -18,7 +18,6 @@ pipeline {
 				script { 
 					image = "${registry}/user-java:${env.BRANCH_NAME}-${BUILD_NUMBER}"
 				}
-				sh "cd apis/user-java && mvn clean install
 				sh "docker build -t ${image} apis/user-java"
 				sh "docker push ${image}"
 				script(
