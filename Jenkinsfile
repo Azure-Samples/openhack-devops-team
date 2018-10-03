@@ -12,6 +12,7 @@ pipeline {
             }
             steps {
                 echo 'poi'
+                echo 'build'
             }
         }
         stage('trips Tests run') {
