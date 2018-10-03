@@ -27,9 +27,7 @@ pipeline {
                 changeset "apis/user-java/**"
             }
             agent {
-                docker {
-                      image 'maven:3-alpine'
-                 }
+                docker { image 'maven:3-alpine' }
             }
             steps {
                 sh 'mvn -f apis/user-java/pom.xml test'
@@ -63,8 +61,9 @@ pipeline {
                       -Dsonar.projectKey=Mimetis_openhack-devops-team \
                       -Dsonar.organization=mimetis-github \
                       -Dsonar.projectName=user-java \
-                      -Dsonar.projectBaseDir=/workspace/apis/user-java/target/classes \
-                      -Dsonar.sources=. \
+                      -Dsonar.projectBaseDir=/workspace/apis/user-java \
+                      -Dsonar.sources= \
+                      -Dsonar.java.binaries=/workspace/apis/user-java/target \
                       -Dsonar.host.url=https://sonarcloud.io \
                       -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd \
                       -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/* """
