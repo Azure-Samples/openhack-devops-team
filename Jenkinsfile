@@ -36,7 +36,12 @@ pipeline {
             post {
                 always {
                     junit '**/target/*-reports/TEST-*.xml'
-                    step( [ $class: 'JacocoPublisher' ] )
+                    step([$class: 'JacocoPublisher',
+                          execPattern: 'apis/user-java/target/*.exec',
+                          classPattern: 'apis/user-java/target/classes',
+                          sourcePattern: 'apis/user-java/src/main/java',
+                          exclusionPattern: 'apis/user-java/src/test*'
+                    ])
 
                 }
              }
