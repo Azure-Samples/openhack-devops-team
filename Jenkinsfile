@@ -6,14 +6,40 @@ pipeline {
     }
 
     stages {
-        stage('poi') {
+        stage('poi tests run') {
+            when {
+                changeset "apis/poi/**"
+            }
+            agent {
+                docker {
+                    image 'microsoft/dotnet:2.1-sdk'
+                    args '-v $HOME/.dotnet:/.dotnet -v $HOME/.nuget:/.nuget'
+                }
+            }
+            steps {
+                  sh 'cd apis/poi && dotnet test tests/UnitTests/UnitTests.csproj'
+            }
+        }
+        stage('poi build docker image and push') {
             when {
                 changeset "apis/poi/**"
             }
             steps {
-                echo 'poi'
-                echo 'build'
+                sh 'docker build -t openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID apis/poi/web && docker push openhacks3n5acr.azurecr.io/devopsoh/api-poi:$BUILD_ID'
             }
+        }
+        stage('poi helm') {
+             when {
+                allOf {
+                  changeset "apis/poi/**"
+                  branch 'master'
+                }
+             }
+             steps {
+                  script {
+                    sh 'helm upgrade api-poi $WORKSPACE/apis/poi/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-poi,repository.tag=$BUILD_ID,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
+                  }
+             }
         }
         stage('trips Tests run') {
             when {
