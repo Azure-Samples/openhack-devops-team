@@ -47,17 +47,17 @@ pipeline {
              }
 
         }
-        stage('user-java SonarQube Analysis') {
-            when {
-                changeset "apis/user-java/**"
-            }
-            agent {
-                docker { image 'sonarqube' }
-            }
-            steps {
-                    sh 'mvn clean package sonar:sonar'
-             }
-        }
+//        stage('user-java SonarQube Analysis') {
+//            when {
+//                changeset "apis/user-java/**"
+//            }
+////            agent {
+//                docker { image 'sonarqube' }
+//            }
+//            steps {
+//                    sh 'mvn clean package sonar:sonar'
+//             }
+//        }
         stage('user-java build Image and Push') {
              when {
                  changeset "apis/user-java/**"
