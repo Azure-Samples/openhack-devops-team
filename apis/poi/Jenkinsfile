@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        dir(apis/poi/){
+        dir('apis/poi/'){
           sh "bash test.sh"
         }
       }
