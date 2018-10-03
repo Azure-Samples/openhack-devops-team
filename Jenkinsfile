@@ -13,7 +13,7 @@ pipeline {
             agent {
                 docker {
                     image 'microsoft/dotnet:2.1-sdk'
-                    args '-v $HOME/.dotnet:/.dotnet'
+                    args '-v $HOME/.dotnet:/.dotnet -v $HOME/.nuget:/.nuget'
                 }
             }
             steps {
