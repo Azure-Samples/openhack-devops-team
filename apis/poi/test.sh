@@ -1,7 +1,7 @@
 cd tools
-dotnet restore
-cd ..
-cd tests/UnitTests/
+dotnet restore 
+cd .. 
+cd tests/UnitTests/ 
 dotnet restore
 dotnet build
 cd ../..
@@ -14,4 +14,4 @@ cd tools
 dotnet minicover uninstrument --workdir ../
 dotnet minicover htmlreport --workdir ../ --threshold 90
 dotnet minicover report --workdir ../ --threshold 90
-cd ..
+
