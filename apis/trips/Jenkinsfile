@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        sh "cd apis/trips && go test -race -coverprofile=coverage.txt -covermode=atomic ./test"
+        sh "export GOPATH=$PWD && cd apis/trips && go test -race -coverprofile=coverage.txt -covermode=atomic ./test"
       }
     }
     stage('build') {
