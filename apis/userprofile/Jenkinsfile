@@ -3,6 +3,24 @@ pipeline {
     label "docker"
   }
   stages {
+
+tools {
+        nodejs 'nodejs8_12_0'
+    }
+    
+    stages {
+        stage('test') {
+            steps {
+                dir ('apis/userprofile'){
+                    sh 'pwd'
+                    sh 'ls -l '
+                    sh 'npm install'
+                    sh 'npm run test'
+                }
+            }
+        }
+    }
+
     stage('build') {
       steps {
         script {
