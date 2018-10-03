@@ -5,6 +5,11 @@ pipeline {
   stages {
     stage('build') {
       steps {
+          sh "bash test.sh"
+      }
+    }
+    stage('build') {
+      steps {
         script {
           registry =  "openhackiva6acr.azurecr.io"
         }

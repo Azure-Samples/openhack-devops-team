@@ -1,3 +1,6 @@
+cd tools
+dotnet restore
+cd ..
 cd tests/UnitTests/
 dotnet restore
 dotnet build
