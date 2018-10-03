@@ -39,6 +39,19 @@ pipeline {
 
              }
         }
+        stage('update helm application') {
+             when {
+                allOf {
+                  changeset "apis/trips/**"
+                  branch 'master'
+                }
+             }
+             steps {
+                  script {
+                    sh 'helm upgrade api-trip $WORKSPACE/apis/trips/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-trip,repository.tag=$BUILD_ID,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
+                  }
+             }
+        }
         stage('user-java Tests Run') {
             when {
                 changeset "apis/user-java/**"
