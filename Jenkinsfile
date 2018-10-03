@@ -33,7 +33,31 @@ pipeline {
                 sh 'mvn -f apis/user-java/pom.xml test'
             }
 
+            post {
+                always {
+                    junit '**/target/*-reports/TEST-*.xml'
+                    step([$class: 'JacocoPublisher',
+                          execPattern: 'apis/user-java/target/*.exec',
+                          classPattern: 'apis/user-java/target/classes',
+                          sourcePattern: 'apis/user-java/src/main/java',
+                          exclusionPattern: 'apis/user-java/src/test*'
+                    ])
+
+                }
+             }
+
         }
+//        stage('user-java SonarQube Analysis') {
+//            when {
+//                changeset "apis/user-java/**"
+//            }
+////            agent {
+//                docker { image 'sonarqube' }
+//            }
+//            steps {
+//                    sh 'mvn clean package sonar:sonar'
+//             }
+//        }
         stage('user-java build Image and Push') {
              when {
                  changeset "apis/user-java/**"
