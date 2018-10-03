@@ -10,7 +10,7 @@ pipeline {
 			steps {
 				script{
 					try {
-						sh "mvn clean verify"
+						sh "cd ./apis/user-java && mvn clean verify"
 					}
 					catch(any) {
 						step([$class: 'GitHubIssueNotifier',
