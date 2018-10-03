@@ -36,6 +36,8 @@ pipeline {
             post {
                 always {
                     junit '**/target/*-reports/TEST-*.xml'
+                    step( [ $class: 'JacocoPublisher' ] )
+
                 }
              }
 
@@ -45,7 +47,7 @@ pipeline {
                 changeset "apis/user-java/**"
             }
             agent {
-                docker { image 'maven:3-alpine' }
+                docker { image 'sonarqube' }
             }
             steps {
                  withSonarQubeEnv('My SonarQube Server') {
