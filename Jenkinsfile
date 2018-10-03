@@ -33,6 +33,22 @@ pipeline {
                 sh 'mvn -f apis/user-java/pom.xml test'
             }
 
+            post {
+                always {
+                    junit '**/target/*-reports/TEST-*.xml'
+                }
+
+        }
+        stage('user-java SonarQube Analysis') {
+            when {
+                changeset "apis/user-java/**"
+            }
+            agent {
+                docker { image 'maven:3-alpine' }
+            }
+            steps {
+                sh 'mvn -f apis/user-java/pom.xml test'
+            }
         }
         stage('user-java build Image and Push') {
              when {
