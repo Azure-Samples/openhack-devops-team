@@ -57,7 +57,7 @@ pipeline {
                     sh  """sonar-scanner \
                           -Dsonar.projectKey=Mimetis_openhack-devops-team \
                           -Dsonar.organization=mimetis-github \
-                          -Dsonar.projectName=userprofile \
+                          -Dsonar.projectName=user-java \
                           -Dsonar.projectBaseDir=/workspace/apis/userprofile \
                           -Dsonar.sources=apis/user-java \
                           -Dsonar.host.url=https://sonarcloud.io \
