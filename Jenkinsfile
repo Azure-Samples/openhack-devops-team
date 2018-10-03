@@ -7,9 +7,9 @@ pipeline {
 
     stages {
         stage('poi tests run') {
-            when {
-                changeset "apis/poi/**"
-            }
+            //when {
+            //    changeset "apis/poi/**"
+            //}
             agent {
                 docker {
                     image 'microsoft/dotnet:2.1-sdk'
