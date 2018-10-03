@@ -65,9 +65,9 @@ pipeline {
                       -Dsonar.java.binaries=/workspace/apis/user-java/target/classes \
                       -Dsonar.host.url=https://sonarcloud.io \
                       -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd \
-                      -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/* """
+                      -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/*;
+                      sleep 10 && curl -s -u dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd: $(cat ./apis/user-java/.scannerwork/report-task.txt | grep ceTaskUrl | cut -d'=' -f2,3) | grep SUCCESS"""
 
-                sh """sleep 10 && curl -s -u dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd: $(cat ./apis/user-java/.scannerwork/report-task.txt | grep ceTaskUrl | cut -d'=' -f2,3) | grep SUCCESS"""
             }
         }
         stage('user-java build Image and Push') {
