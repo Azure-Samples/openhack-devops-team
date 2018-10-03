@@ -3,6 +3,11 @@ pipeline {
     label "docker"
   }
   stages {
+    stage('test') {
+      steps {
+        sh "go test -race -coverprofile=coverage.txt -covermode=atomic apis/trips/test"
+      }
+    }
     stage('build') {
       steps {
         script {
