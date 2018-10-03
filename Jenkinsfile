@@ -13,7 +13,7 @@ pipeline {
             agent {
                 docker {
                     image 'microsoft/dotnet:2.1-sdk'
-                    args '-v $WORKSPACE/apis/poi/:/app/ -w /app/'
+                    args '-v $WORKSPACE/apis/poi/:/app/ -w /app/ -v $HOME/.dotnet:/.dotnet'
                 }
             }
             steps {
