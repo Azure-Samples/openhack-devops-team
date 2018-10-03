@@ -47,7 +47,7 @@ pipeline {
         //     }
              steps {
                   script {
-                        helm upgrade $WORKSPACE/apis/trips/helm  --name api-trip --set repository.image=42,env.webServerBaseUri=http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com,ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com
+                        sh 'helm upgrade $WORKSPACE/apis/trips/helm  --name api-trip --set repository.image=42,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
                   }
              }
         }
