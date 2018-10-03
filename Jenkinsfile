@@ -122,6 +122,19 @@ pipeline {
                   }
              }
         }
+        stage('update helm user-java') {
+             when {
+                allOf {
+                  changeset "apis/user-java/**"
+                  branch 'master'
+                }
+             }
+             steps {
+                  script {
+                    sh 'helm upgrade api-user-java $WORKSPACE/apis/user-java/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-user-java,repository.tag=$BUILD_ID,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
+                  }
+             }
+        }
         stage('userprofile') {
             when {
                 changeset "apis/userprofile/**"
