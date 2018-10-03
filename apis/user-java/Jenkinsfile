@@ -2,6 +2,9 @@ pipeline {
 	agent {
 		label "docker"
 	}
+    tools {
+        jdk 'Java 8' 
+    }
 	stages {
 		stage('build') {
 			steps {
