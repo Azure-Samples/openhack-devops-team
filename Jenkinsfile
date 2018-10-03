@@ -53,7 +53,7 @@ pipeline {
             }
 
             steps {
-                sh """docker run --rm \
+                sh """docker run -t -d -u 1000:1000 --rm \
                       --mount type=bind,source="${env.WORKSPACE}",target=/workspace \
                       -w "/workspace/apis/user-java" \
                       newtmitch/sonar-scanner sonar-scanner \
