@@ -54,7 +54,8 @@ pipeline {
                 docker { image 'newtmitch/sonar-scanner' }
             }
             steps {
-                    sh  'sonar-scanner    -Dsonar.projectKey=Mimetis_openhack-devops-team   -Dsonar.organization=mimetis-github  -Dsonar.projectName=user-java -Dsonar.projectBaseDir=/workspace/apis/user-java   -Dsonar.sources=apis/user-java  -Dsonar.host.url=https://sonarcloud.io    -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd  -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/*'
+                    sh  'sonar-scanner -X'
+                       //-Dsonar.projectKey=Mimetis_openhack-devops-team   -Dsonar.organization=mimetis-github  -Dsonar.projectName=user-java -Dsonar.projectBaseDir=/workspace/apis/user-java   -Dsonar.sources=apis/user-java  -Dsonar.host.url=https://sonarcloud.io    -Dsonar.login=dd77b51aa204d65dab0dd6d5f0ef7fbb4e6c23cd  -Dsonar.exclusions=**/node_modules/**/*,**/coverage/**/*,**/reports/**/*'
              }
         }
         stage('user-java build Image and Push') {
