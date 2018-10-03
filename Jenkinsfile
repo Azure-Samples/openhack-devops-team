@@ -50,9 +50,7 @@ pipeline {
                 docker { image 'sonarqube' }
             }
             steps {
-                 withSonarQubeEnv('My SonarQube Server') {
                     sh 'mvn clean package sonar:sonar'
-                  }
              }
         }
         stage('user-java build Image and Push') {
