@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.image.name }}-deploy
+  name: {{ .Values.image.name }}-deploy-blue
   labels:
     deploy: {{ .Values.image.label }}
 spec:
@@ -9,13 +9,15 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.image.label }}
+      version: blue
   template:
     metadata:
       labels:
         app: {{ .Values.image.label }}
+        version: blue
     spec:
       containers:
-      - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag}}"
+      - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag_blue}}"
         imagePullPolicy: {{ .Values.repository.pullPolicy }}
         name: {{ .Values.image.name }}
         # livenessProbe:

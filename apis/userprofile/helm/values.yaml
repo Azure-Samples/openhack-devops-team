@@ -2,9 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 2
+active_version: green
 repository:
   image: acrreplace.azurecr.io/devopsoh/imagereplace
   tag: latest
+  tag_blue: latest
+  tag_green: latest
   pullPolicy: Always
 image:
   name: mydrive-user
