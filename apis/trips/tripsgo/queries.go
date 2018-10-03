@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+
 // SelectTripByIDQuery - REQUIRED tripID value
 func SelectTripByIDQuery(tripID string) string {
 	return `SELECT

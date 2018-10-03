@@ -21,6 +21,7 @@ func InitLogging(
 	debugHandle io.Writer,
 	fatalHandle io.Writer) {
 
+
 	Info = log.New(infoHandle,
 		"INFO: ",
 		log.Ldate|log.Ltime|log.Lshortfile)
