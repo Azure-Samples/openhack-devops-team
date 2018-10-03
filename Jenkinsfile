@@ -37,6 +37,7 @@ pipeline {
                 always {
                     junit '**/target/*-reports/TEST-*.xml'
                 }
+             }
 
         }
         stage('user-java SonarQube Analysis') {
