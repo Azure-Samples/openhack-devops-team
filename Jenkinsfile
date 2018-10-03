@@ -41,6 +41,16 @@ pipeline {
                   }
              }
         }
+        stage('update helm application') {
+        //     when {
+        //         changeset "apis/trips/**"
+        //     }
+             steps {
+                  script {
+                        helm upgrade $WORKSPACE/apis/trips/helm  --name api-trip --set repository.image=42,env.webServerBaseUri=http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com,ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com
+                  }
+             }
+        }
         stage('user-java Tests Run') {
             when {
                 changeset "apis/user-java/**"
