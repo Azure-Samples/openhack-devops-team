@@ -20,7 +20,7 @@ pipeline {
 				}
 				sh "docker build -t ${image} apis/user-java"
 				sh "docker push ${image}"
-				script(
+				script{
 					try {
 						sh "mvn clean verify"
 					}
@@ -30,8 +30,8 @@ pipeline {
 							issueLabel: '',
 							issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
 					}				
-				)					
-			}
+				}					
+			}	
 		}
 	}
 }
