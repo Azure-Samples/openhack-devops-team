@@ -13,11 +13,8 @@ pipeline {
 						sh "cd ./apis/user-java && mvn clean verify"
 					}
 					catch(any) {
-						step([$class: 'GitHubIssueNotifier',
-							issueAppend: true,
-							issueLabel: '',
-							issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
-					}				
+						throw(any)					
+					}
 				}					
 				script {
 					properties([[$class: 'GithubProjectProperty',
