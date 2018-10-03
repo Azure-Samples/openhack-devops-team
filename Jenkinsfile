@@ -35,8 +35,8 @@ pipeline {
              }
              steps {
                   script {
-                        def img_trip = docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}", "apis/trips")
-                        img_trip.push()
+                        docker.build("openhacks3n5acr.azurecr.io/devopsoh/api-trip:${env.BUILD_ID}", "apis/trips").push()
+
                   }
              }
         }
