@@ -54,7 +54,7 @@ pipeline {
                 docker { image 'newtmitch/sonar-scanner' }
             }
             steps {
-                    sh  """bash sonar-scanner \
+                    sh  """ bash /root/sonar-scanner/bin/sonar-scanner \
                           -Dsonar.projectKey=Mimetis_openhack-devops-team \
                           -Dsonar.organization=mimetis-github \
                           -Dsonar.projectName=user-java \
