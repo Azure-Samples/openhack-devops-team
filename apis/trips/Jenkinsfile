@@ -2,6 +2,9 @@ pipeline {
   agent {
     label "docker"
   }
+  tools {
+        go 'go1.11.1' 
+    }
   stages {
     stage('test') {
       steps {
