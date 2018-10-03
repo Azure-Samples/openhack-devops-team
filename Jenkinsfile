@@ -13,11 +13,11 @@ pipeline {
             agent {
                 docker {
                     image 'microsoft/dotnet:2.1-sdk'
-                    args '-v $WORKSPACE/apis/poi/:/app/ -w /app/ -v $HOME/.dotnet:/.dotnet'
+                    args '-v $HOME/.dotnet:/.dotnet'
                 }
             }
             steps {
-                  sh 'dotnet test tests/UnitTests/UnitTests.csproj'
+                  sh 'cd apis/poi && dotnet test tests/UnitTests/UnitTests.csproj'
             }
         }
         stage('poi build docker image and push') {
