@@ -34,7 +34,7 @@ pipeline {
           sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
         }
         script {
-          image = "${registry}/userprofile:${env.BRANCH_NAME}-${BUILD_NUMBER}"
+          image = "${registry}/userprofile:${BUILD_NUMBER}"
         }
         sh "docker build -t ${image} apis/userprofile"
         sh "docker push ${image}"
