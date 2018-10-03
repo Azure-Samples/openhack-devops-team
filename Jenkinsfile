@@ -15,12 +15,12 @@ pipeline {
             }
         }
         stage('trips Tests run') {
-          //  when {
-          //      changeset "apis/trips/**"
-          //  }
+            when {
+                changeset "apis/trips/**"
+            }
             agent {
                 docker {
-                    image 'jenkinsxio/builder-go'
+                    image 'golang:1.11'
                     args '-v $HOME/.cache:/.cache'
                 }
             }
