@@ -1,4 +1,3 @@
-
 # POI Service
 
 ## Overview
