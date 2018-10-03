@@ -7,6 +7,7 @@ namespace poi.Data
     {
         public POIContext(DbContextOptions<POIContext> options) : base(options)
         {
+          //comment
 
         }
 

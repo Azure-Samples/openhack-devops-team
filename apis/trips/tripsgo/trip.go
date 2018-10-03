@@ -10,6 +10,8 @@ type Trip struct {
 	// Trip ID
 	ID string `json:"Id"`
 
+
+
 	Name string `json:"Name"`
 
 	// User's unique identity
