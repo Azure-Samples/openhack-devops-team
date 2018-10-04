@@ -1,0 +1,37 @@
+pipeline {
+  agent {
+    label "docker"
+  }
+  tools {
+        go 'go1.11'
+    }
+  stages {
+    stage('test') {
+      steps {
+        sh "export GO111MODULE=on &&  go mod vendor && cd apis/trips && go test -coverprofile cover.out ./test; go tool cover -func cover.out"
+      }
+    }
+    stage('build') {
+      steps {
+        script {
+          registry =  "openhackiva6acr.azurecr.io"
+        }
+        withCredentials([usernamePassword(credentialsId: '6f81a13c-2f1b-4547-b66b-5968150d8add', passwordVariable: 'PASSWORD_REGISTRY', usernameVariable: 'USERNAME_REGISTRY')]) {
+          sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
+        }
+        script {
+          image = "${registry}/trips:${BUILD_NUMBER}"
+        }
+        sh "docker build -t ${image} apis/trips"
+        sh "docker push ${image}"
+      }
+    }
+    stage('deploy'){
+        steps {
+            dir ('apis/trips'){
+                sh "helm upgrade --set repository.image=${registry}/trips --set repository.tag=${BUILD_NUMBER}  api-trip ./helm"
+            }
+        }
+    }
+  }
+}

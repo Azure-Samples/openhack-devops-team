@@ -1,0 +1,56 @@
+pipeline {
+  agent {
+    label "docker"
+  }
+  stages {
+    stage('test') {
+      steps {
+        dir('apis/poi/'){
+          sh "bash test.sh"
+        }
+      }
+    }
+    stage('build') {
+      steps {
+        script {
+          registry =  "openhackiva6acr.azurecr.io"
+        }
+        withCredentials([usernamePassword(credentialsId: '6f81a13c-2f1b-4547-b66b-5968150d8add', passwordVariable: 'PASSWORD_REGISTRY', usernameVariable: 'USERNAME_REGISTRY')]) {
+          sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
+        }
+        script {
+          image = "${registry}/poi:${BUILD_NUMBER}"
+        }
+        sh "docker build -t ${image} apis/poi/web"
+        sh "docker push ${image}"
+      }
+    }
+    stage('deploy'){
+        steps {
+            dir ('apis/poi'){
+                sh "helm upgrade --set repository.image=${registry}/poi --set repository.tag=${BUILD_NUMBER}  api-poi ./helm"
+            }
+        }
+    }
+	stage('Production verification'){
+				steps {
+				script {
+				VERSION = sh([script: "helm get values api-user --all | grep \'tag:\' | cut -d \':\' -f 2 | tr -s  \' \'", returnStdout: true]).trim()
+				def productionValidInput = input(id: 'productionValidInput', message: "Is your production deployment running correctly?")
+				if ( "${productionValidInput}" == 'yes' ) {
+					def closePreviousInput = input(id: 'closePreviousInput', message: "Do you wish to destroy the previous deployment?")
+						if ( "${closePreviousInput}" == 'yes' ) {
+							echo "The previous ${VERSION} will be closed"
+						}
+					} else {
+					def worldOnFire = input(id: 'worldOnFire', message: "Is your world on fire and you want to rollback?")
+						if ( "${worldOnFire}" == 'yes' ) {
+						echo "rollback here"
+						} else {
+						}
+					}
+				  }
+				}
+	}	
+  }
+}
