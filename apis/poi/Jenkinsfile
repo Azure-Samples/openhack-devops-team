@@ -32,5 +32,25 @@ pipeline {
             }
         }
     }
+	stage('Production verification'){
+				steps {
+				script {
+				VERSION = sh([script: "helm get values api-user --all | grep \'tag:\' | cut -d \':\' -f 2 | tr -s  \' \'", returnStdout: true]).trim()
+				def productionValidInput = input(id: 'productionValidInput', message: "Is your production deployment running correctly?")
+				if ( "${productionValidInput}" == 'yes' ) {
+					def closePreviousInput = input(id: 'closePreviousInput', message: "Do you wish to destroy the previous deployment?")
+						if ( "${closePreviousInput}" == 'yes' ) {
+							echo "The previous ${VERSION} will be closed"
+						}
+					} else {
+					def worldOnFire = input(id: 'worldOnFire', message: "Is your world on fire and you want to rollback?")
+						if ( "${worldOnFire}" == 'yes' ) {
+						echo "rollback here"
+						} else {
+						}
+					}
+				  }
+				}
+	}	
   }
 }
