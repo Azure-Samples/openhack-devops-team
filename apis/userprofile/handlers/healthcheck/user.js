@@ -3,12 +3,15 @@ var dataProvider = require('../../data/healthcheck/user.js');
 /**
  * Operations on /healthcheck/user
  */
+
+
+ 
 module.exports = {
     /**
-     * summary: 
+     * summary:
      * description: Returns healthcheck for systems looking to ensure API is up and operational
-     * parameters: 
-     * produces: 
+     * parameters:
+     * produces:
      * responses: 200, default
      */
     get: function (req, res, next) {
