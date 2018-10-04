@@ -206,7 +206,24 @@ pipeline {
              }
              steps {
                   script {
-                    sh 'helm upgrade api-user $WORKSPACE/apis/userprofile/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-user,repository.tag=$BUILD_ID,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com'
+                    sh '''#!/bin/bash
+                          active=$(cat /home/jenkins/helm_values_stored/userprofile | grep active= | cut -d= -f2);
+                          if [[ "$active" == "blue" ]]; then
+                            echo "blue is active"
+                            green=$BUILD_ID
+                            blue=$(cat /home/jenkins/helm_values_stored/userprofile | grep blue= | cut -d= -f2);
+                          else
+                            echo "green is active"
+                            blue=$BUILD_ID
+                            green=$(cat /home/jenkins/helm_values_stored/userprofile | grep green= | cut -d= -f2);
+                          fi
+                      helm upgrade api-user $WORKSPACE/apis/userprofile/helm --set repository.image=openhacks3n5acr.azurecr.io/devopsoh/api-user,repository.tag=$BUILD_ID,repository.tag_green=$green,repository.tag_blue=$blue,active_version=$active,env.webServerBaseUri="http://akstraefikopenhacks3n5.westeurope.cloudapp.azure.com",ingress.rules.endpoint.host=akstraefikopenhacks3n5.westeurope.cloudapp.azure.com
+                      cat << EOF > /home/jenkins/helm_values_stored/userprofile
+active=$active
+blue=$blue
+green=$green
+EOF
+                    '''
                   }
              }
         }

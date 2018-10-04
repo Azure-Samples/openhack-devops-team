@@ -6,7 +6,7 @@ spec:
   type: ClusterIP
   selector:
     app: {{ .Values.image.label }}
-#    version: {{ .Values.active_version }}
+    version: {{ .Values.active_version }}
   ports:
     - protocol: TCP
       name: {{ .Values.image.name }}http
