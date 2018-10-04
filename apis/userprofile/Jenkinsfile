@@ -1,0 +1,51 @@
+pipeline {
+  agent {
+    label "docker"
+  }
+  tools {
+        nodejs 'nodejs8_12_0'
+    }
+  stages {
+    stage('test') {
+      steps {
+        dir ('apis/userprofile'){
+		      script {
+	          try{
+              sh 'npm install'
+              sh 'npm run test'
+              sh 'npm run cover'
+	          } catch (any) {
+		          throw any
+	          } finally {
+		          publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'coverage/lcov-report/', reportFiles: 'index.html', reportName: 'NPM cover', reportTitles: ''])
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'reports/'
+	          }
+		      }
+        }
+      }
+    }
+
+    stage('build') {
+      steps {
+//        script {
+//          registry =  "openhackiva6acr.azurecr.io"
+//        }
+        withCredentials([usernamePassword(credentialsId: '6f81a13c-2f1b-4547-b66b-5968150d8add', passwordVariable: 'PASSWORD_REGISTRY', usernameVariable: 'USERNAME_REGISTRY')]) {
+          sh "docker login ${registry} --username ${USERNAME_REGISTRY} --password ${PASSWORD_REGISTRY}"
+        }
+        script {
+          image = "${registry}/userprofile:${BUILD_NUMBER}"
+        }
+        sh "docker build -t ${image} apis/userprofile"
+        sh "docker push ${image}"
+      }
+    }
+stage('deploy'){
+        steps {
+            dir ('apis/userprofile'){
+                sh "helm upgrade --set repository.image=${registry}/userprofile --set repository.tag=${BUILD_NUMBER}  api-user ./helm"
+            }
+        }
+    }
+  }
+}
