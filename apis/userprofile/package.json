@@ -28,6 +28,16 @@
         "tap-junit": "^2.0.0",
         "tape": "^4.9.1"
     },
+    "nyc": {
+        "check-coverage": true,
+        "per-file": false,
+        "reporter": [
+          "cobertura"
+        ],
+        "require": [],
+        "cache": true,
+        "all": true
+      },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
         "cover": "istanbul cover tape -- 'tests/**/*.js'",
