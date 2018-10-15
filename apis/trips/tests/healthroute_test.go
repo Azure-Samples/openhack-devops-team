@@ -1,4 +1,4 @@
-package tripsgo
+package tests
 
 import (
 	"io/ioutil"
