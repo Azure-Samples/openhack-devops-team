@@ -7,8 +7,10 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  imageName: 'your-container-image-name:$(build.buildId)'
+  imageName: 'poi-web:$(build.buildId)'
+  dockerfilePath: './apis/poi/web/Dockerfile'
+  dockerContext: './apis/poi/web'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
-  displayName: 'docker build'
+- script: docker build -f $(dockerfilePath) -t $(imageName) $(dockerContext)
+  displayName: 'docker build poi-web'
