@@ -2,6 +2,8 @@
 
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
+[![Build Status](https://dev.azure.com/RiFiOrg/DevOpsOpenHackMelb/_apis/build/status/build-poi-web)](https://dev.azure.com/RiFiOrg/DevOpsOpenHackMelb/_build/latest?definitionId=2)
+
 ## Architecture
 
 The application used for this event is a heavily modified and recreated version of the original [My Driving application](https://github.com/Azure-Samples/MyDriving).
