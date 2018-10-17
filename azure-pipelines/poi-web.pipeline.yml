@@ -9,8 +9,8 @@ pool:
 variables:
   containerRegistry: 'flanagan89'
   imageName: 'devopsopenhack/poi-web:$(build.buildId)'
-  dockerfilePath: '../apis/poi/web/Dockerfile'
-  dockerContext: '../apis/poi/web'
+  dockerfilePath: 'apis/poi/web/Dockerfile'
+  dockerContext: 'apis/poi/web'
 
 steps:
 - script: docker build -f $(dockerfilePath) -t $(imageName) $(dockerContext)
