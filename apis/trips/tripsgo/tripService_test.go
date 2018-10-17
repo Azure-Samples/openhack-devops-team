@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -145,7 +146,7 @@ var apiTestList = []APITestCase{
 	},
 }
 
-func TestTrip(t *testing.T) {
+func TestTripApis(t *testing.T) {
 	router := NewRouter()
 	var debug, present = os.LookupEnv("DEBUG_LOGGING")
 
@@ -166,30 +167,29 @@ func TestTrip(t *testing.T) {
 	// apiTestList[5].URL = strings.Replace(apiTestList[5].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
 	// apiTestList[5].Body = strings.Replace(apiTestList[5].Body, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
 
-	// // run update trip and create trip point tests
-	// RunAPITests(t, router, apiTestList[4:6])
+	// run update trip and create trip point tests
+	RunAPITests(t, router, apiTestList[3:5])
 
-	// // setup update trip point test
-	// apiTestList[6].URL = strings.Replace(apiTestList[6].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// apiTestList[6].URL = strings.Replace(apiTestList[6].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
-	// apiTestList[6].Body = GetUpdateTripPoint(apiTestList[5].ActualResponse, apiTestList[6].Body)
-	// //apiTestList[6].ExpectedResponse = apiTestList[6].Body
+	// setup update trip point test
+	apiTestList[5].URL = strings.Replace(apiTestList[5].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	apiTestList[5].URL = strings.Replace(apiTestList[5].URL, "{tripPointID}", TripPointFromStr(apiTestList[4].ActualResponse).ID, 1)
+	apiTestList[5].Body = GetUpdateTripPoint(apiTestList[4].ActualResponse, apiTestList[5].Body)
 
-	// // setup read trip points for trip test
-	// apiTestList[7].URL = strings.Replace(apiTestList[7].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	// setup read trip points for trip test
+	apiTestList[6].URL = strings.Replace(apiTestList[6].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
 
 	// // setup ready trip points by trip point id test
-	// apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
+	apiTestList[7].URL = strings.Replace(apiTestList[7].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	apiTestList[7].URL = strings.Replace(apiTestList[7].URL, "{tripPointID}", TripPointFromStr(apiTestList[4].ActualResponse).ID, 1)
 
 	// //setup delete trip point test
-	// apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripPointID}", TripPointFromStr(apiTestList[5].ActualResponse).ID, 1)
+	apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	apiTestList[8].URL = strings.Replace(apiTestList[8].URL, "{tripPointID}", TripPointFromStr(apiTestList[4].ActualResponse).ID, 1)
 
-	// // setup delete test (URL)
-	// apiTestList[10].URL = strings.Replace(apiTestList[10].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// // run update test
-	// RunAPITests(t, router, apiTestList[6:10])
+	// setup delete test (URL)
+	apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	// run update test
+	RunAPITests(t, router, apiTestList[5:10])
 }
 
 func GetUpdateTrip(tripCreate string, tripUpdate string) string {
@@ -218,7 +218,7 @@ func GetUpdateTripPoint(tripPointCreate string, tripPointUpdate string) string {
 func TripFromStr(tripStr string) Trip {
 	trip := Trip{}
 
-	Debug.Println(tripStr)
+	Debug.Println("DEBUG: TripFromStr - " + tripStr)
 
 	errCreate := json.Unmarshal([]byte(tripStr), &trip)
 	if errCreate != nil {
@@ -231,6 +231,8 @@ func TripFromStr(tripStr string) Trip {
 
 func TripPointFromStr(tripPointStr string) TripPoint {
 	tripPoint := TripPoint{}
+
+	Info.Println("DEBUG: TripPointFromStr - " + tripPointStr)
 
 	errCreate := json.Unmarshal([]byte(tripPointStr), &tripPoint)
 	if errCreate != nil {

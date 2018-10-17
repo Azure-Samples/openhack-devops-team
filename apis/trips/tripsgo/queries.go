@@ -349,7 +349,6 @@ func updateTripPointQuery(tripPoint TripPoint) string {
 	var formattedQuery = fmt.Sprintf(
 		query,
 		tripPoint.TripID,
-		tripPoint.TripID,
 		tripPoint.Latitude,
 		tripPoint.Longitude,
 		tripPoint.Speed,
