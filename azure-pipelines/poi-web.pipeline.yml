@@ -7,10 +7,15 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  imageName: 'poi-web:$(build.buildId)'
+  containerRegistry: 'flanagan89'
+  imageName: 'devopsopenhack/poi-web:$(build.buildId)'
   dockerfilePath: '../apis/poi/web/Dockerfile'
   dockerContext: '../apis/poi/web'
 
 steps:
 - script: docker build -f $(dockerfilePath) -t $(imageName) $(dockerContext)
   displayName: 'docker build poi-web'
+- script: docker tag $(imageName) $(containerRegistry)/$(imageName)
+  displayName: Tag the image
+- script: docker push $(containerRegistry)/$(imageName)
+  displayName: push to container registry
