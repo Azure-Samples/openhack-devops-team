@@ -1,1 +1,5 @@
 *.xml
+coverage
+.nyc_output
+reports
+reports-tmp

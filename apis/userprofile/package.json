@@ -19,17 +19,34 @@
     },
     "devDependencies": {
         "eslint": "^5",
-        "tape": "^4.9.1",
-        "istanbul": "~0.4.5",
         "is-my-json-valid": "^2.17.2",
         "js-yaml": "^3.12.0",
+        "nyc": "^13.0.1",
         "supertest": "^3.1.0",
         "swagger-parser": "^4.1.0",
-        "tap-junit": "^2.0.0"
+        "tap-junit": "^2.0.0",
+        "tape": "^4.9.1"
     },
+    "nyc": {
+        "check-coverage": true,
+        "per-file": false,
+        "lines": 25,
+        "statements": 8,
+        "functions": 9,
+        "branches": 1,
+        "reporter": [
+          "cobertura",
+          "html"
+        ],
+        "require": [],
+        "cache": true,
+        "all": true,
+        "temp-directory": "./reports-tmp",
+        "report-dir": "./reports"
+      },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
-        "cover": "istanbul cover tape -- 'tests/**/*.js'",
+        "cover": "nyc tape -- 'tests/**/*.js' --cov",
         "lint": "eslint .",
         "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.json'"
     },
