@@ -156,16 +156,16 @@ func TestTripApis(t *testing.T) {
 		// if debug env is not present or false, do not log debug output to console
 		InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
-	RunAPITests(t, router, apiTestList[0:4])
+	RunAPITests(t, router, apiTestList[0:3])
 
-	// // setup update trip test (URL, Body, expected Response)
-	// apiTestList[4].URL = strings.Replace(apiTestList[4].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// apiTestList[4].Body = GetUpdateTrip(apiTestList[3].ActualResponse, apiTestList[4].Body)
-	// apiTestList[4].ExpectedResponse = apiTestList[4].Body
+	// setup update trip test (URL, Body, expected Response)
+	apiTestList[3].URL = strings.Replace(apiTestList[3].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	apiTestList[3].Body = GetUpdateTrip(apiTestList[2].ActualResponse, apiTestList[3].Body)
+	apiTestList[3].ExpectedResponse = apiTestList[3].Body
 
-	// // setup create trip point test
-	// apiTestList[5].URL = strings.Replace(apiTestList[5].URL, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
-	// apiTestList[5].Body = strings.Replace(apiTestList[5].Body, "{tripID}", TripFromStr(apiTestList[3].ActualResponse).ID, 1)
+	// setup create trip point test
+	apiTestList[4].URL = strings.Replace(apiTestList[4].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
+	apiTestList[4].Body = strings.Replace(apiTestList[4].Body, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
 
 	// run update trip and create trip point tests
 	RunAPITests(t, router, apiTestList[3:5])
@@ -232,7 +232,7 @@ func TripFromStr(tripStr string) Trip {
 func TripPointFromStr(tripPointStr string) TripPoint {
 	tripPoint := TripPoint{}
 
-	Info.Println("DEBUG: TripPointFromStr - " + tripPointStr)
+	Debug.Println("DEBUG: TripPointFromStr - " + tripPointStr)
 
 	errCreate := json.Unmarshal([]byte(tripPointStr), &tripPoint)
 	if errCreate != nil {
