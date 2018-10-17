@@ -40,7 +40,7 @@ func RunAPITests(t *testing.T, router *mux.Router, tests []APITestCase) {
 	for i := 0; i < len(tests); i++ {
 		res := testAPI(router, tests[i].Method, tests[i].URL, tests[i].Body)
 		tests[i].ActualResponse = res.Body.String()
-		Debug.Println(tests[i].ActualResponse)
+		Debug.Println(tests[i].Tag + " - " + tests[i].ActualResponse)
 		assert.Equal(t, tests[i].Status, res.Code, tests[i].Tag)
 		Info.Println(tests[i].Tag + "- Response Code:" + strconv.Itoa(res.Code))
 		if tests[i].ExpectedResponse != "" {
