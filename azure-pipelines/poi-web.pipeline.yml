@@ -3,11 +3,17 @@
 # Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+jobs:
+- job: test
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  variables: 
+    testProj: 'apis\poi\tests\UnitTests\UnitTests.csproj'
+  steps:
+  - scrips: dotnet test $(testProj)
 
 variables:
-  imageName: 'ci/poi-web:$(build.buildId)'
+  imageName: 'devopsopenhack/poi-web:$(build.buildId)'
   dockerfilePath: 'apis/poi/web/Dockerfile'
   dockerContext: 'apis/poi/web'
 
@@ -17,6 +23,16 @@ steps:
 - script: docker tag $(imageName) $(dockerId).azurecr.io/$(imageName)
   displayName: Tag the image
 - script: |
-    docker login -u $(dockerId) -p $(dockerpswd) $(dockerId).azurecr.io
+    docker login -u $(dockerId).azurecr.io -p $(dockerpswd) $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName)
   displayName: Auth to registry and push
+
+  steps:
+  - script: docker build -f $(dockerfilePath) -t $(imageName) $(dockerContext)
+    displayName: 'docker build poi-web'
+  - script: docker tag $(imageName) $(dockerId).azurecr.io/$(imageName)
+    displayName: Tag the image
+  - script: |
+      docker login -u $(dockerId).azurecr.io -p $(dockerpswd) $(dockerId).azurecr.io
+      docker push $(dockerId).azurecr.io/$(imageName)
+    displayName: Auth to registry and push
