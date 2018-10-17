@@ -14,7 +14,7 @@ variables:
 steps:
 - script: docker build -f $(dockerfilePath) -t $(imageName) $(dockerContext)
   displayName: 'docker build poi-web'
-- script: docker tag $(imageName) $(containerRegistry)/$(imageName)
+- script: docker tag $(imageName) $(dockerId)/$(imageName)
   displayName: Tag the image
 - script: |
     docker login -u $(dockerId) -p $(dockerpswd)
