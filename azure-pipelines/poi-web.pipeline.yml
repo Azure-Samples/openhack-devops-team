@@ -17,6 +17,6 @@ steps:
 - script: docker tag $(imageName) $(dockerId).azurecr.io/$(imageName)
   displayName: Tag the image
 - script: |
-    docker login -u $(dockerId).azurecr.io -p $(dockerpswd)
+    docker login -u $(dockerId) -p $(dockerpswd) $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName)
   displayName: Auth to registry and push
