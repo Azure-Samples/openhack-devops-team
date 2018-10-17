@@ -19,13 +19,13 @@ go run main.go
 To run unit tests, execute:
 
 ```shell
-go test ./test
+go test ./tests
 ```
 
-To run integration tests, execute:
+To run all integration tests, execute:
 
 ```shell
-go test ./test/integration
+go test
 ```
 
 > Note: this requires an actual database connection, so the required ENV variables need to be present.
