@@ -7,6 +7,8 @@ import io.swagger.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class UserRepositoryService {
 
@@ -15,7 +17,10 @@ public class UserRepositoryService {
     @Autowired
     private UserRepository userRepository;
 
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
     public Profile update(Profile updateEntry) {
+        long start = System.currentTimeMillis();
         Preconditions.checkNotNull(updateEntry, "User profile cannot be null");
 
         LOGGER.info("Updating user profile for user=%s", updateEntry.getId());
@@ -34,13 +39,24 @@ public class UserRepositoryService {
         existingUser.setRating(updateEntry.getRating() == null ? existingUser.getRating() : updateEntry.getRating());
         existingUser.setRating(updateEntry.getRanking() == null ? existingUser.getRanking() : updateEntry.getRanking());
 
-        return save(existingUser);
+        Profile userProfile = save(existingUser);
+        long end = System.currentTimeMillis();
+        long timeElapsed = end - start;
+
+        LOGGER.info("Update method called: on {} and response time in ms: {}", timestamp, timeElapsed);
+        return userProfile;
     }
 
     public Profile save(Profile newProfile) {
         Preconditions.checkNotNull(newProfile, "User profile cannot be null");
-        LOGGER.info("Saving new user profile for user=%s", newProfile.getId());
-        return userRepository.save(newProfile);
+
+        long start = System.currentTimeMillis();
+        Profile userProfile = userRepository.save(newProfile);
+        long end = System.currentTimeMillis();
+        long timeElapsed = end - start;
+
+        LOGGER.info("Save method called: on {} and response time in ms: {}", timestamp, timeElapsed);
+        return userProfile;
     }
 
     private Profile findOne(String Id) {
