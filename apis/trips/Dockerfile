@@ -1,4 +1,4 @@
-FROM golang:1.11.1 AS gobuild
+FROM golang:1.11.0 AS gobuild
 
 WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
@@ -6,11 +6,11 @@ COPY . .
 
 ENV GO111MODULE=on
 
-RUN go get
+RUN go mod vendor
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-FROM alpine:3.8 AS gorun
+FROM alpine:3.7 AS gorun
 
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
