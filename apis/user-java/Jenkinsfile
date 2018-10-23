@@ -9,6 +9,7 @@ pipeline {
         APP_NAME = 'devopsoh/api-user-java'
         ACR_HOST = 'openhacktce4acr.azurecr.io'
         SRC_DIR = 'apis/user-java'
+        IMG_TAG = "${env.BUILD_TAG}"
     }
 
     stages{
@@ -31,7 +32,7 @@ pipeline {
             steps {
                 dir("${env.SRC_DIR}") {
                     script {
-                        docker.build("${env.ACR_HOST}/${env.APP_NAME}:${env.BUILD_ID}")
+                        docker.build("${env.ACR_HOST}/${env.APP_NAME}:${env.IMG_TAG}")
                     }
                 }
             }
@@ -42,7 +43,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: '162a5f2f-bc39-4c82-a67b-7b9eedb3afe4', url: "https://${env.ACR_HOST}") {
                         
-                        docker.image("${env.ACR_HOST}/${env.APP_NAME}:${env.BUILD_ID}").push("${env.BUILD_ID}")
+                        docker.image("${env.ACR_HOST}/${env.APP_NAME}:${env.IMG_TAG}").push("${env.IMG_TAG}")
                     }
                 }
             }
