@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = 'mydriving-userjava'
+        APP_NAME = 'devopsoh/api-user-java'
         SRC_DIR = 'apis/user-java'
     }
 
@@ -20,7 +20,7 @@ pipeline {
         stage('Upload Docker Image to ACR') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '162a5f2f-bc39-4c82-a67b-7b9eedb3afe4', url: 'openhacktce4acr.azurecr.io') {
+                    withDockerRegistry(credentialsId: '162a5f2f-bc39-4c82-a67b-7b9eedb3afe4', url: 'https://openhacktce4acr.azurecr.io') {
                         docker.push("${env.APP_NAME}:${env.BUILD_ID}")
                     }
                 }
