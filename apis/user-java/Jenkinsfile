@@ -21,7 +21,7 @@ pipeline {
             }
             post {
                 always {
-                    junit "${env.SRC_DIR}/target/surefire-reports/*.xml"
+                    junit "**/target/surefire-reports/*.xml"
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: '162a5f2f-bc39-4c82-a67b-7b9eedb3afe4', url: 'https://openhacktce4acr.azurecr.io') {
-                        docker.image("${env.APP_NAME}:${env.BUILD_ID}").push
+                        docker.image("${env.APP_NAME}:${env.BUILD_ID}").push("${env.BUILD_ID}")
                     }
                 }
             }
