@@ -55,7 +55,7 @@ public class UserApiControllerTest {
         profile.setUserId("userId");
         profile.setRanking(1);
         profile.setTotalDistance(1000f);
-        profile.setId("2");
+        profile.setId("21");
     }
 
     @Test
