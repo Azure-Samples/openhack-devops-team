@@ -31,15 +31,6 @@ pipeline {
             }
         }
 
-        stage('Upload Docker Image to ACR') {
-            steps {
-                script {
-                    withDockerRegistry(credentialsId: '162a5f2f-bc39-4c82-a67b-7b9eedb3afe4', url: "https://${env.ACR_HOST}") {
-                        
-                        docker.image("${env.ACR_HOST}/${env.APP_NAME}:${env.IMG_TAG}").push("${env.IMG_TAG}")
-                    }
-                }
-            }
-        }
+
     }
 }
