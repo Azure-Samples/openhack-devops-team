@@ -1,24 +1,35 @@
 pipeline {
     agent any
 
+    tools {
+        maven '3.5.4'
+    }
+
     environment {
         APP_NAME = 'devopsoh/api-user-java'
         SRC_DIR = 'apis/user-java'
     }
 
     stages{
+        stage('Code Test') {
+            steps {
+                sh '''
+                    mvn test
+                '''
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 dir("${env.SRC_DIR}") {
                     script {
                         docker.build("${env.APP_NAME}:${env.BUILD_ID}")
                     }
-                }
-            }
-            post {
-                always {
-                    archive "/target/**/*"
-                    junit '/target/surefire-reports/*.xml'
                 }
             }
         }
