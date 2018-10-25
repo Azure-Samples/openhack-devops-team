@@ -1,11 +1,11 @@
 # First stage to build the application
-FROM maven:3.5.4-jdk-10-slim AS build-env
+FROM maven:3.5.4-jdk-11-slim AS build-env
 ADD ./pom.xml pom.xml
 ADD ./src src/
 RUN mvn clean package
 
 # build runtime image
-FROM openjdk:10-jre-slim
+FROM openjdk:11-jre-slim
 
 EXPOSE 8080
 
