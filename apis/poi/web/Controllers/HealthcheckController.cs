@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace poi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]/poi")]
+    [Route("api/healthcheck/poi")]
     public class HealthCheckController : ControllerBase
     {
 
