@@ -8,7 +8,7 @@ using poi.Data;
 namespace poi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/poi")]
     public class POIController : ControllerBase
     {
         private readonly POIContext _context;
