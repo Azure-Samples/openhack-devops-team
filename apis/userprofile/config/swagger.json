@@ -5,10 +5,9 @@
         "version": "0.1.0",
         "title": "My Driving User Profile API"
     },
-    "host": "myazurek8slbname.cloudapp.net",
     "basePath": "/api",
     "schemes": [
-        "https"
+        "http"
     ],
     "consumes": [
         "application/json"
