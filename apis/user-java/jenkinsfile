@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    tools {
+        maven '3.5.4'
+    }
+
+    environment {
+        APP_NAME = 'devopsoh/api-user-java'
+        SRC_DIR = 'apis/user-java'
+        IMG_TAG = "${env.BUILD_TAG}"
+    }
+
+    stages{  
+        stage('Code Test') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    sh '''
+                        echo "Initiating test phase."
+                        mvn test
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit "**/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+         stage('Test Coverage') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    sh '''
+                        echo "Initiating verify phase."
+                        mvn verify
+                    '''
+                }
+            }  
+             post {
+                always {
+                    jacoco()
+                }
+            } 
+        }
+    }
+}
