@@ -36,9 +36,12 @@ pipeline {
                         mvn verify
                     '''
                 }
-                
-                jacoco()
-            }   
+            }  
+             post {
+                always {
+                    jacoco()
+                }
+            } 
         }
     }
 }
