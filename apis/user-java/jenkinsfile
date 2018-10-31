@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    tools {
+        maven '3.5.4'
+    }
+
+    environment {
+        APP_NAME = 'devopsoh/api-user-java'
+        SRC_DIR = 'apis/user-java'
+        IMG_TAG = "${env.BUILD_TAG}"
+    }
+
+    stages{
+        stage('Reset') {
+            steps {
+                deleteDir()
+            }
+        }
+        // stage('Checkout') {
+        //     steps {
+        //         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/org-manisbindra/openhack-devops-team.git']]])
+        //     }
+        // }
+        stage('Code Test') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    sh '''
+                        echo "Initiating test phase."
+                        mvn test
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit "**/target/surefire-reports/*.xml"
+                }
+            }
+        }
+
+         stage('Coverage') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    sh '''
+                        echo "Initiating test phase."
+                        mvn verify
+                    '''
+                }
+                
+                jacoco()
+                // jacoco( 
+                // execPattern: 'target/*.exec',
+                // classPattern: 'target/classes',
+                // sourcePattern: 'src/main/java',
+                // exclusionPattern: 'src/test*'
+                // )
+                
+            }   
+        }
+    }
+}
