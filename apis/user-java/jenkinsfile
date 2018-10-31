@@ -11,13 +11,7 @@ pipeline {
         IMG_TAG = "${env.BUILD_TAG}"
     }
 
-    stages{
-        stage('Reset') {
-            steps {
-                deleteDir()
-            }
-        }
-     
+    stages{  
         stage('Code Test') {
             steps {
                 dir("${env.SRC_DIR}") {
