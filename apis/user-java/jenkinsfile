@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-         stage('Coverage') {
+         stage('Test Coverage') {
             steps {
                 dir("${env.SRC_DIR}") {
                     sh '''
