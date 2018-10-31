@@ -32,7 +32,7 @@ pipeline {
             steps {
                 dir("${env.SRC_DIR}") {
                     sh '''
-                        echo "Initiating verify phase.."
+                        echo "Initiating verify phase..."
                         mvn verify
                     '''
                 }
