@@ -17,7 +17,6 @@ pipeline {
 
     stages{
         
-
         stage('Build Docker Image') {
             steps {
                 dir("${env.SRC_DIR}") {
