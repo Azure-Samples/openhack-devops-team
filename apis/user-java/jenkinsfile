@@ -12,12 +12,12 @@ pipeline {
     }
 
     stages{  
-        stage('Execute Tests and publish test and code coverage report') {
+        stage('Execute Tests and verify code coverage') {
             steps {
                 dir("${env.SRC_DIR}") {
                     sh '''
                         echo "Initiating test phase."
-                        mvn clean test
+                        mvn clean test verify
                     '''
                 }
             }
@@ -28,17 +28,5 @@ pipeline {
                 }
             }
         }
-
-         stage('Verify code coverage meets threshold') {
-            steps {
-                dir("${env.SRC_DIR}") {
-                    sh '''
-                        echo "Verify code coverage"
-                        mvn verify
-                    '''
-                }
-            }
-        }
-        
     }
 }
