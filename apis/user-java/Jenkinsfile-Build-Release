@@ -6,13 +6,16 @@ pipeline {
     }
 
     environment {
+
         HELM_RELEASE_NAME = 'api-user-java'
         APP_IMAGE_REPOSITORY_NAME = 'devopsoh/api-user-java'
         APP_IMAGE_TAG = "${env.BUILD_TAG}"
         SRC_DIR = 'apis/user-java'
         KUBECONFIG_PATH = "/home/jenkins/.kube/kubeconfig"
+        
         // ACR_HOST = 'openhackXXXXXXXacr.azurecr.io' // environment variable set outside this file
         // API_URL = "akstraefikopenhackXXX.region.cloudapp.azure.com" // environment variable set outside this file
+
     }
 
     stages{
