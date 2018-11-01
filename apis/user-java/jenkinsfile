@@ -17,7 +17,7 @@ pipeline {
                 dir("${env.SRC_DIR}") {
                     sh '''
                         echo "Initiating test phase."
-                        mvn test verify
+                        mvn clean test verify
                     '''
                 }
             }
