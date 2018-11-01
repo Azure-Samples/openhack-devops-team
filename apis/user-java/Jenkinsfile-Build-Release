@@ -6,6 +6,7 @@ pipeline {
     }
 
     environment {
+
         HELM_RELEASE_NAME = 'api-user-java'
         APP_IMAGE_REPOSITORY_NAME = 'devopsoh/api-user-java'
         APP_IMAGE_TAG = "${env.BUILD_TAG}"
@@ -15,6 +16,7 @@ pipeline {
         // ** environment variable below are set outside this file
         // ACR_HOST = 'openhackXXXXXXXacr.azurecr.io' 
         // API_URL = "akstraefikopenhackXXX.region.cloudapp.azure.com" 
+        
     }
 
     stages{
