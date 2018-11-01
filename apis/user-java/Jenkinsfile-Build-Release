@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    tools {
+        maven '3.5.4'
+    }
+
+    environment {
+        HELM_RELEASE_NAME = 'api-user-java'
+        APP_IMAGE_REPOSITORY_NAME = 'devopsoh/api-user-java'
+        APP_IMAGE_TAG = "${env.BUILD_TAG}"
+        SRC_DIR = 'apis/user-java'
+        KUBECONFIG_PATH = "/home/jenkins/.kube/kubeconfig"
+        // ACR_HOST = 'openhackXXXXXXXacr.azurecr.io' // environment variable set outside this file
+        // API_URL = "akstraefikopenhackXXX.region.cloudapp.azure.com" // environment variable set outside this file
+    }
+
+    stages{
+        
+
+        stage('Build Docker Image') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    sh "docker build -t ${ACR_HOST}/${env.APP_IMAGE_REPOSITORY_NAME}:${env.APP_IMAGE_TAG} ."
+                    
+                }
+            }
+        }
+
+        stage('Push Docker Image to Registry') {
+            steps {
+                dir("${env.SRC_DIR}") {
+                    withDockerRegistry(credentialsId: 'acrcreds', url: "https://${env.ACR_HOST}") {
+                        sh "docker push ${ACR_HOST}/${env.APP_IMAGE_REPOSITORY_NAME}:${env.APP_IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+        
+
+        stage('Initialize Helm and Upgrade Application'){
+            steps {
+                 dir("${env.SRC_DIR}") {
+                    sh '''
+                    export KUBECONFIG="${KUBECONFIG_PATH}"
+                  
+                    IMAGE="${ACR_HOST}/${APP_IMAGE_REPOSITORY_NAME}"
+                    TAG="${APP_IMAGE_TAG}"
+                    HELM_CHART_PATH="${WORKSPACE}/apis/user-java/helm"
+                    INSTALLATION_NAMESPACE="default"
+                    BASE_URI="http://${API_URL}"
+                    DNS_HOSTNAME="${API_URL}"
+                  
+                    helm init --force-upgrade
+                    helm version --client
+                    helm version
+
+                    helm upgrade --install ${HELM_RELEASE_NAME} ${HELM_CHART_PATH}  --namespace ${INSTALLATION_NAMESPACE}  --set repository.image=${IMAGE} --set repository.tag=${TAG} --set rollingUpdate.maxUnavailablePercentage='0%' --set rollingUpdate.maxSurgePercentage='100%' --set env.webServerBaseUri=${BASE_URI} --set ingress.rules.endpoint.host=${DNS_HOSTNAME}
+                    '''
+                 }
+            }
+        }
+
+    }
+}
