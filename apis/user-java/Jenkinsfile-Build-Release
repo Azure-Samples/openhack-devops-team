@@ -37,7 +37,6 @@ pipeline {
             }
         }
         
-
         stage('Initialize Helm and Upgrade Application'){
             steps {
                  dir("${env.SRC_DIR}") {
