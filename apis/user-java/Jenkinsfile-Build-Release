@@ -12,8 +12,9 @@ pipeline {
         SRC_DIR = 'apis/user-java'
         KUBECONFIG_PATH = "/home/jenkins/.kube/kubeconfig"
 
-        // ACR_HOST = 'openhackXXXXXXXacr.azurecr.io' // environment variable set outside this file
-        // API_URL = "akstraefikopenhackXXX.region.cloudapp.azure.com" // environment variable set outside this file
+        // ** environment variable below are set outside this file
+        // ACR_HOST = 'openhackXXXXXXXacr.azurecr.io' 
+        // API_URL = "akstraefikopenhackXXX.region.cloudapp.azure.com" 
     }
 
     stages{
