@@ -12,36 +12,21 @@ pipeline {
     }
 
     stages{  
-        stage('Code Test') {
+        stage('Execute Tests and verify code coverage') {
             steps {
                 dir("${env.SRC_DIR}") {
                     sh '''
                         echo "Initiating test phase."
-                        mvn test
+                        mvn clean test verify
                     '''
                 }
             }
             post {
                 always {
                     junit "**/target/surefire-reports/*.xml"
-                }
-            }
-        }
-
-         stage('Test Coverage') {
-            steps {
-                dir("${env.SRC_DIR}") {
-                    sh '''
-                        echo "Initiating verify phase."
-                        mvn verify
-                    '''
-                }
-            }  
-             post {
-                always {
                     jacoco()
                 }
-            } 
+            }
         }
     }
 }
