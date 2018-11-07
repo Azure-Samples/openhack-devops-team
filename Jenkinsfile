@@ -8,7 +8,4 @@ node{
       def mvnHome =  tool name: 'maven', type: 'maven'   
       sh "${mvnHome}/bin/mvn -f /aps/user-java/pom.xml clean install"
    }
-   stage('Email Notification'){
-      mail bcc: '', body: '''Hi Welcome to jenkins email alerts
-   }
 }
