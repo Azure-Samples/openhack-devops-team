@@ -1,4 +1,7 @@
 node{
+    tools {
+        maven 'Maven_3.5.2' 
+    }
    stage('SCM Checkout'){
      git 'https://github.com/apraovjr/openhack-devops-team'
    }
