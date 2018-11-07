@@ -17,7 +17,7 @@ The team environment consists of the following:
   * User-Java - API written in Java with POST and PATCH routes plus swagger docs routes for the users of the client application.
 * Mobile Apps - for iOS and Android which will display driving trip data
 
-## Getting Started, test here
+## Getting Started
 
 To understand each of the components above in more detail, please visit the readme files inside the root folder of each corresponding part of the application.
 
