@@ -5,7 +5,7 @@ node{
    }
    stage('Compile-Package'){
       // Get maven home path
-      def mvnHome =  tool name: 'maven-3', type: 'maven'   
+      def mvnHome =  tool name: 'maven', type: 'maven'   
       sh "${mvnHome}/bin/mvn -f /aps/user-java/pom.xml clean install"
    }
    stage('Email Notification'){
