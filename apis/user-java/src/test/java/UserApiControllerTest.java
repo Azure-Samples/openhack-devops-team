@@ -114,6 +114,7 @@ public class UserApiControllerTest {
 
     }
 
+    //Testing jenkins-azure devops connection
     public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
