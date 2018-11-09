@@ -73,6 +73,7 @@ public class UserApiControllerTest {
         verify(userRepositoryService, times(1)).save(profile);
     }
 
+    //Reverting the test here
     @Test
     public void testSave_shouldNotImplemented() throws Exception {
         mockMvc.perform(
@@ -81,7 +82,7 @@ public class UserApiControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonBytes(profile))
         )
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
 
     @Test
@@ -92,7 +93,7 @@ public class UserApiControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonBytes(profile))
         )
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
 
     @Test
