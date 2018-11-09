@@ -97,6 +97,7 @@ public class UserApiControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
 
+    //Testing again for azure devops - trigger twice
     @Test
     public void testUpdate() throws Exception {
         profile.setRanking(2);
