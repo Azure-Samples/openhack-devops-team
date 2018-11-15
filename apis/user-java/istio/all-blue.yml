@@ -7,7 +7,7 @@ metadata:
 spec:
   hosts:
     - istio.local
-    - istiodevopsoh.australiaeast.cloudapp.azure.com
+    - istiodevopsoh.eastus.cloudapp.azure.com
     - api-user-java-blue
   gateways:
   - gateway-istio
