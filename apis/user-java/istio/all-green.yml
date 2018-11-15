@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: api-user-java
+  labels:
+    mode: allgreen
+spec:
+  hosts:
+    - istio.local
+    - istiodevopsoh.australiaeast.cloudapp.azure.com
+    - api-user-java-green
+  gateways:
+  - gateway-istio
+  http:
+  - match:
+    - uri:
+        prefix: /api/user-java
+    - uri:
+        prefix: /api/healthcheck/user-java
+    - uri:
+        prefix: /api/docs/user-java
+    - uri:
+        prefix: /swagger/docs/user-java
+    route:
+    - destination:
+        host: api-user-java-green
+        port:
+          number: 80

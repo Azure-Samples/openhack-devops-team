@@ -8,8 +8,9 @@ repository:
   tag: latest
   pullPolicy: Always
 image:
-  name: user-java
-  label: user-java
+  name: api-user-java
+  label: api-user-java
+  slot: svc
   containerPort: 8080
 service:
   externalPort: 80
