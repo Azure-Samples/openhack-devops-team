@@ -8,7 +8,7 @@ spec:
   servers:
   - hosts:
     - istio.local
-    - istiodevopsoh.australiaeast.cloudapp.azure.com
+    - istiodevopsoh.eastus.cloudapp.azure.com
     port:
       name: http
       number: 80
