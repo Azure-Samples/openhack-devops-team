@@ -23,22 +23,22 @@ ingress:
       host: changeme
       paths:
       - path: /api/user-java
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
       - path: /api/healthcheck/user-java
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
       - path: /api/documentation/user-java
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
       - path: /api/docs/user-java
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
       - path: /api/swagger-resources
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
       - path: /api/api-docs
-        serviceName: api-user-java-svc
+        serviceName: api-user-java-blue
         servicePort: 80
 
   tls: []
