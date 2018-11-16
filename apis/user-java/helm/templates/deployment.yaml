@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.image.name }}-deploy"
+  name: "{{ .Values.image.name }}-{{ .Values.image.slot }}-deploy"
   labels:
     deploy: {{ .Values.image.label }}
 spec:
