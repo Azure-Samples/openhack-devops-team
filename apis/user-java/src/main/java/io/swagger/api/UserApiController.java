@@ -1,6 +1,5 @@
 package io.swagger.api;
 
-import com.microsoft.applicationinsights.TelemetryClient;
 import io.swagger.model.Profile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -29,9 +28,6 @@ public class UserApiController implements UserApi {
 
     @Autowired
     UserRepositoryService userRepositoryService;
-
-    @Autowired
-    TelemetryClient telemetryClient;
 
     @org.springframework.beans.factory.annotation.Autowired
     public UserApiController(ObjectMapper objectMapper, HttpServletRequest request) {
