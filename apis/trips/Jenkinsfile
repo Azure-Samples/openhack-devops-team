@@ -1,0 +1,63 @@
+pipeline{
+
+  agent  { node { label 'master' } }
+
+
+
+  environment {
+
+    BUID_TAG = "ujpr${env.BUILD_NUMBER}"
+
+  }
+
+
+
+  stages {
+
+    stage('login') {
+
+      steps
+
+      {
+
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+
+        credentialsId: 'AzureACRCreds',
+
+        usernameVariable: 'ACR_USER',
+
+        passwordVariable: 'ACR_PASSWORD']])
+
+        {
+
+          sh  "docker login ${env.ACR_ENDPOINT} -u '${ACR_USER}' -p '${ACR_PASSWORD}'"
+
+        }   
+
+      }
+
+    }
+
+    stage('build') {
+
+      steps {
+
+        sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-trips:latest $WORKSPACE/apis/trips"
+
+      }
+
+    } 
+
+    stage('push') {
+
+      steps {
+
+        sh "docker push  ${env.ACR_ENDPOINT}/jenkins-trips:latest"
+
+      }
+
+    }
+
+  }
+
+}
