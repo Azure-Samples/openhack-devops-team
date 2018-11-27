@@ -47,7 +47,7 @@ public class UserApiControllerTest {
 
         // this must be called for the @Mock annotations above to be processed
         // and for the mock service to be injected into the controller under
-        // test. ok.
+        // test.
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userApiController).build();
         profile = new Profile();
