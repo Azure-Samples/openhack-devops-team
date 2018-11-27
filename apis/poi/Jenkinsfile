@@ -23,10 +23,25 @@ pipeline{
         sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-poi-api:latest $WORKSPACE/apis/poi/web"
       }
     }
-        stage('push') {
+
+    stage('push') {
       steps {
         sh "docker push ${env.ACR_ENDPOINT}/jenkins-poi-api:latest"
       }
-  }
+    }
+ }
+  post { 
+  always { 
+    echo 'Post Build Results'
+    script {
+      properties([[$class: 'GithubProjectProperty',
+                projectUrlStr: 'https://github.com/Openhack03/openhack-devops-team']])
+    }
+   step([$class: 'GitHubIssueNotifier',
+        issueAppend: true,
+        issueLabel: '',
+        issueTitle: '$JOB_NAME $BUILD_DISPLAY_NAME failed'])
+        }
+    }
 }
 }
