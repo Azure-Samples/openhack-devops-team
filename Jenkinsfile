@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dotnet build 'apis\poi' --configuration Release
+                dotnet build 'apis\\poi' --configuration Release
             }
         }
         stage('Test') {
