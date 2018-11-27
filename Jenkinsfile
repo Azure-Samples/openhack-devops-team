@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                dotnet build "apis\poi" --configuration Release
             }
         }
         stage('Test') {
