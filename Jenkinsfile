@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat "dotnet build \"apis\\poi\" --configuration Release"
+                sh 'dotnet build "apis/poi" --configuration Release'
             }
         }
         stage('Test') {
