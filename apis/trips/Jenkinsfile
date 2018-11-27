@@ -1,3 +1,4 @@
+/* Openhack Team */
 pipeline{
 
   agent  { node { label 'master' } }
