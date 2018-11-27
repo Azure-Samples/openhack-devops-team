@@ -1,4 +1,4 @@
-## [project-title] Changelog
+## Microsoft Openhack Nov 27 Changelog
 
 <a name="x.y.z"></a>
 # x.y.z (yyyy-mm-dd)
