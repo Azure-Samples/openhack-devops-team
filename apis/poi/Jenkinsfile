@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                sh 'dotnet build "apis/poi" --configuration Release'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                echo 'Testing... a sep file'
             }
         }
         stage('Deploy') {
