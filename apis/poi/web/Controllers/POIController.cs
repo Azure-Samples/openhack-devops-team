@@ -12,7 +12,7 @@ namespace poi.Controllers
     public class POIController : ControllerBase
     {
         private readonly POIContext _context;
-
+//Bata
         public POIController(POIContext context)
         {
             _context = context;
