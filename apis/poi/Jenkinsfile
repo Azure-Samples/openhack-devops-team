@@ -20,13 +20,13 @@ pipeline{
     }
     stage('build') {
       steps {
-        sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-poi-api:latest1 $WORKSPACE/apis/poi/web"
+        sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-poi-api:${BUILD_NUMBER} $WORKSPACE/apis/poi/web"
       }
     }
 
     stage('push') {
       steps {
-        sh "docker push ${env.ACR_ENDPOINT}/jenkins-poi-api:latest1"
+        sh "docker push ${env.ACR_ENDPOINT}/jenkins-poi-api:${BUILD_NUMBER}"
       }
     }
  }
