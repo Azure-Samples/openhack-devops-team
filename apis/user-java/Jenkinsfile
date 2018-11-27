@@ -24,7 +24,9 @@ pipeline{
       }
     } 
     stage('push') {
-      sh "docker push -t ${env.ACR_ENDPOINT}/jenkins-user-java:latest"
+      steps {
+        sh "docker push -t ${env.ACR_ENDPOINT}/jenkins-user-java:latest"
+      }
     }
   }
 }
