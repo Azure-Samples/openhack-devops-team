@@ -1,0 +1,15 @@
+pipeline{
+  agent  { node { label 'master' } }
+
+  environment {
+    BUID_TAG = "poipr${env.BUILD_NUMBER}"
+  }
+
+  stages {
+    stage('build') {
+      steps {
+        sh "docker build -t poi-api ."
+      }
+    } 
+  }
+}
