@@ -36,6 +36,11 @@ pipeline{
         sh "helm version"
       }
     }
+    stage('Helm Upgrade'){
+      steps{
+        sh "helm upgrade --install api-poi $WORKSPACE/apis/poi/helm  --namespace default --set repository.image=${env.ACR_ENDPOINT}/jenkins-poi-api --set repository.tag=${BUILD_NUMBER}  --set env.webServerBaseUri=${dnsUrl} --set ingress.rules.endpoint.host=${dnsUrl}"
+      }
+    }
  }
   post { 
   always { 
