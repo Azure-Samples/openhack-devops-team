@@ -2,20 +2,29 @@ FROM microsoft/dotnet:2.1-sdk AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY **/*.csproj ./
 RUN dotnet restore
 
 # copy everything else and build
 COPY . ./
 RUN dotnet publish -c Release -o out
-COPY ./appsettings.*.json /app/out/
-COPY ./appsettings.json /app/out/
+COPY ./web/appsettings.*.json /app/out/
+COPY ./web/appsettings.json /app/out/
+
+# unit test image
+FROM microsoft/dotnet:2.1-sdk AS test-env
+WORKDIR /app
+COPY . ./
+
+RUN dotnet restore tests/UnitTests/UnitTests.csproj 
+RUN dotnet test tests/UnitTests/UnitTests.csproj
 
 # build runtime image
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
+
 WORKDIR /app
 
-RUN dotnet test
+
 
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
