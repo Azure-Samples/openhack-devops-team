@@ -55,8 +55,7 @@ public class UserRepositoryServiceTest {
     @Test
     public void testSave() {
         when(userRepository.save(any(Profile.class))).thenReturn(profile);
-//        assertNotNull(userRepositoryService.save(profile));
-        assertNotNull(null);
+        assertNotNull(userRepositoryService.save(profile));
     }
 
     @Test
