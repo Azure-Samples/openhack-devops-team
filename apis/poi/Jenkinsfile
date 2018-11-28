@@ -32,7 +32,7 @@ pipeline {
        stage('Push Docker Image to Registry') {
            steps {
                dir("${env.SRC_DIR}/web") {
-                   withDockerRegistry(credentialsId: 'acrcreds', url: "https://${ACR_LOGINSERVER}") {
+                   withDockerRegistry(credentialsId: 'acr-credentials', url: "https://${ACR_LOGINSERVER}") {
                        sh "docker push ${ACR_LOGINSERVER}/${env.APP_IMAGE_REPOSITORY_NAME}:${env.BUILD_NUMBER}"
                    }
                }
