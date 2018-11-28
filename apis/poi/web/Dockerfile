@@ -15,6 +15,8 @@ COPY ./appsettings.json /app/out/
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /app
 
+RUN dotnet test
+
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
 SQL_SERVER="changeme.database.windows.net" \
