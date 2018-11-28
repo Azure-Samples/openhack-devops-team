@@ -29,6 +29,13 @@ pipeline{
         sh "docker push ${env.ACR_ENDPOINT}/jenkins-poi-api:${BUILD_NUMBER}"
       }
     }
+    stage('Helm Install'){
+      steps{
+        sh "export KUBECONFIG=/home/jenkins/.kube/config"
+        sh "helm version --client"
+        sh "helm version"
+      }
+    }
  }
   post { 
   always { 
