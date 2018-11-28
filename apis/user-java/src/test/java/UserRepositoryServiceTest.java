@@ -74,10 +74,10 @@ public class UserRepositoryServiceTest {
         when(userRepository.findOne(USER_ID)).thenReturn(null);
         try {
             userRepositoryService.update(profile);
-            fail("Unable to locate user");
+            fail("Unable to locate user ");
 
         }catch (NullPointerException e) {
-            assertEquals("Unable to locate user", e.getMessage());
+            assertEquals("Unable to locate user ", e.getMessage());
         }
         verify(userRepository, never()).save(profile);
     }
