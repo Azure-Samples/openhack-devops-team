@@ -20,12 +20,12 @@ pipeline{
     }
     stage('build') {
       steps {
-        sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-user-java:latest $WORKSPACE/apis/user-java"
+        sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-user-java:${BUILD_NUMBER} $WORKSPACE/apis/user-java"
       }
     } 
     stage('push') {
       steps {
-        sh "docker push  ${env.ACR_ENDPOINT}/jenkins-user-java:latest"
+        sh "docker push  ${env.ACR_ENDPOINT}/jenkins-user-java:${BUILD_NUMBER}"
       }
     }
   }
