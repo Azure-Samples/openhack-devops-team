@@ -4,7 +4,7 @@
 
 replicaCount: 2
 repository:
-  image: acrreplace.azurecr.io/devopsoh/imagereplace
+  image: openhacko287acr.azurecr.io/jenkins-poi-api
   tag: latest
   pullPolicy: Always
 image:
@@ -19,7 +19,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     endpoint:
-      host: changeme
+      host: akstraefikopenhacko287.eastus.cloudapp.azure.com
       paths:
       - path: /api/poi
         serviceName: api-poi-svc
