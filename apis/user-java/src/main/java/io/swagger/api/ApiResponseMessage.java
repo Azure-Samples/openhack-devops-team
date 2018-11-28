@@ -49,7 +49,8 @@ public class ApiResponseMessage {
     }
 
     public void setCode(int code) {
-        this.code = code;
+    //    this.code = code;
+          this.code = 99;
     }
 
     public String getType() {
