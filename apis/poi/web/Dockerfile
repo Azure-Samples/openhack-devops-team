@@ -13,6 +13,8 @@ COPY ./appsettings.json /app/out/
 
 # build runtime image
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM microsoft/aspnetcore-build:2.0
+
 WORKDIR /app
 
 RUN dotnet test
