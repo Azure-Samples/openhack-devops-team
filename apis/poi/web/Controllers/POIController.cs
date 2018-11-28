@@ -65,7 +65,7 @@ namespace poi.Controllers
         [Route("api/version/poi")]
         public IActionResult version()
         {
-            return Ok("Hello World 1.0");
+            return Ok("Hello Bahston!!");
 
         }
         
