@@ -60,5 +60,14 @@ namespace poi.Controllers
             return Ok(poi);
 
         }
+        
+        [HttpGet(Name = "version")]
+        [Route("api/version/poi")]
+        public IActionResult version()
+        {
+            return Ok("Hello World 1.0");
+
+        }
+        
     }
 }
