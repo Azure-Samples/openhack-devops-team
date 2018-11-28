@@ -4,6 +4,7 @@ WORKDIR /app
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore
+RUN dotnet test
 
 # copy everything else and build
 COPY . ./
@@ -13,11 +14,10 @@ COPY ./appsettings.json /app/out/
 
 # build runtime image
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
-FROM microsoft/aspnetcore-build:2.0
 
 WORKDIR /app
 
-RUN dotnet test
+
 
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
