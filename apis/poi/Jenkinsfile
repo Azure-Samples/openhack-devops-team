@@ -46,7 +46,7 @@ pipeline{
   post { 
   always { 
     echo 'Post Build Results'
-    slackSend channel: "#jenkins_notify", message: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
+    slackSend channel: "#jenkins_notify", message: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
     script {
       properties([[$class: 'GithubProjectProperty',
                 projectUrlStr: 'https://github.com/Openhack03/openhack-devops-team']])
