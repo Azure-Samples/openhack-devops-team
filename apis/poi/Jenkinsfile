@@ -20,7 +20,7 @@ pipeline{
     }
     stage('build') {
       steps {
-        slackSend channel: "#jenkins_notify", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
+        slackSend channel: "#jenkins_notify", message: "Build STARTED: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
         sh "docker build -t ${env.ACR_ENDPOINT}/jenkins-poi-api:${BUILD_NUMBER} $WORKSPACE/apis/poi"
       }
     }
