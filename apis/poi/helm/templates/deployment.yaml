@@ -5,6 +5,11 @@ metadata:
   labels:
     deploy: {{ .Values.image.label }}
 spec:
+  strategy:
+   rollingUpdate:
+     maxUnavailable: {{ .Values.rollingUpdate.maxUnavailablePercentage}}
+     maxSurge: {{ .Values.rollingUpdate.maxSurgePercentage}}
+   type: RollingUpdate
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -18,18 +23,18 @@ spec:
       - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag }}"
         imagePullPolicy: {{ .Values.repository.pullPolicy }}
         name: {{ .Values.image.name }}
-        # livenessProbe:
-        #   httpGet:
-        #     path: /api/healthcheck/poi
-        #     port: {{ .Values.image.containerPort }}
-        #   initialDelaySeconds: 10
-        #   periodSeconds: 30
-        # readinessProbe:
-        #   httpGet:
-        #     path: /api/healthcheck/poi
-        #     port: {{ .Values.image.containerPort }}
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 5
+        livenessProbe:
+        httpGet:
+             path: /api/healthcheck/poi
+             port: {{ .Values.image.containerPort }}
+        initialDelaySeconds: 10
+           periodSeconds: 30
+        readinessProbe:
+           httpGet:
+             path: /api/healthcheck/poi
+             port: {{ .Values.image.containerPort }}
+           initialDelaySeconds: 5
+           periodSeconds: 5
         ports:
           - containerPort: {{ .Values.image.containerPort }}
             name: http
