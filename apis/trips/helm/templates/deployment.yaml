@@ -6,6 +6,9 @@ metadata:
     deploy: {{ .Values.image.label }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  # strategy:
+  #   type: RollingUpdate
+  #     maxUnavailable: 0
   selector:
     matchLabels:
       app: {{ .Values.image.label }}
