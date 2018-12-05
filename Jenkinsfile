@@ -6,7 +6,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          sh 'docker build "apis/user-java/" -t user-java:v3'
+          sh 'docker build "apis/user-java/" -t user-java:$BUILD_NUMBER'
       }
     }
   }
@@ -15,8 +15,12 @@ pipeline {
   stage('Pushing image to ACR') {
       steps{
         script {
-            sh 'docker tag user-java:v3 openhack58u7acr.azurecr.io/user-java:v3'
-            sh 'docker push openhack58u7acr.azurecr.io/user-java:v3'
+            withCredentials([usernamePassword(credentialsId: env.ACR_JENKINS)]{
+                    sh 'docker login openhack58u7acr.azurecr.io'
+                    sh 'docker tag user-java:$BUILD_NUMBER openhack58u7acr.azurecr.io/user-java:$BUILD_NUMBER'
+                    sh 'docker push openhack58u7acr.azurecr.io/user-java:$BUILD_NUMBER'
+            }
+            
             
       }
     }
