@@ -9,6 +9,7 @@ pipeline {
                 sh 'docker build "apis/user-java/" -t user-java:$BUILD_NUMBER'
             }
         }
+
         stage('Pushing image to ACR') {
             steps{
                     script {
@@ -23,6 +24,6 @@ pipeline {
         }
     }
       
-      
+    }      
   
 }
