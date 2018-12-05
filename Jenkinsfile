@@ -6,7 +6,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          sh 'docker build "apis/user-java/"'
+          sh 'docker build -f "apis/user-java/" -t user-java:v1'
       }
     }
   }
