@@ -2,20 +2,12 @@ pipeline {
 
     agent any
 
-    stages {
-
-
-        stage('Build'){
-
-            steps{
-
-               // bat "go clean"
-                sh "echo build"
-            }
-
-        }
-
-
+  stages {
+    stage('Building image') {
+      steps{
+        script {
+          docker.build "apis/user-java/"
+      }
     }
-
+  }
 }
