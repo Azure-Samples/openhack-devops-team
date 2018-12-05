@@ -13,7 +13,12 @@ pipeline {
         stage('Pushing image to ACR') {
             steps{
                     script {
-                        withCredentials([[usernamePassword(credentialsId: 'ACR_JENKINS')]]){
+                       // withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'ACR_JENKINS',
+                       // usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {                            
+                       //     BITBUCKET_ACCOUNT_NAME = USERNAME
+                      //      BITBUCKET_ACCOUNT_PASSWORD = PASSWORD
+                      //  }
+                        withCredentials([usernamePassword(credentialsId: 'ACR_JENKINS')]){
                                 sh 'docker login openhack58u7acr.azurecr.io'
                                 sh 'docker tag user-java:$BUILD_NUMBER openhack58u7acr.azurecr.io/user-java:$BUILD_NUMBER'
                                 sh 'docker push openhack58u7acr.azurecr.io/user-java:$BUILD_NUMBER'
