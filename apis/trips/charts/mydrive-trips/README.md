@@ -14,9 +14,9 @@ This installs the application on a Kubernetes cluster with the following compone
 2. Make sure tiller (the server side component to Helm) is up to date:
 ```helm init --upgrade```
 
-3. Make any changes you'd like to the `helm/values.yaml` fil. If you change the image tag, make sure the image exists on ACR or docker hub.
+3. Make any changes you'd like to the `charts/mydrive-trips/values.yaml` fil. If you change the image tag, make sure the image exists on ACR or docker hub.
 
-4. Run the following commands in a terminal window in the `helm/` folder.
+4. Run the following commands in a terminal window in the `charts/mydrive-trips/` folder.
 
 ```bash
 
