@@ -15,6 +15,7 @@ SQL_SERVER="changeme.database.windows.net" \
 SQL_DBNAME="mydrivingDB"
 
 # Add the application's jar to the container
+# Test
 COPY --from=build-env target/swagger-spring-1.0.0.jar user-java.jar
 
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/user-java.jar"]
