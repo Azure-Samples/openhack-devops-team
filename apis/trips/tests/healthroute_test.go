@@ -20,7 +20,6 @@ var healthRouteTests = []tripSvc.APITestCase{
 
 func TestHealthRoute(t *testing.T) {
 	t.Error("Always fail")
-
 	router := tripSvc.NewRouter()
 	var debug, present = os.LookupEnv("DEBUG_LOGGING")
 
