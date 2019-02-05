@@ -69,7 +69,7 @@ public class UserApiControllerTest {
                         .content(convertObjectToJsonBytes(profile))
         )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType("BLA4"));
+                .andExpect(content().contentType("BLA5"));
         verify(userRepositoryService, times(1)).save(profile);
     }
 
