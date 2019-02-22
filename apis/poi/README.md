@@ -7,6 +7,8 @@
 
 ## Tests
 
+Testing is important.
+
 ### Running the unit tests
 
 ### Running the Integration Test
