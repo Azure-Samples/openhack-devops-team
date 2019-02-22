@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('error') {
+    stage('Build Docker Image') {
       steps {
-        dockerNode(image: 'test123')
+        echo 'Building POI API ...'
       }
     }
   }
