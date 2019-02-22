@@ -11,7 +11,7 @@
 
 ### Running the Integration Test
 
-Yet Not Running the test.
+Running the test.
 
 ## References
 
