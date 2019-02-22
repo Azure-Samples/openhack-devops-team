@@ -7,8 +7,6 @@
 
 ## Tests
 
-More tests
-
 ### Running the unit tests
 
 ### Running the Integration Test
