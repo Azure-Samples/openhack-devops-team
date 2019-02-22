@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('error') {
       steps {
-        sh 'app = docker.build("getintodevops/hellonode")'
+        dockerNode(image: 'test123')
       }
     }
   }
