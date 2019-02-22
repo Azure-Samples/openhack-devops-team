@@ -10,6 +10,7 @@ pipeline {
 
             sh 'echo uname=$ACR_ID pwd=$ACR_PASSWORD'
         }
+        sh 'echo $ACR_ID'
       }
     }
   }
