@@ -5,7 +5,7 @@ pipeline {
     WEB_IMAGE_NAME = ''
   }
   stages {         
-    stage('Build Docker Image') {
+    stage('Build POI Image') {
       steps {
         echo 'Building POI API Docker Image...'
          sh '''
@@ -15,12 +15,12 @@ pipeline {
          '''
       }
     }
-    stage('Push Docker Image') {
+    stage('Push POI Image') {
       steps {
         echo 'Pushing POI API Docker Image...'
         sh '''
           echo $WEB_IMAGE_NAME
-          #docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PWD}
+          #docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PSW}
           #docker push $WEB_IMAGE_NAME
         '''
       }
