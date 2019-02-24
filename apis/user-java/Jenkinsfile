@@ -52,7 +52,10 @@ pipeline {
       }
     }
     stage('Build User Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Building User API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -64,7 +67,10 @@ pipeline {
       }
     }
     stage('Push User Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Pushing User API Docker Image...'
         sh '''
