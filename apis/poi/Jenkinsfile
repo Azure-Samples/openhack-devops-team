@@ -48,7 +48,8 @@ pipeline {
       when { environment name: 'BUILD', value: "true" }
       steps {
         dir("$API_PATH") {
-          echo 'Unit testing'                  
+          echo 'Unit testing'
+          sh 'dotnet test'                  
         }
       }
     }
