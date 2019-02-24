@@ -22,7 +22,7 @@ To run unit tests, execute:
 go test ./tests
 ```
 
-To run all integration tests, execute:
+To run all integration tests, execute, in a shell:
 
 ```shell
 go test
