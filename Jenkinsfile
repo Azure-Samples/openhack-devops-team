@@ -17,10 +17,10 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         echo 'Pushing POI API Docker Image...'
-        echo $WEB_IMAGE_NAME
         sh '''
-          docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PWD}
-          docker push $WEB_IMAGE_NAME
+          echo $WEB_IMAGE_NAME
+          #docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PWD}
+          #docker push $WEB_IMAGE_NAME
         '''
       }
     }
