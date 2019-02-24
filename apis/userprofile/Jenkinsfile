@@ -53,6 +53,7 @@ pipeline {
           nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
             sh 'npm test'
           }
+          junit 'reports/*.xml'
         }
       }
     }
