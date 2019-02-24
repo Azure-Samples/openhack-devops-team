@@ -25,6 +25,11 @@ pipeline {
           docker push $WEB_IMAGE_NAME
         '''
       }
+
+      when { changeset "apis/poi/*" }
+      steps {
+         echo "This is a change in the POI"
+      }
     }
   }
 }
