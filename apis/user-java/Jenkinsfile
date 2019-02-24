@@ -3,20 +3,65 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user-java:${BUILD_NUMBER}"
+    API_PATH = "apis/user-java/"
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/user-java/*" }
+      //when { changeset "apis/user-java/*" }
+      when {
+        expression {
+          sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
+        }
+      }
       steps {
-        echo "This is a change in the POI"
+        echo "This is a change in the API"
 	
 	      script { 
           env.BUILD = "true"
         }
       }
     }
-    stage('Build User Image') {
+    stage('Build Locally') {
       when { environment name: 'BUILD', value: "true" }
+      steps {
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3',
+            // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+            // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+            mavenSettingsConfig: '',
+            mavenLocalRepo: '.repository') {
+
+          // Go to the right folder
+          // Run the maven build
+          sh "mvn clean package -f apis/user-java/pom.xml -DskipTests"
+
+        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+      }
+    }
+    stage('Unit tests') {
+      when { environment name: 'BUILD', value: "true" }
+      steps {
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3',
+            // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+            // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+            mavenSettingsConfig: '',
+            mavenLocalRepo: '.repository') {
+
+          // Go to the right folder
+          // Run the maven build
+          sh "mvn clean package test -f apis/user-java/pom.xml"
+
+        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+      }
+    }
+    stage('Build User Image') {
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Building User API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -28,7 +73,10 @@ pipeline {
       }
     }
     stage('Push User Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Pushing User API Docker Image...'
         sh '''
