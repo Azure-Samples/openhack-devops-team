@@ -13,6 +13,7 @@ pipeline {
 	
 	      script { 
           BUILD = "true"
+          env.BUILD2 = "true2"
         }
       }
     }
@@ -26,6 +27,8 @@ pipeline {
       steps {
         echo "${BUILD}"
         echo "${env.BUILD}"
+        echo "${env.BUILD2}"
+        echo "${env.BUILD3}"
         echo "Let's do it"
       }
     }
