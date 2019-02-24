@@ -22,8 +22,10 @@ pipeline {
       }
     }
     stage('Environment test') {
-      when { environment name: 'BUILD', value: "false" }
+      /*when { environment name: 'BUILD', value: "false" }*/
       steps {
+        echo "${BUILD}"
+        echo "${env.BUILD}"
         echo "Let's do it"
       }
     }
