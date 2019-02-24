@@ -3,7 +3,6 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-poi:${BUILD_NUMBER}"
-    BUILD = "false"
   }
   stages {         
     stage('Check for changeset') {
