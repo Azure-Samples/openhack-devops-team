@@ -9,8 +9,20 @@ pipeline {
     stage('Check for changeset') {
       //when { changeset "apis/user-java/*" }
       when {
+        changeset "$API_PATH"
+      }
+      steps {
+        echo "This is a change in the API"
+	
+	      script { 
+          env.BUILD = "true"
+        }
+      }
+    }
+    stage('Check for diff master') {
+      //when { changeset "apis/user-java/*" }
+      when {
         anyOf {
-          changeset "$API_PATH"
           expression {
             sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
           }
