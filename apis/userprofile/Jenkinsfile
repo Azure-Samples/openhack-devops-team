@@ -3,20 +3,65 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user:${BUILD_NUMBER}"
+    API_PATH = "apis/userprofile/"
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/userprofile/*" }
+      when {
+        changeset "$API_PATH/*"
+      }
       steps {
-        echo "This is a change in the POI"
+        echo "This is a change in the API"
 	
 	      script { 
           env.BUILD = "true"
         }
       }
     }
-    stage('Build User Profile Image') {
+    stage('Check for diff master') {
+      when {
+        anyOf {
+          expression {
+            sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
+          }
+        }
+      }
+      steps {
+        echo "This is a change in the API"
+	
+	      script { 
+          env.BUILD = "true"
+        }
+      }
+    }
+    stage('Build Locally') {
       when { environment name: 'BUILD', value: "true" }
+      steps {
+        dir("$API_PATH") {
+          nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+            sh 'ls'
+            sh 'npm install'
+          }
+        }
+      }
+    }
+    stage('Unit tests') {
+      when { environment name: 'BUILD', value: "true" }
+      steps {
+        dir("$API_PATH") {
+          echo 'Unit testing'
+          nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+            sh 'npm test'
+          }
+          junit 'reports/*.xml'
+        }
+      }
+    }
+    stage('Build User Profile Image') {
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'  
+      }
       steps {
         echo 'Building User Profile Docker Image...'
         echo "Should build: ${BUILD}"
@@ -28,7 +73,10 @@ pipeline {
       }
     }
     stage('Push User Profile Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'  
+      }
       steps {
         echo 'Pushing User Profile Docker Image...'
         sh '''
