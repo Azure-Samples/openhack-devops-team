@@ -2,6 +2,7 @@ pipeline {
   agent any
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
+    WEB_IMAGE_NAME = ''
   }
   stages {         
     stage('Build Docker Image') {
