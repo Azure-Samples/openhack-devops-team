@@ -1,12 +1,13 @@
 pipeline {
   agent any
   stages {
+            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'acr-credentials',
+            usernameVariable: 'ACR_ID', passwordVariable: 'ACR_PASSWORD']]) {
     stage('Build Docker Image') {
       steps {
         echo 'Building POI API Docker Image...'
         echo 'Fetching credentials...'
-        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'acr-credentials',
-            usernameVariable: 'ACR_ID', passwordVariable: 'ACR_PASSWORD']]) {
+
 
             sh '''
               # Build new image and push to ACR.
