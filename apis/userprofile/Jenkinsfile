@@ -47,6 +47,7 @@ pipeline {
     stage('Unit tests') {
       when { environment name: 'BUILD', value: "true" }
       steps {
+        dir("$API_PATH")
         echo 'Unit testing'
         nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
           sh 'npm test'
