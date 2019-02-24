@@ -9,7 +9,7 @@ pipeline {
     stage('Check for changeset') {
       //when { changeset "apis/user-java/*" }
       when {
-        changeset "$API_PATH"
+        changeset "$API_PATH/*"
       }
       steps {
         echo "This is a change in the API"
