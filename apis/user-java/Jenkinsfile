@@ -3,12 +3,18 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user-java:${BUILD_NUMBER}"
+    API_PATH = "apis/user-java/"
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/user-java/*" }
+      //when { changeset "apis/user-java/*" }
+      when {
+        expression {
+          sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
+        }
+      }
       steps {
-        echo "This is a change in the POI"
+        echo "This is a change in the API"
 	
 	      script { 
           env.BUILD = "true"
