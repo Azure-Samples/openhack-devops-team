@@ -49,7 +49,7 @@ pipeline {
       steps {
         dir("$API_PATH") {
           echo 'Unit testing'
-          sh 'dotnet test'                  
+          sh 'dotnet test ./tests/UnitTests/UnitTests.csproj'                  
         }
       }
     }
