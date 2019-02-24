@@ -12,23 +12,7 @@ pipeline {
 	
 	      script { 
           env.BUILD = "true"
-          env.BUILD2 = "true2"
         }
-      }
-    }
-    stage('Variable test') {
-      steps {
-        echo "${BUILD}"
-      }
-    }
-    stage('Environment test') {
-      /*when { environment name: 'BUILD', value: "false" }*/
-      steps {
-        echo "${BUILD}"
-        echo "${env.BUILD}"
-        echo "${env.BUILD2}"
-        echo "${env.BUILD3}"
-        echo "Let's do it"
       }
     }
     stage('Build POI Image') {
