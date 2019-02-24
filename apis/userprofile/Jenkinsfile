@@ -39,7 +39,7 @@ pipeline {
       steps {
         dir("$API_PATH")
         nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
-          sh 'npm config ls'
+          sh 'ls'
           sh 'npm install'
         }
       }
