@@ -11,12 +11,13 @@ pipeline {
       steps {
         echo "This is a change in the POI"
 	
-	script { 
+	      script { 
           BUILD = true
         }
       }
     }
     stage('Build POI Image') {
+      when { environment name: 'BUILD', value: true }
       steps {
         echo 'Building POI API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -29,6 +30,7 @@ pipeline {
       }
     }
     stage('Push POI Image') {
+      when { environment name: 'BUILD', value: true }
       steps {
         echo 'Pushing POI API Docker Image...'
         sh '''
@@ -37,6 +39,7 @@ pipeline {
           docker push $WEB_IMAGE_NAME
         '''
       }
+    }
     }
   }
 }
