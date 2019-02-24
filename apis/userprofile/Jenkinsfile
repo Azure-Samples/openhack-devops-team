@@ -2,11 +2,11 @@ pipeline {
   agent any
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
-    WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-poi:${BUILD_NUMBER}"
+    WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user:${BUILD_NUMBER}"
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/poi/*" }
+      when { changeset "apis/userprofile/*" }
       steps {
         echo "This is a change in the POI"
 	
@@ -15,22 +15,22 @@ pipeline {
         }
       }
     }
-    stage('Build POI Image') {
+    stage('Build User Profile Image') {
       when { environment name: 'BUILD', value: "true" }
       steps {
-        echo 'Building POI API Docker Image...'
+        echo 'Building User Profile Docker Image...'
         echo "Should build: ${BUILD}"
         echo "${WEB_IMAGE_NAME}"
          sh '''
            # Build new image and push to ACR.
-           docker build -t $WEB_IMAGE_NAME ./apis/poi/web/
+           docker build -t $WEB_IMAGE_NAME ./apis/userprofile/
          '''
       }
     }
-    stage('Push POI Image') {
+    stage('Push User Profile Image') {
       when { environment name: 'BUILD', value: "true" }
       steps {
-        echo 'Pushing POI API Docker Image...'
+        echo 'Pushing User Profile Docker Image...'
         sh '''
           echo $WEB_IMAGE_NAME
           docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS_USR} -p ${ACR_CREDENTIALS_PSW}
