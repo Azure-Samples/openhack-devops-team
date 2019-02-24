@@ -9,8 +9,11 @@ pipeline {
     stage('Check for changeset') {
       when { changeset "apis/poi/*" }
       steps {
-         echo "This is a change in the POI"
-         BUILD = true
+        echo "This is a change in the POI"
+	
+	script { 
+          BUILD = true
+        }
       }
     }
     stage('Build POI Image') {
