@@ -16,6 +16,9 @@ pipeline {
         }
       }
     }
+    stage('Variable test') {
+      echo "${BUILD}"
+    }
     stage('Build POI Image') {
       when { environment name: 'BUILD', value: "true" }
       steps {
