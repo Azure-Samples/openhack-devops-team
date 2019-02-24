@@ -12,7 +12,7 @@ pipeline {
         echo "This is a change in the POI"
 	
 	      script { 
-          env.BUILD = "true"
+          BUILD = "true"
         }
       }
     }
