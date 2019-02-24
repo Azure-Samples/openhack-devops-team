@@ -21,7 +21,7 @@ pipeline {
         echo 'Pushing POI API Docker Image...'
         sh '''
           echo $WEB_IMAGE_NAME
-          docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PSW}
+          docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS_USR} -p ${ACR_CREDENTIALS_PSW}
           docker push $WEB_IMAGE_NAME
         '''
       }
