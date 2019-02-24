@@ -40,7 +40,7 @@ pipeline {
         dir("$API_PATH")
         nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
           sh 'npm config ls'
-          sh ''
+          sh 'npm install'
         }
       }
     }
@@ -48,6 +48,9 @@ pipeline {
       when { environment name: 'BUILD', value: "true" }
       steps {
         echo 'Unit testing'
+        nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+          sh 'npm test'
+        }
       }
     }
     stage('Build User Profile Image') {
