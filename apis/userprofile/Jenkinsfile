@@ -3,16 +3,63 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user:${BUILD_NUMBER}"
+    API_PATH = "apis/userprofile/"
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/userprofile/*" }
+      when {
+        changeset "$API_PATH/*"
+      }
       steps {
-        echo "This is a change in the POI"
+        echo "This is a change in the API"
 	
 	      script { 
           env.BUILD = "true"
         }
+      }
+    }
+    stage('Check for diff master') {
+      when {
+        anyOf {
+          expression {
+            sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
+          }
+        }
+      }
+      steps {
+        echo "This is a change in the API"
+	
+	      script { 
+          env.BUILD = "true"
+        }
+      }
+    }
+    stage('Build Locally') {
+      when { environment name: 'BUILD', value: "true" }
+      steps {
+        dir("$API_PATH")
+        nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+          sh 'npm config ls'
+          sh ''
+        }
+      }
+    }
+    stage('Unit tests') {
+      when { environment name: 'BUILD', value: "true" }
+      steps {
+        withMaven(
+            // Maven installation declared in the Jenkins "Global Tool Configuration"
+            maven: 'M3',
+            // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+            // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
+            mavenSettingsConfig: '',
+            mavenLocalRepo: '.repository') {
+
+          // Go to the right folder
+          // Run the maven build
+          sh "mvn clean package test -f apis/user-java/pom.xml"
+
+        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
       }
     }
     stage('Build User Profile Image') {
