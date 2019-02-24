@@ -6,7 +6,7 @@ pipeline {
   }
   stages {         
     stage('Check for changeset') {
-      when { changeset "apis/poi/*" }
+      when { changeset "apis/user-java/*" }
       steps {
         echo "This is a change in the POI"
 	
