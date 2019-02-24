@@ -37,20 +37,22 @@ pipeline {
     stage('Build Locally') {
       when { environment name: 'BUILD', value: "true" }
       steps {
-        dir("$API_PATH")
-        nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
-          sh 'ls'
-          sh 'npm install'
+        dir("$API_PATH") {
+          nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+            sh 'ls'
+            sh 'npm install'
+          }
         }
       }
     }
     stage('Unit tests') {
       when { environment name: 'BUILD', value: "true" }
       steps {
-        dir("$API_PATH")
-        echo 'Unit testing'
-        nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
-          sh 'npm test'
+        dir("$API_PATH") {
+          echo 'Unit testing'
+          nodejs(nodeJSInstallationName: 'Node 8', configId: '') {
+            sh 'npm test'
+          }
         }
       }
     }
