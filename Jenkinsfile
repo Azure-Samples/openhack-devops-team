@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    AUTH = credentials('acr-credentials')
+    ACR_CREDENTIALS = credentials('acr-credentials')
   }
   stages {         
     stage('Build Docker Image') {
@@ -16,7 +16,12 @@ pipeline {
     }
     stage('Push Docker Image') {
       steps {
-        echo 'Pushing POI API Docker Image...'      
+        echo 'Pushing POI API Docker Image...'
+        echo $WEB_IMAGE_NAME
+        sh '''
+          docker login ${ACR_LOGINSERVER} -u ${ACR_CREDENTIALS:USR} -p ${ACR_CREDENTIALS:PWD}
+          docker push $WEB_IMAGE_NAME
+        '''
       }
     }
   }
