@@ -27,9 +27,8 @@ pipeline {
             mavenLocalRepo: '.repository') {
 
           // Go to the right folder
-          sh "apis/user-java/"
           // Run the maven build
-          sh "mvn clean package -DskipTest"
+          sh "mvn clean package -f apis/user-java/pom.xml -DskipTest"
 
         } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
       }
