@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build Docker Image') {
       steps {
-        echo 'Building POI API ...'
+        echo 'Building POI API Docker Image...'
         echo 'Fetching credentials...'
         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'acr-credentials',
             usernameVariable: 'ACR_ID', passwordVariable: 'ACR_PASSWORD']]) {
@@ -14,7 +14,12 @@ pipeline {
               docker build -t $WEB_IMAGE_NAME ./apis/poi/web/
             '''
         }
-        sh 'echo $ACR_ID'
+      }
+    }
+    stage('Push Docker Image') {
+      steps {
+        echo 'Pushing POI API Docker Image...'
+        echo 'Fetching credentials...'           
       }
     }
   }
