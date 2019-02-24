@@ -47,6 +47,7 @@ pipeline {
     stage('Unit tests') {
       when { environment name: 'BUILD', value: "true" }
       steps {
+        echo 'Unit testing'
       }
     }
     stage('Build User Profile Image') {
