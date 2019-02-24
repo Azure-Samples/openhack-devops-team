@@ -57,7 +57,10 @@ pipeline {
       }
     }
     stage('Build User Profile Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'  
+      }
       steps {
         echo 'Building User Profile Docker Image...'
         echo "Should build: ${BUILD}"
@@ -69,7 +72,10 @@ pipeline {
       }
     }
     stage('Push User Profile Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'  
+      }
       steps {
         echo 'Pushing User Profile Docker Image...'
         sh '''
