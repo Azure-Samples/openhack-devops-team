@@ -3,7 +3,7 @@ pipeline {
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-poi:${BUILD_NUMBER}"
-    BUILD = false
+    BUILD = "false"
   }
   stages {         
     stage('Check for changeset') {
@@ -12,12 +12,12 @@ pipeline {
         echo "This is a change in the POI"
 	
 	      script { 
-          BUILD = true
+          BUILD = "true"
         }
       }
     }
     stage('Build POI Image') {
-      when { environment name: 'BUILD', value: true }
+      when { environment name: 'BUILD', value: "true" }
       steps {
         echo 'Building POI API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -30,7 +30,7 @@ pipeline {
       }
     }
     stage('Push POI Image') {
-      when { environment name: 'BUILD', value: true }
+      when { environment name: 'BUILD', value: "true" }
       steps {
         echo 'Pushing POI API Docker Image...'
         sh '''
