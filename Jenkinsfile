@@ -8,6 +8,8 @@ pipeline {
     stage('Build POI Image') {
       steps {
         echo 'Building POI API Docker Image...'
+        WEB_IMAGE_NAME="${ACR_LOGINSERVER}/devopsoh/api-poi:${BUILD_NUMBER}"
+        echo ${WEB_IMAGE_NAME}
          sh '''
            # Build new image and push to ACR.
            WEB_IMAGE_NAME="${ACR_LOGINSERVER}/devopsoh/api-poi:${BUILD_NUMBER}"
