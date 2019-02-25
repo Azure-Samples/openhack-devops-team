@@ -49,7 +49,7 @@ pipeline {
       steps {
         dir("$API_PATH") {
           echo 'Unit testing'
-          sh 'dotnet test ./tests/UnitTests/UnitTests.csproj --results-directory . --logger trx'
+          sh 'dotnet test ./tests/UnitTests/UnitTests.csproj --results-directory . --logger trx --collect "Code Coverage"'
           mstest testResultsFile:"**/*.trx", keepLongStdio: true                  
         }
       }
