@@ -58,7 +58,10 @@ pipeline {
       }
     }
     stage('Build Trip Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Building Trip API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -70,7 +73,10 @@ pipeline {
       }
     }
     stage('Push Trip Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Pushing Trip API Docker Image...'
         sh '''
