@@ -3,19 +3,31 @@ pipeline {
   tools {
     go 'Go 1.11'
   }
+  parameters {    
+    booleanParam(name: 'FORCE', defaultValue: false, description: 'Force a build with empty changeset.')
+  }  
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-trip:${BUILD_NUMBER}"
     API_PATH = "apis/trips/"
   }
-  stages {         
+  stages {  
+    stage('Check for parameters') {
+      steps {
+        script { 
+          if (params.FORCE == true) {
+            echo "Forcing build..."
+            env.BUILD = "true"
+          }
+        }
+      }
+    }       
     stage('Check for changeset') {
       when {
         changeset "$API_PATH/*"
       }
       steps {
         echo "This is a change in the API"
-        echo "$JOB_NAME"
 	
 	      script { 
           env.BUILD = "true"
