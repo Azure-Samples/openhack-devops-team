@@ -12,7 +12,7 @@ pipeline {
       }
       steps {
         echo "This is a change in the API"
-        echo "$JOB_BASE_NAME"
+        echo "$JOB_NAME"
 	
 	      script { 
           env.BUILD = "true"
