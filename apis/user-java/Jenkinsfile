@@ -5,7 +5,20 @@ pipeline {
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-user-java:${BUILD_NUMBER}"
     API_PATH = "apis/user-java/"
   }
+  parameters {    
+    booleanParam(name: 'FORCE', defaultValue: false, description: 'Force a build with empty changeset.')
+  }    
   stages {         
+    stage('Check for parameters') {
+      steps {
+        script { 
+          if (params.FORCE == true) {
+            echo "Forcing build..."
+            env.BUILD = "true"
+          }
+        }
+      }
+    }      
     stage('Check for changeset') {
       //when { changeset "apis/user-java/*" }
       when {
