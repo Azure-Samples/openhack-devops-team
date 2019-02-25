@@ -1,22 +1,78 @@
 pipeline {
   agent any
+  tools {
+    go 'Go 1.11'
+  }
+  parameters {    
+    booleanParam(name: 'FORCE', defaultValue: false, description: 'Force a build with empty changeset.')
+  }  
   environment {
     ACR_CREDENTIALS = credentials('acr-credentials')
     WEB_IMAGE_NAME = "${ACR_LOGINSERVER}/devopsoh/api-trip:${BUILD_NUMBER}"
+    API_PATH = "apis/trips/"
   }
-  stages {         
-    stage('Check for changeset') {
-      when { changeset "apis/trips/*" }
+  stages {  
+    stage('Check for parameters') {
       steps {
-        echo "This is a change in the POI"
+        script { 
+          if (params.FORCE == true) {
+            echo "Forcing build..."
+            env.BUILD = "true"
+          }
+        }
+      }
+    }       
+    stage('Check for changeset') {
+      when {
+        changeset "$API_PATH/*"
+      }
+      steps {
+        echo "This is a change in the API"
 	
 	      script { 
           env.BUILD = "true"
         }
       }
     }
-    stage('Build Trip Image') {
+    stage('Check for diff master') {
+      when {
+        anyOf {
+          expression {
+            sh(returnStatus: true, script: 'git diff origin/master --name-only | grep "^$API_PATH.*" > /dev/null') == 0
+          }
+        }
+      }
+      steps {
+        echo "This is a change in the API"
+	
+	      script { 
+          env.BUILD = "true"
+        }
+      }
+    }
+    stage('Build Locally') {
       when { environment name: 'BUILD', value: "true" }
+      steps {
+        dir("$API_PATH") {
+          sh 'ls'
+          sh 'go get .'
+        }
+      }
+    }
+    stage('Unit tests') {
+      when { environment name: 'BUILD', value: "true" }
+      steps {
+        dir("$API_PATH") {
+          echo 'Unit testing'
+          sh 'go test ./tests'                  
+        }
+      }
+    }
+    stage('Build Trip Image') {
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Building Trip API Docker Image...'
         echo "Should build: ${BUILD}"
@@ -28,7 +84,10 @@ pipeline {
       }
     }
     stage('Push Trip Image') {
-      when { environment name: 'BUILD', value: "true" }
+      when { 
+        environment name: 'BUILD', value: "true" 
+        branch 'master'
+      }
       steps {
         echo 'Pushing Trip API Docker Image...'
         sh '''
