@@ -8,7 +8,7 @@ The application used for this event is a heavily modified and recreated version 
 
 The team environment consists of the following:
 
-* Azure Container Service (AKS) cluster which has four APIs deployed:
+* Azure Kubernetes Service (AKS) cluster which has four APIs deployed:
 
   * POI (Trip Points of Interest) - CRUD API written in .Net Core 2 for points of interest on trips
   * Trips - CRUD open API written in golang 1.11 for trips connected to the client application
