@@ -1,0 +1,50 @@
+# Default values for chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 2
+repository:
+  image: acrreplace.azurecr.io/devopsoh/imagereplace
+  tag: latest
+  pullPolicy: Always
+image:
+  name: mydrive-trips
+  label: mydrive-trips
+  containerPort: 80
+env:
+  webServerBaseUri: 'http://localhost'
+service:
+  externalPort: 80
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  rules:
+    endpoint:
+      host: changeme
+      paths:
+      - path: /api/trips
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/healthcheck/trips
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/docs/trips/
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/docs/trips
+        serviceName: api-trip-svc
+        servicePort: 80
+      - path: /api/json
+        serviceName: api-trip-svc
+        servicePort: 80
+resources: {}
+ # We usually recommend not to specify default resources and to leave this as a conscious
+ # choice for the user. This also increases chances charts run on environments with little
+ # resources, such as Minikube. If you do want to specify resources, uncomment the following
+ # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+ # limits:
+ # cpu: 100m
+ # memory: 128Mi
+ # requests:
+ # cpu: 100m
+ # memory: 128Mi
