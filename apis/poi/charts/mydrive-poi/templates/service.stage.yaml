@@ -6,6 +6,11 @@ spec:
   type: ClusterIP
   selector:
     app: {{ .Values.image.label }}
+    {{- if eq .Values.productionSlot "blue" }}
+    slot: green
+    {{- else }}
+    slot: blue
+    {{- end}}
   ports:
     - protocol: TCP
       name: {{ .Values.image.name }}http

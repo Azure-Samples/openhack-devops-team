@@ -1,7 +1,8 @@
+{{ if .Values.blue.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.image.name }}-deploy"
+  name: "{{ .Values.image.name }}-deploy-blue"
   labels:
     deploy: {{ .Values.image.label }}
 spec:
@@ -17,9 +18,10 @@ spec:
     metadata:
       labels:
         app: {{ .Values.image.label }}
+        slot: blue
     spec:
       containers:
-      - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag }}"
+      - image: "{{ .Values.repository.image }}:{{ .Values.blue.tag }}"
         imagePullPolicy: {{ .Values.repository.pullPolicy }}
         name: {{ .Values.image.name }}
         # livenessProbe:
@@ -68,3 +70,4 @@ spec:
             value: '8080'
           - name: ASPNETCORE_ENVIRONMENT
             value: 'Production'
+{{ end }}
