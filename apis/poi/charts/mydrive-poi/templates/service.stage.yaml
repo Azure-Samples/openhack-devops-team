@@ -10,7 +10,7 @@ spec:
     slot: green
     {{- else }}
     slot: blue
-    {{- end}}
+    {{- end }}
   ports:
     - protocol: TCP
       name: {{ .Values.image.name }}http
