@@ -5,7 +5,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "chart.fullname" . }}
+  name: {{ template "chart.fullname" . }}-stage
   labels:
     app: {{ template "chart.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -24,7 +24,7 @@ spec:
         {{- range $path := .paths }}
           - path: {{ $path.path }}
             backend:
-              serviceName: {{ $path.serviceName }}
+              serviceName: {{ $path.serviceName }}-stage
               servicePort: {{ $path.servicePort }}
         {{- end -}}
     {{- end -}}
