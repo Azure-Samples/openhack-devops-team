@@ -6,6 +6,7 @@
 *Features*
 - Refactored Blue/Green support in api charts
 - Clean up chart parameters
+- Change charts to use packages
 - Remove Proctor monitoring infrastructure and replace with Bash Curl/PowerShell scripts
 
 *Bug Fixes*
