@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 2
 repository:
-  image: acrreplace.azurecr.io/devopsoh/imagereplace
+  image: openhackuse8acr.azurecr.io/alyssa/api/userprofile
   tag: latest
   pullPolicy: Always
 image:
@@ -18,7 +18,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     endpoint:
-      host: changeme
+      host: @@HOST_ENDPOINT@@
       paths:
       - path: /api/user
         serviceName: api-user-svc
