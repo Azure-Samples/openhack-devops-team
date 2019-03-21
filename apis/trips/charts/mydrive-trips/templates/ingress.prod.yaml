@@ -24,7 +24,7 @@ spec:
         {{- range $path := .paths }}
           - path: {{ $path.path }}
             backend:
-              serviceName: {{ $path.serviceName }}
+              serviceName: {{ $path.serviceName }}-prod
               servicePort: {{ $path.servicePort }}
         {{- end -}}
     {{- end -}}

@@ -1,15 +1,12 @@
+{{ if .Values.green.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.image.name }}-deploy"
+  name: "{{ .Values.image.name }}-deploy-green"
   labels:
     deploy: {{ .Values.image.label }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  # strategy:
-  #   type: RollingUpdate
-  #   rollingUpdate:
-  #     maxUnavailable: 0
   selector:
     matchLabels:
       app: {{ .Values.image.label }}
@@ -17,23 +14,24 @@ spec:
     metadata:
       labels:
         app: {{ .Values.image.label }}
+        slot: green
     spec:
       containers:
-      - image: "{{ .Values.repository.image }}:{{ .Values.repository.tag }}"
+      - image: "{{ .Values.repository.image }}:{{ .Values.green.tag }}"
         imagePullPolicy: {{ .Values.repository.pullPolicy }}
         name: {{ .Values.image.name }}
-        # livenessProbe:
-        #   httpGet:
-        #     path: /api/healthcheck/poi
-        #     port: {{ .Values.image.containerPort }}
-        #   initialDelaySeconds: 10
-        #   periodSeconds: 30
-        # readinessProbe:
-        #   httpGet:
-        #     path: /api/healthcheck/poi
-        #     port: {{ .Values.image.containerPort }}
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /api/healthcheck/trips
+            port: {{ .Values.image.containerPort }}
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /api/healthcheck/trips
+            port: {{ .Values.image.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
         ports:
           - containerPort: {{ .Values.image.containerPort }}
             name: http
@@ -63,8 +61,11 @@ spec:
                 name: sql
                 key: sql_dbname
           - name: WEB_SERVER_BASE_URI
-            value: 'http://0.0.0.0'
+            value: {{ .Values.env.webServerBaseUri }}
           - name: WEB_PORT
-            value: '8080'
-          - name: ASPNETCORE_ENVIRONMENT
-            value: 'Production'
+            value: '80'
+          - name: DOCS_URI
+            value: {{ .Values.env.webServerBaseUri }}
+          - name: DEBUG_LOGGING
+            value: 'true'
+{{ end }}

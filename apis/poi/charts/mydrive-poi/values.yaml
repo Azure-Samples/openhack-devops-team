@@ -1,10 +1,20 @@
 # Default values for helmv2.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+productionSlot: blue
+blue:
+  enabled: true
+  tag: latest
+
+green:
+  enabled: false
+  tag: latest
 
 replicaCount: 2
 repository:
-  image: acrreplace.azurecr.io/devopsoh/imagereplace
+  # Fully qualified path to image in ACR (Ex. youracr.azureacr.io/devopsoh/poi-build).
+  # See deployment scripts in https://github.com/Azure-Samples/openhack-devops-proctor for example usage.
+  image:
   tag: latest
   pullPolicy: Always
 image:
@@ -19,7 +29,8 @@ ingress:
     kubernetes.io/ingress.class: traefik
   rules:
     endpoint:
-      host: changeme
+      #fqdn of your exposed application (found in ohteamvalues file)
+      host:
       paths:
       - path: /api/poi
         serviceName: api-poi-svc
@@ -32,7 +43,7 @@ ingress:
         servicePort: 80
       - path: /swagger/docs/poi
         serviceName: api-poi-svc
-        servicePort: 80        
+        servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
