@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{ if .Values.blue.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
