@@ -18,7 +18,7 @@ metadata:
 spec:
   rules:
     {{- range $key, $value := .Values.ingress.rules }}
-    - host: {{ $value.host }}
+    - host: stage{{ $value.host }}
       http:
         paths:
         {{- range $path := .paths }}
