@@ -1,0 +1,40 @@
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "chart.fullname" . -}}
+{{- $servicePort := .Values.service.externalPort -}}
+{{- $path := .Values.ingress.path -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "chart.fullname" . }}-prod
+  labels:
+    app: {{ template "chart.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/service-weights: |
+      api-poi-svc-prod: {{ .Values.prod.weight }}
+      api-poi-svc-canary: {{ .Values.canary.weight }}
+spec:
+  rules:
+    {{- range $key, $value := .Values.ingress.rules }}
+    - host: {{ $value.host }}
+      http:
+        paths:
+        {{- range $path := .paths }}
+          - path: {{ $path.path }}
+            backend:
+              serviceName: {{ $path.serviceName }}-prod
+              servicePort: {{ $path.servicePort }}
+          - path: {{ $path.path }}
+            backend:
+              serviceName: {{ $path.serviceName }}-canary
+              servicePort: {{ $path.servicePort }}
+        {{- end -}}
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}
