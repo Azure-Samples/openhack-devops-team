@@ -1,5 +1,5 @@
 
-# TESTING
+# TEST
 
 # POI Service
 
