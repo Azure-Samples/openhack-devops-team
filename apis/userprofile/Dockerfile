@@ -10,4 +10,6 @@ RUN npm install
 
 RUN npm test
 
+RUN cat reports/userprofile-report.xml
+
 CMD npm start
