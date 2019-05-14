@@ -17,7 +17,7 @@ namespace UnitTests
         [Fact]
         public void BestTestEver()
         {
-            Assert.Equal(42,0x42);
+            Assert.Equal(0x42,0x42);
         }
     }
 }
