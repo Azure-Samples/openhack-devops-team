@@ -25,7 +25,7 @@ public class SwaggerDocumentationConfig extends WebMvcConfigurerAdapter {
 
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("My Driving User Java API")
+            .title("My Driving User Java API (Radek)")
             .description("API for the user in the My Driving example app. https://github.com/Azure-Samples/openhack-devops-team")
             .license("")
             .licenseUrl("http://unlicense.org")
