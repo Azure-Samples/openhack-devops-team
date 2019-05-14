@@ -3,6 +3,7 @@
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
 ## Build status
+
 [![Build status](https://dev.azure.com/hacker3f9e/LufthansaHackJens/_apis/build/status/LufthansaHackJens-Docker%20container-CI)](https://dev.azure.com/hacker3f9e/LufthansaHackJens/_build/latest?definitionId=1)
 
 ## Architecture
