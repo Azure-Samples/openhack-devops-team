@@ -16,7 +16,9 @@ namespace poi.Controllers
         public POIController(POIContext context)
         {
             _context = context;
-            throw new Exception("TODO Fix 
+            if (false) {
+                throw new Exception("It should never happen.");
+            }
         }
 
         [HttpGet(Name = "GetAllPOIs")]
