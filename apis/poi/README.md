@@ -19,3 +19,4 @@
 * [Example - How to Debug .NET Core Xunit Tests](https://github.com/nickolasacosta/dotnetcore-xunit-debugging)
 * [Logging in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-2.1&tabs=aspnetcore2x)
 Hello :)
+Hello :)
