@@ -1,4 +1,4 @@
-# TESTING CI
+# TEST CI
 
 # Project Name
 
