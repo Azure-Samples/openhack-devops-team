@@ -59,11 +59,6 @@ public class UserRepositoryServiceTest {
     }
 
     @Test
-    public void testFail() {
-        assertNotNull(null);
-    }
-
-    @Test
     public void testUpdate() {
         when(userRepository.findOne(ID)).thenReturn(profile);
         profile.setRanking(ranking);
