@@ -3,7 +3,7 @@ FROM maven:3.5.4-jdk-11-slim AS build-env
 ADD ./pom.xml pom.xml
 ADD ./src src/
 RUN mvn clean package
-
+RUN mvn test
 # build runtime image
 FROM openjdk:11-jre-slim
 
