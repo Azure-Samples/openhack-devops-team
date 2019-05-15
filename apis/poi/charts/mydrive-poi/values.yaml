@@ -14,7 +14,7 @@ replicaCount: 2
 repository:
   # Fully qualified path to image in ACR (Ex. youracr.azureacr.io/devopsoh/poi-build).
   # See deployment scripts in https://github.com/Azure-Samples/openhack-devops-proctor for example usage.
-  image:
+  image: openhackdcc0acr.azurecr.io/devopsoh/api-poi
   pullPolicy: Always
 image:
   name: mydrive-poi
@@ -29,7 +29,7 @@ ingress:
   rules:
     endpoint:
       #fqdn of your exposed application (found in ohteamvalues file)
-      host:
+      host: akstraefikopenhackdcc0.northeurope.cloudapp.azure.com
       paths:
       - path: /api/poi
         serviceName: api-poi-svc
