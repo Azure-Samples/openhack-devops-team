@@ -12,7 +12,7 @@ COPY ./web/appsettings.*.json /app/out/
 COPY ./web/appsettings.json /app/out/
 
 # run unit tests
-COPY ./tests/* tests/
+COPY tests tests/
 RUN dotnet test tests/IntegrationTests
 RUN dotnet test tests/UnitTests
 
