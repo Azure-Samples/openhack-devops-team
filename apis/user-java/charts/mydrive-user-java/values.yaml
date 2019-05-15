@@ -14,7 +14,7 @@ replicaCount: 2
 repository:
   # Fully qualified path to image in ACR (Ex. youracr.azureacr.io/devopsoh/poi-build).
   # See deployment scripts in https://github.com/Azure-Samples/openhack-devops-proctor for example usage.
-  image:
+  image: openhack1ws1acr.azurecr.io/devopsoh/api-user-java
   pullPolicy: Always
 image:
   name: user-java
