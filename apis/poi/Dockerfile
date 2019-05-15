@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 # copy everything else and build
-RUN dotnet publish -c Release -o out web/poi.csproj
+RUN dotnet publish -c Release -o app/out web/poi.csproj
 COPY ./web/appsettings.*.json /app/out/
 COPY ./web/appsettings.json /app/out/
 
