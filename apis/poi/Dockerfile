@@ -12,9 +12,9 @@ COPY ./web/appsettings.*.json /app/out/
 COPY ./web/appsettings.json /app/out/
 
 # run unit tests
-COPY ./tests/* /app/tests/
-#RUN dotnet test app/tests/IntegrationTests
-#RUN dotnet test app/tests/UnitTests
+COPY ./tests/* tests/
+RUN dotnet test tests/IntegrationTests
+RUN dotnet test tests/UnitTests
 
 # build runtime image
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
