@@ -29,7 +29,7 @@ ingress:
   rules:
     endpoint:
       #fqdn of your exposed application (found in ohteamvalues file)
-      host:
+      host: openhackdcc0acr.azurecr.io/devopsoh
       paths:
       - path: /api/user
         serviceName: api-user-svc
