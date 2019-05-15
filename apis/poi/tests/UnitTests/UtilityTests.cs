@@ -13,5 +13,11 @@ namespace UnitTests
             Assert.Equal(2002, LoggingEvents.GetPOIByID);
             Assert.Equal(2002, LoggingEvents.GetPOIByTripID);
         }
+        
+        [Fact]
+        public void BestTestEver()
+        {
+            Assert.Equal(0x42,0x42);
+        }
     }
 }
