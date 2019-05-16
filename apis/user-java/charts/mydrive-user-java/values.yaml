@@ -29,7 +29,7 @@ ingress:
   rules:
     endpoint:
       #fqdn of your exposed application (found in ohteamvalues file)
-      host:
+      host: akstraefikopenhack1ws1.northeurope.cloudapp.azure.com
       paths:
       - path: /api/user-java
         serviceName: api-user-java-svc
