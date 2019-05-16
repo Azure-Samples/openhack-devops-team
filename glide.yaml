@@ -1,0 +1,17 @@
+package: .
+import:
+- package: github.com/Azure-Samples/openhack-devops-team
+  subpackages:
+  - apis/trips/tripsgo
+- package: github.com/codemodus/swagui
+- package: github.com/denisenkom/go-mssqldb
+- package: github.com/gorilla/mux
+  version: ~1.6.2
+testImport:
+- package: github.com/Azure-Samples/openhack-devops
+  subpackages:
+  - src/MobileAppServiceV2/TripService/tripsgo
+- package: github.com/stretchr/testify
+  version: ~1.2.1
+  subpackages:
+  - assert
