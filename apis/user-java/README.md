@@ -71,5 +71,3 @@ curl -X PATCH --header 'Content-Type: application/json' --header 'Accept: applic
   "hardStops":74371 \ 
 }
 ```
-
-Text is here to test CI trigger - please delete
