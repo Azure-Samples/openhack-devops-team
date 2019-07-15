@@ -59,6 +59,11 @@ public class UserApiControllerTest {
     }
 
     @Test
+    public void testScrewUp() throws Exception {
+        assert(false);
+    }
+
+    @Test
     public void testSave() throws Exception {
         when(httpServletRequest.getHeader("Accept")).thenReturn("accept,application/json;charset=UTF-8");
         when(userRepositoryService.save(profile)).thenReturn(profile);
