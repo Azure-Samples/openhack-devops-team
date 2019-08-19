@@ -8,7 +8,7 @@ trigger:
     - master
   paths:
     include:
-    - 'apis/poi/*'
+    - apis/poi/*
 
 resources:
 - repo: self
