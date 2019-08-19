@@ -18,7 +18,7 @@ variables:
   dockerRegistryServiceConnection: '09f667c2-8299-4b33-b720-f27ca18dfc77'
   imageRepository: 'fawohlscopenhackdevopsteam'
   containerRegistry: 'openhackryz0acr.azurecr.io'
-  dockerfilePath: '/apis/poi/web/Dockerfile'
+  dockerfilePath: 'apis/poi/web/Dockerfile'
   tag: '$(Build.BuildId)'
   
   # Agent VM image name
