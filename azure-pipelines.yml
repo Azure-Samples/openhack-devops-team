@@ -23,5 +23,5 @@ steps:
   inputs:
     repository: $(imageName)
     command: build
-    Dockerfile: web/Dockerfile
+    Dockerfile: apis/poi/web/Dockerfile
 
