@@ -7,7 +7,7 @@ namespace poi.Models
     {
         public Healthcheck()
         {
-            Message = "POI Service Healthcheck";
+            Message = "POI Service Healthchecks";
             Status = "Healthy";
         }
         [Newtonsoft.Json.JsonProperty(PropertyName = "message")]
