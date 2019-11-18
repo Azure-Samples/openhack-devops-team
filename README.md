@@ -4,7 +4,7 @@ The DevOps open hack event is designed to foster learning via implementing DevOp
 
 ## Architecture
 
-ANNOYING CHANGe .. will now be modified
+ANNOYING CHANGe .. will now be modified ... again
 
 The application used for this event is a heavily modified and recreated version of the original [My Driving application](https://github.com/Azure-Samples/MyDriving).
 
