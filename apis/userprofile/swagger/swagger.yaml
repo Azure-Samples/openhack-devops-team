@@ -4,7 +4,7 @@ info:
   description: "API for the user profile in the My Driving example app. https://github.com/Azure-Samples/openhack-devops-team"
   version: "0.1.0"
   title: "My Driving User Profile API"
-basePath: "/api"
+basePath: "/api-ERROR"
 schemes:
 - "http"
 consumes:
