@@ -25,7 +25,6 @@ public class UserRepositoryService {
 
         LOGGER.info("Updating user profile for user=%s", updateEntry.getId());
         Profile existingUser = findOne(updateEntry.getId());
-        existingUser = null;
         if (existingUser == null) {
             throw new NullPointerException("Unable to locate user");
         }
