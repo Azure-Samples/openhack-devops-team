@@ -1,4 +1,0 @@
-The following two commands enables accessing the api via the 1st pod in the deployment at http://localhost:{{ .Values.image.containerPort }}
-
-export API_USER_POD_NAME=$(kubectl get pods -l app={{ .Values.image.label }} -o jsonpath="{.items[0].metadata.name}")
-kubectl port-forward $API_USER_POD_NAME {{ .Values.image.containerPort }}:{{ .Values.image.containerPort }}
