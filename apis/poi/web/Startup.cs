@@ -75,7 +75,7 @@ namespace poi
                 });
             });
 
-            dbcontext.Database.EnsureCreated();
+            // dbcontext.Database.EnsureCreated();
         }
     }
 }
