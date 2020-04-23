@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using poi.Utility;
-using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace poi
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        public static void Main(string[] args) 
+            => CreateHostBuilder(args).Build().Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) {
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
             //used to read env variables for host/port
             var configuration = new ConfigurationBuilder()
             .AddEnvironmentVariables()
@@ -50,7 +44,6 @@ namespace poi
                     .UseStartup<Startup>()
                     .UseUrls(POIConfiguration.GetUri(configuration));
                 });
-                
 
             return host;
         }
