@@ -34,11 +34,6 @@ namespace IntegrationTests
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 }));
 
-            //// Create a new service provider.
-            //var serviceProvider = new ServiceCollection()
-            //        .AddEntityFrameworkInMemoryDatabase()
-            //        .BuildServiceProvider();
-
             // Add a database context (ApplicationDbContext) using an in-memory
             // database for testing.
             services
@@ -57,8 +52,6 @@ namespace IntegrationTests
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            //app.UseMvc();
         }
     }
 }
