@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using poi.Data;
 using Newtonsoft.Json;
@@ -28,20 +28,22 @@ namespace IntegrationTests
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .AddJsonOptions(options =>
+            services.AddControllers()
+                .AddNewtonsoftJson((options =>
                 {
                     options.SerializerSettings.Formatting = Formatting.Indented;
-                });
+                }));
 
-                // Create a new service provider.
-                var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
+            //// Create a new service provider.
+            //var serviceProvider = new ServiceCollection()
+            //        .AddEntityFrameworkInMemoryDatabase()
+            //        .BuildServiceProvider();
 
-                // Add a database context (ApplicationDbContext) using an in-memory
-                // database for testing.
-                services.AddDbContext<POIContext>(options =>
+            // Add a database context (ApplicationDbContext) using an in-memory
+            // database for testing.
+            services
+                .AddEntityFrameworkInMemoryDatabase()
+                .AddDbContext<POIContext>((serviceProvider, options) =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
                     options.UseInternalServiceProvider(serviceProvider);
@@ -49,14 +51,14 @@ namespace IntegrationTests
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            //app.UseMvc();
         }
     }
 }
