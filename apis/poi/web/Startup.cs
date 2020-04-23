@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,10 @@ namespace poi
                 {
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 }));
+
+            services.AddHealthChecks()
+                    .AddDbContextCheck<POIContext>()
+                    .AddCheck<Utility.HealthCheck>("poi_health_check");
 
             var connectionString = poi.Utility.POIConfiguration.GetConnectionString(this.Configuration);
             services.AddDbContext<POIContext>(options =>
@@ -64,6 +69,10 @@ namespace poi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("api/healthcheck/poi", new HealthCheckOptions()
+                {
+                    AllowCachingResponses = false
+                });
             });
         }
     }
