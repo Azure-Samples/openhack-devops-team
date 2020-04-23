@@ -54,7 +54,6 @@ namespace IntegrationTests
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
 
             app.UseMvc();
