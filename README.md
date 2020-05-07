@@ -10,7 +10,7 @@ The team environment consists of the following:
 
 * Azure Kubernetes Service (AKS) cluster which has four APIs deployed:
 
-  * POI (Trip Points of Interest) - CRUD API written in .Net Core 2 for points of interest on trips
+  * POI (Trip Points of Interest) - CRUD API written in .Net Core 3.1 for points of interest on trips
   * Trips - CRUD open API written in golang 1.11 for trips connected to the client application
   * UserProfile - CRUD open API written in Node.JS for the users of the client application
     > Note:PATCH/POST operations not functional
