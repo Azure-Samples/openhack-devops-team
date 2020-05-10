@@ -78,6 +78,12 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>8.2.2.jre11</version>
+        </dependency>
+
         <!-- Use MySQL Connector-J -->
         <dependency>
             <groupId>mysql</groupId>
