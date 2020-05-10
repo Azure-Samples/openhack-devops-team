@@ -285,21 +285,6 @@
                     "type": "string"
                 }
             }
-        },
-        "inline_response_default": {
-            "required": [
-                "message",
-                "status"
-            ],
-            "properties": {
-                "status": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
         }
     }
 }
