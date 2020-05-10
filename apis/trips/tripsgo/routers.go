@@ -60,39 +60,38 @@ func CreateHandler(router *mux.Router, route Route) {
 
 // CreateDocsHandler - Create route handler for docs using SwagUI
 func CreateDocsHandler(router *mux.Router, route Route) {
-	// var handler http.Handler
-	var options swagui.Options
-	options.PathPrefix = route.Pattern
-	options.DefaultURLParam = fmt.Sprintf("%s%s",
-		*du,
-		"/api/json/swagger.json")
+	var (
+		port    = "8080"
+		def     = ""
+		scrpath = "/api/json/swagger.json"
+	)
+	def = fmt.Sprintf("http://localhost:%s%s", port, scrpath)
 
-	ui, err := swagui.New(&options)
+
+	var provider = suidata3.New()
+
+	ui, err := swagui.New(http.NotFoundHandler(), provider)
 	if err != nil {
 		Info.Println(err)
 		os.Exit(1)
 	}
 
-	// handler = ui.Handler()
-	// handler = Logger(handler, route.Name)
-
 	router.
 		Methods(route.Method).
-		Path(ui.PathPrefix()).
 		Name(route.Name).
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 
 	router.
 		Methods(route.Method).
 		Path("/api/docs/trips/{dir}/{fileName}").
 		Name("*").
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 
 	router.
 		Methods(route.Method).
 		Path("/api/docs/trips/{fileName}").
 		Name("Swagger UI JS").
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 }
 
 var docsRoute = Route{
