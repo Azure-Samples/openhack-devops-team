@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
@@ -74,8 +74,6 @@ namespace poi
                     AllowCachingResponses = false
                 });
             });
-
-            // dbcontext.Database.EnsureCreated();
         }
     }
 }
