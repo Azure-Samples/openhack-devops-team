@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/codemodus/swagui"
 	"github.com/codemodus/swagui/suidata3"
