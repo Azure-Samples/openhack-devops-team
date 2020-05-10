@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/codemodus/swagui"
+	"github.com/codemodus/swagui/suidata3"
 	"github.com/gorilla/mux"
 )
 
