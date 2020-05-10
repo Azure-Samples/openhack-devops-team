@@ -97,7 +97,7 @@ func CreateDocsHandler(router *mux.Router, route Route) {
 
 var docsRoute = Route{
 	"swagger-ui",
-	strings.ToUpper("Get"),
+	"GET",
 	"/api/docs/trips/",
 	nil,
 }
@@ -112,91 +112,91 @@ var routes = Routes{
 
 	Route{
 		"swagger-json",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/json/swagger.json",
 		swaggerDocsJSON,
 	},
 
 	Route{
 		"CreateTrip",
-		strings.ToUpper("Post"),
+		"POST",
 		"/api/trips",
 		createTrip,
 	},
 
 	Route{
 		"CreateTripPoint",
-		strings.ToUpper("Post"),
+		"POST",
 		"/api/trips/{tripID}/trippoints",
 		createTripPoint,
 	},
 
 	Route{
 		"DeleteTrip",
-		strings.ToUpper("Delete"),
+		"DELETE",
 		"/api/trips/{tripID}",
 		deleteTrip,
 	},
 
 	Route{
 		"DeleteTripPoint",
-		strings.ToUpper("Delete"),
+		"DELETE",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		deleteTripPoint,
 	},
 
 	Route{
 		"GetAllTrips",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips",
 		getAllTrips,
 	},
 
 	Route{
 		"GetAllTripsForUser",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/user/{userID}",
 		getAllTripsForUser,
 	},
 
 	Route{
 		"GetTripById",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}",
 		getTripByID,
 	},
 
 	Route{
 		"GetTripPointByID",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		getTripPointByID,
 	},
 
 	Route{
 		"GetTripPoints",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}/trippoints",
 		getTripPoints,
 	},
 
 	Route{
 		"HealthcheckGet",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/healthcheck/trips",
 		healthcheckGet,
 	},
 
 	Route{
 		"UpdateTrip",
-		strings.ToUpper("Patch"),
+		"PATCH",
 		"/api/trips/{tripID}",
 		updateTrip,
 	},
 
 	Route{
 		"UpdateTripPoint",
-		strings.ToUpper("Patch"),
+		"PATCH",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		updateTripPoint,
 	},
