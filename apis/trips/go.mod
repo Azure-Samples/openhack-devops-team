@@ -1,5 +1,7 @@
 module github.com/Azure-Samples/openhack-devops-team/apis/trips
 
+go 1.14
+
 require (
 	cloud.google.com/go v0.0.0-20180627205256-45528feae6df // indirect
 	github.com/codemodus/swagui v0.1.0
