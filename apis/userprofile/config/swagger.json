@@ -30,8 +30,9 @@
                             "$ref": "#/definitions/error_response_default"
                         }
                     }
+                },
+                "tags": [ "User Profile" ]
                 }
-            }
         },
         "/user": {
             "get": {
@@ -55,7 +56,8 @@
                         }
                     }
                 },
-                "x-swagger-router-controller": "user"
+                "x-swagger-router-controller": "user",
+                "tags": [ "User Profile" ]
             }
         },
         "/user/{userID}": {
@@ -88,7 +90,8 @@
                         }
                     }
                 },
-                "x-swagger-router-controller": "user"
+                "x-swagger-router-controller": "user",
+                "tags": [ "User Profile" ]
             },
             "post": {
                 "description": "Declares and creates a new profile",
@@ -123,7 +126,8 @@
                         }
                     }
                 },
-                "x-swagger-router-controller": "user"
+                "x-swagger-router-controller": "user",
+                "tags": [ "User Profile" ]
             },
             "patch": {
                 "description": "Update User",
@@ -146,6 +150,8 @@
                     }
                 }
             },
+                "tags": [ "User Profile" ]
+            },
             "delete": {
                 "description": "Delete User By ID",
                 "operationId": "userDELETE",
@@ -162,9 +168,10 @@
                             "$ref": "#/definitions/error_response_default"
                         }
                     }
+                },
+                "tags": [ "User Profile" ]
                 }
             }
-        }
     },
     "definitions": {
         "Healthcheck": {
