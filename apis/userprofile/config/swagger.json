@@ -6,9 +6,6 @@
         "title": "My Driving User Profile API"
     },
     "basePath": "/api",
-    "schemes": [
-        "http"
-    ],
     "consumes": [
         "application/json"
     ],
