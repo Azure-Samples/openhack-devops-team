@@ -17,18 +17,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.4.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Controllers\HealthcheckController.cs" />
-    <Compile Remove="Controllers\ValuesController.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="appsettings.Development.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="appsettings.Development.json" />
-  </ItemGroup>
 </Project>
