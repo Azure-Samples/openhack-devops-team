@@ -27,12 +27,12 @@
                     "default": {
                         "description": "An error occurred",
                         "schema": {
-                            "$ref": "#/definitions/error_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
                 },
                 "tags": [ "User Profile" ]
-                }
+            }
         },
         "/user": {
             "get": {
@@ -52,7 +52,7 @@
                     "default": {
                         "description": "An error occurred",
                         "schema": {
-                            "$ref": "#/definitions/inline_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
                 },
@@ -86,7 +86,7 @@
                     "default": {
                         "description": "An error occurred",
                         "schema": {
-                            "$ref": "#/definitions/inline_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
                 },
@@ -122,7 +122,7 @@
                     "default": {
                         "description": "An error occurred",
                         "schema": {
-                            "$ref": "#/definitions/inline_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
                 },
@@ -145,11 +145,10 @@
                     "default": {
                         "description": "Unknown Error",
                         "schema": {
-                            "$ref": "#/definitions/error_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
-                }
-            },
+                },
                 "tags": [ "User Profile" ]
             },
             "delete": {
@@ -165,13 +164,13 @@
                     "default": {
                         "description": "Unknown Error",
                         "schema": {
-                            "$ref": "#/definitions/error_response_default"
+                            "$ref": "#/definitions/DefaultResponse"
                         }
                     }
                 },
                 "tags": [ "User Profile" ]
-                }
             }
+        }
     },
     "definitions": {
         "Healthcheck": {
@@ -272,19 +271,19 @@
                 }
             }
         },
-        "error_response_default": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "description": "Error code (if available)",
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "description": "Error Message",
-                    "type": "string"
-                }
-            }
-        }
+        "DefaultResponse": {
+          "type": "object",
+          "properties": {
+              "status": {
+                  "description": "Error code (if available)",
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "message": {
+                  "description": "Error Message",
+                  "type": "string"
+              }
+          }
+      }
     }
 }
