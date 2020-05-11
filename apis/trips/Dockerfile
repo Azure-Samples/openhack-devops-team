@@ -4,8 +4,6 @@ WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
 COPY . .
 
-ENV GO111MODULE=on
-
 RUN go get
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
