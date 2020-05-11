@@ -1,4 +1,4 @@
-FROM golang:1.11.1 AS gobuild
+FROM golang:1.14.2-buster AS gobuild
 
 WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
