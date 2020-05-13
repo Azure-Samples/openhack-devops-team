@@ -19,11 +19,12 @@ pool:
 
 steps:  
   - task: DotNetCoreCLI@2
+    displayName: '.NET BUild'
     inputs:
       command: 'build'
-      projects: '/apis/poi/web/*.csproj'
+      projects: 'apis/poi/web/*.csproj'
 
   - task: DotNetCoreCLI@2
     inputs:
       command: 'test'
-      projects: '/apis/poi/tests/UnitTests/*.csproj'
+      projects: 'apis/poi/tests/UnitTests/*.csproj'
