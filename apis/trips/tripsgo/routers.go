@@ -60,13 +60,7 @@ func CreateHandler(router *mux.Router, route Route) {
 
 // CreateDocsHandler - Create route handler for docs using SwagUI
 func CreateDocsHandler(router *mux.Router, route Route) {
-	var (
-		port    = "8080"
-		def     = ""
-		scrpath = "/api/json/swagger.json"
-	)
-	def = fmt.Sprintf("http://localhost:%s%s", port, scrpath)
-
+	var def = "/api/json/swagger.json"
 
 	var provider = suidata3.New()
 
