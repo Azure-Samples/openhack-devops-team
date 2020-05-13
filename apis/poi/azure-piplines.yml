@@ -25,6 +25,16 @@ steps:
       projects: 'apis/poi/web/*.csproj'
 
   - task: DotNetCoreCLI@2
+    displayName: '.NET Test'
     inputs:
       command: 'test'
       projects: 'apis/poi/tests/UnitTests/*.csproj'
+
+  - task: Docker@2
+    displayName: 'Docker Build'
+    inputs:
+      containerRegistry: 'ACR'
+      repository: 'devopsoh/api-poi'
+      command: 'buildAndPush'
+      Dockerfile: 'apis/poi/web/Dockerfile'
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))             
