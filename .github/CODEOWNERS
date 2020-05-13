@@ -11,7 +11,10 @@
 # In this example, @doctocat owns any files in the build/logs
 # directory at the root of the repository and any of its
 # subdirectories.
-/apis/poi       @gryczka
+/apis/poi           @gryczka        @islamtg
+/apis/trips         @islamtg        @alwell-kevin
+/apis/user-java     @alwell-kevin   @cocallaw
+/apis/userprofile   @odaibert       @cocallaw
 
 # The `docs/*` pattern will match files like
 # `docs/getting-started.md` but not further nested files like
