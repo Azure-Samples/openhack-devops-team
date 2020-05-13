@@ -5,13 +5,13 @@ name: User-Java-CI
 on:
   push:
     paths: 
-    - '/apis/user-java/**'
-    - '/.github/**'
+    - 'apis/user-java/**'
+    - '.github/**'
   pull_request:
     branches: [ master ]
     paths:
-    - '/apis/user-java/**'
-    - '/.github/**' 
+    - 'apis/user-java/**'
+    - '.github/**' 
 
 jobs:
   build:
