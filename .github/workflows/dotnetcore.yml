@@ -2,7 +2,7 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master ]
+    branches: [ slamb2k-patch-1 ]
   pull_request:
     branches: [ master ]
 
