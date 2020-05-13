@@ -1,17 +1,28 @@
 trigger:
-  - master
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - apis/poi/*
   
-  pr:
-  - master
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - apis/poi/*
   
-  pool:
-    vmImage: 'Ubuntu-18.04'
-  
+pool:
+  vmImage: 'Ubuntu-18.04'
+
+steps:  
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
       projects: '/apis/poi/web/*.csproj'
-  
+
   - task: DotNetCoreCLI@2
     inputs:
       command: 'test'
