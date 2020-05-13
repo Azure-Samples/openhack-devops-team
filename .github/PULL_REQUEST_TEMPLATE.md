@@ -2,7 +2,7 @@
 <!-- Describe the intention of the changes being proposed. What problem does it solve or functionality does it add? -->
 * ...
 
-## Is there an associated GH Issue?
+## Is there an associated  Issue?
 ```
 [ ] Yes
 [ ] No
