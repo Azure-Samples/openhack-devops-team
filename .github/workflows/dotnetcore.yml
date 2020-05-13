@@ -35,3 +35,16 @@ jobs:
         password: ${{secrets.ACR_KEY}} 
         # Container registry server url
         login-server: https://openhackxv61mxh2acr.azurecr.io
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.1.0
+      with:
+        username: ${{secrets.ACR_USER}}
+        password: ${{secrets.ACR_KEY}}
+        # Server address of Docker registry. If not set then will default to Docker Hub
+        registry: https://openhackxv61mxh2acr.azurecr.io
+        # Docker repository to tag the image with
+        repository: actions-devopsoh/api-poi        
+        tags: true
+        push: true
+        tag_with_sha: true
+
