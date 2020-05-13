@@ -9,7 +9,7 @@ on:
 #    paths: [/apis/poi/*]
 defaults:
   run:
-    working-directory: /apis/poi/
+    working-directory: /apis/poi
     
 jobs:
   build:
