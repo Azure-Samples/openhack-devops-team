@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -12,7 +12,7 @@ COPY ./appsettings.*.json /app/out/
 COPY ./appsettings.json /app/out/
 
 # build runtime image
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 
 ENV SQL_USER="YourUserName" \
@@ -24,6 +24,8 @@ WEB_SERVER_BASE_URI="http://0.0.0.0" \
 ASPNETCORE_ENVIRONMENT="Production"
 
 COPY --from=build-env /app/out .
+
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "poi.dll"]
 
