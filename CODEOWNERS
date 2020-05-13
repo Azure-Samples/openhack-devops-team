@@ -5,7 +5,7 @@
 # the repo. Unless a later match takes precedence,
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
-#*       @gitstua @goupadhy @slamb2k @akirakakar @neosaybin @prabdeb
+*       @Openhack-DevOps-2-0-team1/global_team
 apis/poi/* @slamb2k @gitstua
 apis/trips/* @prabdeb @goupadhy
 apis/user-java/* @neosaybin @gitstua
