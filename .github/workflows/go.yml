@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    name: Go Build & Test
+    name: Trips Go Build & Test
     runs-on: ubuntu-latest
     steps:
 
