@@ -1,16 +1,18 @@
-name: .NET Core
+name: API-POI CI
 
 on:
   push:
-    branches: [ master ]
-    paths: [/apis/poi/*]
-  pull_request:
-    branches: [ master ]
-    paths: [/apis/poi/*]
+    branches: [ API-POI ]
+
+#  pull_request:
+#    branches: [ master ]
+#    paths: [/apis/poi/*]
+    
 jobs:
   build:
+    name: POI .Net Build & Test
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -19,8 +21,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
+      working-directory: apis/poi
       run: dotnet restore
     - name: Build
+      working-directory: apis/poi
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      working-directory: apis/poi/tests/UnitTests
       run: dotnet test --no-restore --verbosity normal
