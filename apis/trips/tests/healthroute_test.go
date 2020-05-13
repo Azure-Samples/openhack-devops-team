@@ -13,7 +13,7 @@ var healthRouteTests = []tripSvc.APITestCase{
 		Tag:              "t0 - healthcheck",
 		Method:           "GET",
 		URL:              "/api/healthcheck/trips",
-		Status:           200,
+		Status:           404,
 		ExpectedResponse: `{"message": "Trip Service Healthcheck","status": "Healthy"}`,
 	},
 }
