@@ -2,10 +2,14 @@ name: API-Trips CI
 
 on:
   push:
-    branches: [ API-Trips ]
-#  pull_request:
-#    branches: [ master ]
-
+    paths: 
+      - 'api/trips/**'
+      - '.github/**'
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - 'api/trips/**'
+      - '.github/**'
 jobs:
 
   build:
