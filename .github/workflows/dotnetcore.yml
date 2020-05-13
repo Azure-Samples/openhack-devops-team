@@ -10,6 +10,7 @@ on:
     
 jobs:
   build:
+    name: POI .Net Build & Test
 
     runs-on: windows-latest
 
