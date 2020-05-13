@@ -1,12 +1,12 @@
-name: .NET Core
+name: API-POI CI
 
 on:
   push:
-    branches: [ master ]
-    paths: [/apis/poi/*]
-  pull_request:
-    branches: [ master ]
-    paths: [/apis/poi/*]
+    branches: [ API-POI ]
+
+#  pull_request:
+#    branches: [ master ]
+#    paths: [/apis/poi/*]
 jobs:
   build:
 
