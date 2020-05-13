@@ -40,5 +40,5 @@ jobs:
       run: go build -v .
 
     - name: Test
-      working-directory: apis/trips
+      working-directory: apis/trips/tests
       run: go test -v .
