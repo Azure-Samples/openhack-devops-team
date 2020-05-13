@@ -2,7 +2,7 @@ name: .NET Core
 
 on:
   push:
-    branches: [ slamb2k-patch-1 ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -17,9 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+    - name: Whatever
+      run: ls
     - name: Install dependencies
       run: dotnet restore
-      working-directory: ~/apis/poi
     - name: Build
       run: dotnet build --configuration Release --no-restore
       working-directory: ~/apis/poi
