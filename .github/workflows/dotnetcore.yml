@@ -44,7 +44,6 @@ jobs:
         registry: https://openhackxv61mxh2acr.azurecr.io
         # Docker repository to tag the image with
         repository: actions-devopsoh/api-poi        
-        tags: true
         push: true
-        tag_with_sha: true
+        tags: latest, ${{github.run_id}}
 
