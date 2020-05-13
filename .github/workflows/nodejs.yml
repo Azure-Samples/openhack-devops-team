@@ -5,9 +5,13 @@ name: Userprofile CI
 
 on:
   push:
-    branches: [ ci-node-1 ]
+    paths: 
+    - '/apis/userprofile/**'
   pull_request:
     branches: [ master ]
+    paths:
+    - '/apis/userprofile/**'
+
 
 jobs:
   build:
