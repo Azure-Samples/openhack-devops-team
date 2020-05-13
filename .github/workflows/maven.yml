@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-
+    name: user-java build and test
     runs-on: ubuntu-latest
 
     steps:
