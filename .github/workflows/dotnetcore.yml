@@ -7,9 +7,6 @@ on:
 #  pull_request:
 #    branches: [ master ]
 #    paths: [/apis/poi/*]
-defaults:
-  run:
-    working-directory: /apis/poi
     
 jobs:
   build:
@@ -23,8 +20,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
+      working-directory: apis/poi
       run: dotnet restore
     - name: Build
+      working-directory: apis/poi
       run: dotnet build --configuration Release --no-restore
     - name: Test
+      working-directory: apis/poi
       run: dotnet test --no-restore --verbosity normal
