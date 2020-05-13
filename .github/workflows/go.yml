@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    name: Build
+    name: Go Build & Test
     runs-on: ubuntu-latest
     steps:
 
