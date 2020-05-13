@@ -5,9 +5,14 @@ name: User-Java-CI
 
 on:
   push:
-    branches: [ ci-maven ]
+    paths: 
+    - '/apis/user-java/**'
+    - '/.github/**'
   pull_request:
     branches: [ master ]
+    paths:
+    - '/apis/user-java/**'
+    - '/.github/**' 
 
 jobs:
   build:
