@@ -11,7 +11,7 @@ POI (Trip Points of Interest) - CRUD API written in .Net Core 3.1 for points of 
 dotnet build .
 ```
 
-## Tests
+## Tests.
 
 You can run the test in Visual Studio/VSCode or with the command line
 
