@@ -24,16 +24,14 @@ jobs:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet build apis/poi/web/*.csproj
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test apis/poi/tests/UnitTests/*.csproj
     - name: Docker Login
       uses: Azure/docker-login@v1
       with:
         # Container registry username
-        username: test
+        username: ${{secrets.ACR_USER}}
         # Container registry password
-        password: test 
+        password: ${{secrets.ACR_KEY}} 
         # Container registry server url
-        login-server: # default is https://index.docker.io/v1/
+        login-server: https://openhackxv61mxh2acr.azurecr.io
