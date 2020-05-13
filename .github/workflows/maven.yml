@@ -21,6 +21,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn clean install
+      run: ./apis/user-java mvn clean install
     - name: Run Test
-      run: mvn test
+      run: ./apis/user-java mvn test
