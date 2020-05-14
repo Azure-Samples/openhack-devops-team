@@ -22,8 +22,11 @@ steps:
 - task: Docker@2
   displayName: 'Docker Build'
   inputs:
+    tags:|
+      $(Build.BuildId)
+      latest
     containerRegistry: 'ACR'
     repository: 'devopsoh/api-trips'
     command: 'buildAndPush'
     Dockerfile: 'apis/trips/Dockerfile'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))             
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))            
