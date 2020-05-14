@@ -5,8 +5,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-env:
-  IMAGE_NAME: devopsoh/api-user-java
   
 jobs:
 
@@ -18,9 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: 
-        echo $IMAGE_NAME
-        docker build . --file Dockerfile --tag $IMAGE_NAME
+      run: docker build . --file Dockerfile --tag our-image-name
       working-directory: apis/user-java
   
     - name: Log into registry
@@ -28,7 +24,7 @@ jobs:
 
     - name: Push image
       run: |
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/our-image-name
 
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
