@@ -1,0 +1,26 @@
+name: Docker Build Push POI
+
+on:
+  push:
+    branches:
+      - master
+      - API-POI
+    paths:
+      - "apis/poi/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ACR build
+        id: acr
+        uses: ams0/acr-task-github-action@v1
+        with:
+          service_principal: ${{ secrets.service_principal }}
+          service_principal_password: ${{ secrets.service_principal_password }}
+          tenant: ${{ secrets.tenant }}
+          registry: ${{ secrets.registry }}
+          repository: ${{ secrets.POIrepository }}
+          image: poi
+          folder: src/poi
+          dockerfile: Dockerfile
