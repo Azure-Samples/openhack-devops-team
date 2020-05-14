@@ -5,10 +5,16 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+
+env:
+  AZURE_WEBAPP_NAME: ${{ secrets.userjavawebappname }}   # set this to your application's name
+  CONTAINER_REGISTRY: docker.pkg.github.com # Container Registry name
+  AZURE_RESOURCE_GROUP: ${{ secrets.azureresourcegroup }}  # set this to your Azure Resource group's name
+  AZURE_APP_PLAN: ${{ secrets.azureappplan }}  # set this to your App service plan's name - Needed only if you are provisioning the app in the workflow
   
 jobs:
 
-  publish:
+  publishPackage:
     name: Docker Build User Java
 
     runs-on: ubuntu-latest
@@ -24,3 +30,27 @@ jobs:
         registry: docker.pkg.github.com
         workdir: ./apis/user-java
 
+  deployPackage:
+    needs: [publishPackage]
+    
+    name: Deploy from GitHub Packages to Azure App Services
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+    - name: ACR authentication
+      uses: azure/docker-login@v1
+      with:
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.githubtoken }}  
+    - name: 'Deploy to Azure Web App for Container'   
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+        images: ${{ env.CONTAINER_REGISTRY }}/chixcancode-projects/openhack-devops-team/user-java:latest
+    
+    
