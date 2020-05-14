@@ -1,26 +1,25 @@
-name: Docker Build Push POI
+name: Docker Build POI
 
 on:
   push:
-    branches:
-      - master
-      - API-POI
-    paths:
-      - "apis/poi/**"
-
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  
 jobs:
-  build:
+
+  publish:
+    name: Docker Build POI
+
     runs-on: ubuntu-latest
-    steps:
-      - name: ACR build
-        id: acr
-        uses: ams0/acr-task-github-action@v1
-        with:
-          service_principal: ${{ secrets.service_principal }}
-          service_principal_password: ${{ secrets.service_principal_password }}
-          tenant: ${{ secrets.tenant }}
-          registry: ${{ secrets.registry }}
-          repository: ${{ secrets.POIrepository }}
-          image: poi
-          folder: src/poi
-          dockerfile: Dockerfile
+
+    steps:      
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: chixcancode-projects/openhack-devops-team/poi
+        username: ${{ github.actor }}
+        password: ${{ secrets.githubtoken }}
+        registry: docker.pkg.github.com
+        workdir: ./apis/poi
