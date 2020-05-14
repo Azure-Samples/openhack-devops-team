@@ -1,4 +1,4 @@
-name: POI API CI Build (.NET Core)
+name: poi-ci
 
 on:
 # when someone pushes to a branch run this workflow
@@ -37,5 +37,12 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       working-directory: ./apis/poi
     - name: Test
-      run: dotnet test --no-restore --verbosity normal --logger:trx 
+      run: dotnet test --no-restore --verbosity normal --logger:trx;LogFileName=<{{ github.workflow }}.trx>
       working-directory: ./apis/poi/tests/UnitTests
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        # Artifact name
+        name: 'test-results-trx'
+        # A file, directory or wildcard pattern that describes what to upload
+        path: '{{ github.workflow }}.trx'  
