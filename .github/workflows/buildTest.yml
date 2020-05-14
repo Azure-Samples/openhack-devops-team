@@ -1,0 +1,13 @@
+  build-and-publish-dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' # Running this job only for develop branch
+    
+    steps:
+    - uses: actions/checkout@v2 # Checking out the repo
+
+    - name: Build and Publish head Docker image
+      uses: VaultVulp/gp-docker-action@1.1.1
+      with:
+        github-token: ${{ secrets.githubtoken }} # Provide GITHUB_TOKEN to login into the GitHub Packages
+        image-name: user-java # Provide Docker image name
+        build-context: ./apis/user-java # Provide path to the folder with the Dockerfile
