@@ -22,7 +22,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.githubtoken }}
         registry: docker.pkg.github.com
-        workdir: ./apis/user-java/
-        context: ./apis/user-java/
+        workdir: ./apis/user-java
+        context: ./apis/user-java
 
 
