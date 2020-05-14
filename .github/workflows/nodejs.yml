@@ -7,12 +7,12 @@ on:
   push:
     paths: 
     - 'apis/userprofile/**'
-    - '.github/**'
+#    - '.github/**'
   pull_request:
     branches: [ master ]
     paths:
     - 'apis/userprofile/**'
-    - '.github/**' 
+#    - '.github/**' 
 
 
 jobs:
