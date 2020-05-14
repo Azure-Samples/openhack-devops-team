@@ -21,5 +21,4 @@ jobs:
       with:
         github-token: ${{ secrets.githubtoken }} # Provide GITHUB_TOKEN to login into the GitHub Packages
         image-name: our-image-name # Provide only Docker image name, tag will be automatically set to latest
-        image-tag: head # Provide Docker image tag
         build-context: ./apis/user-java
