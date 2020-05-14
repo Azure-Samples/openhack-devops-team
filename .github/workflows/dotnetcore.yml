@@ -2,9 +2,11 @@ name: .NET Core
 
 on:
   push:
-    branches: [ slamb2k-patch-1 ]
+    branches-ignore: [ master ]
+    paths: 'apis/poi/**'    
   pull_request:
     branches: [ master ]
+    paths: 'apis/poi/**'
 
 jobs:
   build:
