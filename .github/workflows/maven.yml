@@ -6,12 +6,12 @@ on:
   push:
     paths: 
     - 'apis/user-java/**'
-    - '.github/**'
+#    - '.github/**'
   pull_request:
     branches: [ master ]
     paths:
     - 'apis/user-java/**'
-    - '.github/**' 
+ #   - '.github/**' 
 
 jobs:
   build:
