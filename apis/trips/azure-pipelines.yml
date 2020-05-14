@@ -1,0 +1,29 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - apis/trips/*
+  
+pr:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - apis/trips/*
+  
+pool:
+  vmImage: 'Ubuntu-18.04'
+
+steps: 
+
+- task: Docker@2
+  displayName: 'Docker Build'
+  inputs:
+    containerRegistry: 'ACR'
+    repository: 'devopsoh/api-trips'
+    command: 'buildAndPush'
+    Dockerfile: 'apis/trips/Dockerfile'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))             
