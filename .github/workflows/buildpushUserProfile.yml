@@ -1,0 +1,25 @@
+name: Docker Build User Profile
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  
+jobs:
+
+  publish:
+    name: Docker Build User
+
+    runs-on: ubuntu-latest
+
+    steps:      
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: chixcancode-projects/openhack-devops-team/userprofile
+        username: ${{ github.actor }}
+        password: ${{ secrets.githubtoken }}
+        registry: docker.pkg.github.com
+        workdir: ./apis/userprofile
