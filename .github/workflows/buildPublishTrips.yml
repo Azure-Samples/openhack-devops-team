@@ -1,4 +1,4 @@
-name: Docker
+name: Build & Publish Trips Service to GH Packages
 
 on:
   push:
