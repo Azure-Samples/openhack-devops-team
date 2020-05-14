@@ -37,7 +37,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       working-directory: ./apis/poi
     - name: Test
-      run: dotnet test --no-restore --verbosity normal --logger:trx;LogFileName=<{{ github.workflow }}.trx>
+      run: dotnet test --no-restore --verbosity normal --logger:trx;LogFileName={{ github.workflow }}.trx
       working-directory: ./apis/poi/tests/UnitTests
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
