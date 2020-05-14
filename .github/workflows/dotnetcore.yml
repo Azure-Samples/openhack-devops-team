@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Whatever
+    - name: Show current working directory and files list
       run: |
         ls
         pwd
