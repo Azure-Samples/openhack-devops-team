@@ -1,9 +1,12 @@
 name: .NET Core
 
 on:
+# when someone pushes to a branch run this workflow
+# Q: should we do this for master or not
   push:
-    branches-ignore: [ master ]
+#    branches-ignore: [ master ]
     paths: 'apis/poi/**'    
+# when someone creates a PR for master run this workflow
   pull_request:
     branches: [ master ]
     paths: 'apis/poi/**'
