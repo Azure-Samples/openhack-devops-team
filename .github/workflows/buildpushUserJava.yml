@@ -18,7 +18,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$(date +%s)
+      run: 
+        echo $IMAGE_NAME
+        docker build . --file Dockerfile --tag $IMAGE_NAME
       working-directory: apis/user-java
   
     - name: Log into registry
