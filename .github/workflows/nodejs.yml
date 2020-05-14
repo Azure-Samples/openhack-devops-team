@@ -26,6 +26,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Whatever
+      run: |
+        ls
+        pwd
     - name: npm ci
       run: npm ci
       working-directory: ./apis/userprofile
