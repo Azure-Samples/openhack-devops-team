@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag devopsoh/api-user-java
+      run: docker build . --file Dockerfile --tag our-image-name
       working-directory: apis/user-java
   
     - name: Log into registry
@@ -24,7 +24,7 @@ jobs:
 
     - name: Push image
       run: |
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/devopsoh/api-user-java
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/our-image-name
 
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -35,13 +35,12 @@ jobs:
         # Strip "v" prefix from tag name
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
 
-        # Use Docker `latest` tag convention
+        # Use Docker `latest` tag convention docker tag our-image-name $IMAGE_ID:$VERSION
         [ "$VERSION" == "master" ] && VERSION=latest
 
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
-
-        docker tag devopsoh/api-user-java $IMAGE_ID:$VERSION
+        
         docker push $IMAGE_ID:$VERSION
 
 
