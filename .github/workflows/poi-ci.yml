@@ -1,4 +1,4 @@
-name: .NET Core
+name: POI API CI Build (.NET Core)
 
 on:
 # when someone pushes to a branch run this workflow
