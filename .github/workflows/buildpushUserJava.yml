@@ -23,6 +23,6 @@ jobs:
         password: ${{ secrets.githubtoken }}
         registry: docker.pkg.github.com
         workdir: ./apis/user-java
-        context: ./apis/user-java
+        context: apis/user-java
 
 
