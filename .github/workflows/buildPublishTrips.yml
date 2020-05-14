@@ -4,7 +4,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-#      - master
+      - master
       - API-Trips
     paths: 'apis/trips'
 
