@@ -8,17 +8,19 @@ on:
   
 jobs:
 
-  build:
+  publish:
     name: Docker Build User Java
 
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-      
-    - name: Build and Publish latest Docker image
-      uses: VaultVulp/gp-docker-action@1.1.1
+    steps:      
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        github-token: ${{ secrets.githubtoken }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-        image-name: our-image-name # Provide only Docker image name, tag will be automatically set to latest
-        build-context: ./apis/user-java/
+        name: chixcancode-projects/openhack-devops-team/user-java
+        username: ${{ github.actor }}
+        password: ${{ secrets.githubtoken }}
+        registry: docker.pkg.github.com
+        workdir: ./apis/user-java
+
