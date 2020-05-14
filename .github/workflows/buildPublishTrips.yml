@@ -4,7 +4,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - master
+#      - master
       - API-Trips
     paths: 'apis/trips'
 
@@ -20,6 +20,7 @@ jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
+    name: Build & Publish Trips Service to GH Packages 
 
     runs-on: ubuntu-latest
 
