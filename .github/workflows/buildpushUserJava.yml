@@ -5,16 +5,22 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+  
 jobs:
 
-  build:
+  publish:
     name: Docker Build User Java
 
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-      working-directory: apis/user-java
+    steps:      
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: chixcancode-projects/openhack-devops-team/user-java
+        username: ${{ github.actor }}
+        password: ${{ secrets.githubtoken }}
+        registry: docker.pkg.github.com
+        workdir: ./apis/user-java
+
