@@ -1,7 +1,13 @@
-  build-and-publish-dev:
+name: Build & Publish Trips Service to GH Packages
+
+on:
+  push:
+    # Publish `master` as Docker `latest` image.
+    branches:  
+      - develop
+jobs:
+  build-and-push-trips:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' # Running this job only for develop branch
-    
     steps:
     - uses: actions/checkout@v2 # Checking out the repo
 
