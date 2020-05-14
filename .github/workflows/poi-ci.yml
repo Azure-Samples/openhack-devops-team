@@ -7,13 +7,13 @@ on:
     branches-ignore: [ master ]
     paths: 
       - 'apis/poi/**' 
-      - '/.github/workflows/poi-*.yml'   
+      - '.github/workflows/poi-*.yml'   
 # when someone creates a PR for master run this workflow
   pull_request:
     branches: [ master ]
     paths: 
       - 'apis/poi/**'
-      - '/.github/workflows/poi-*.yml'   
+      - '.github/workflows/poi-*.yml'   
 
 jobs:
   build:
