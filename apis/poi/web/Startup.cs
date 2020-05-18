@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using poi.Data;
 
@@ -38,7 +39,11 @@ namespace poi
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("docs", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Points Of Interest(POI) API", Version = "v1" });
+                c.SwaggerDoc("docs", new OpenApiInfo {
+                  Title = "Points Of Interest(POI) API",
+                  Version = "v1",
+                  Description = "API for the POI in the My Driving example app. https://github.com/Azure-Samples/openhack-devops"
+                });
             });
         }
 
@@ -74,8 +79,6 @@ namespace poi
                     AllowCachingResponses = false
                 });
             });
-
-            // dbcontext.Database.EnsureCreated();
         }
     }
 }
