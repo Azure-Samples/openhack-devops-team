@@ -17,7 +17,7 @@ WORKDIR /app
 
 # docker build argument
 #    This can be specified during the docker build step by adding " --build-arg build_version=<value>"
-#    pp version can be accessed via the uri path /api/version/poi
+#    App version can be accessed via the uri path /api/version/poi
 #    https://vsupalov.com/docker-build-pass-environment-variables/
 ARG build_version="poi default"
 
