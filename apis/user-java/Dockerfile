@@ -13,7 +13,7 @@ EXPOSE 8080
 #    This can be specified during the docker build step by adding " --build-arg build_version=<value>"
 #    App version can be accessed via the uri path /api/version/user-java
 #    https://vsupalov.com/docker-build-pass-environment-variables/
-ARG build_version="trips default"
+ARG build_version="user-java default"
 
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
