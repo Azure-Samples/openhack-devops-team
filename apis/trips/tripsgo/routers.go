@@ -193,4 +193,11 @@ var routes = Routes{
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		updateTripPoint,
 	},
+
+	Route{
+		"VersionGet",
+		"GET",
+		"/api/version/trips",
+		versionGet,
+	},	
 }
