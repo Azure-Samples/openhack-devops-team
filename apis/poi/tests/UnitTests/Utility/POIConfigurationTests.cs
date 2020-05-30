@@ -6,103 +6,86 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnitTests.Utility
 {
-  public class POIConfigurationTests
-  {
 
-    [Fact]
-    public async void Foo()
+    public class POIConfigurationTests
     {
-      //arrange
-      CancellationToken token = new CancellationToken();
-      HealthCheck healthCheck = new HealthCheck();
-      //act
-      HealthCheckResult result = await healthCheck.CheckHealthAsync(null,token);
-      //assert
-      Assert.NotNull(result);
-    }
 
-  }
-  public class MockConfiguration : IConfiguration
-{
-    public IConfigurationSection GetSection(string key)
-    {
-        return new MockConfigurationSection()
+        private Dictionary<string, string> GetTestSettings()
         {
-            Value = "123"
-        };
-    }
-
-    public IEnumerable<IConfigurationSection> GetChildren()
-    {
-        var configurationSections = new List<IConfigurationSection>()
-        {
-            new MockConfigurationSection()
+            string connectionStringTemplate = "Server=tcp:[SQL_SERVER],1433;Initial Catalog=[SQL_DBNAME];Persist Security Info=False;User ID=[SQL_USER];Password=[SQL_PASSWORD];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            return new Dictionary<string, string>
             {
-                Value = "MyConfigStr"
-            }
-        };
-        return configurationSections;
-    }
+                {"SQL_USER", "user1"},
+                {"SQL_PASSWORD", "password2"},
+                {"SQL_SERVER", "sqlserver3"},
+                {"SQL_DBNAME", "db4"},
+                {"WEB_PORT", "9090"},
+                {"WEB_SERVER_BASE_URI", "https://github.com"},
+                {"ConnectionStrings:myDrivingDB",connectionStringTemplate}
+            };
+        }
 
-    public Microsoft.Extensions.Primitives.IChangeToken GetReloadToken()
-    {
-        throw new System.NotImplementedException();
-    }
+        private IConfiguration GetTestConfiguration()
+        {
+            var inMemorySettings = GetTestSettings();
+            IConfiguration configuration = new ConfigurationBuilder()
+                        .AddInMemoryCollection(inMemorySettings)
+                        .Build();
+            return configuration;
+        }
 
-    public string this[string key]
-    {
-        get => throw new System.NotImplementedException();
-        set => throw new System.NotImplementedException();
-    }
-}
-public class MockConfigurationSection : IConfigurationSection
-{
-    public IConfigurationSection GetSection(string key)
-    {
-        return this;
-    }
+        [Fact]
+        public void GetConnectionString_ReturnsCS_WithCorrectValuesReplaced()
+        {
+            //arrange
+            IConfiguration configuration = GetTestConfiguration();
 
-    public IEnumerable<IConfigurationSection> GetChildren()
-    {
-        return new List<IConfigurationSection>();
+            //act
+            var connectionString = POIConfiguration.GetConnectionString(configuration);
+
+            //assert
+            var expectedConnectionString = "Server=tcp:sqlserver3,1433;Initial Catalog=db4;Persist Security Info=False;User ID=user1;Password=password2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            Assert.Equal(expectedConnectionString, connectionString);
+        }
+
+
+        [Fact]
+        public void GetUri_Returns_DefailtUriAndPort_WhenNotInSettings()
+        {
+            //arrange
+            IConfiguration configuration = GetTestConfiguration();
+
+            //act
+            var uri = POIConfiguration.GetUri(configuration);
+
+            //assert
+            var expectedUri = "https://github.com:9090";
+            Assert.Equal(expectedUri, uri);
+        }
+
+        [Fact]
+        public void GetUri_Returns_BaseUrlAndPortFromSettings()
+        {
+            //arrange
+            var inMemorySettings = GetTestSettings();
+            inMemorySettings.Remove("WEB_SERVER_BASE_URI");
+            inMemorySettings.Remove("WEB_PORT");
+            IConfiguration configuration = new ConfigurationBuilder()
+                        .AddInMemoryCollection(inMemorySettings)
+                        .Build();
+
+            //act
+            var uri = POIConfiguration.GetUri(configuration);
+
+            //assert
+            var expectedUri = "http://localhost:8080";
+            Assert.Equal(expectedUri, uri);
+        }
     }
-
-    public IChangeToken GetReloadToken()
-    {
-        return new MockChangeToken();
-    }
-
-    public string this[string key]
-    {
-        get => throw new System.NotImplementedException();
-        set => throw new System.NotImplementedException();
-    }
-
-    public string Key { get; }
-    public string Path { get; }
-    public string Value { get; set; }
-}
-
-public class MockChangeToken : IChangeToken
-{
-    public IDisposable RegisterChangeCallback(Action<object> callback, object state)
-    {
-        return new MockDisposable();
-    }
-
-    public bool HasChanged { get; }
-    public bool ActiveChangeCallbacks { get; }
-}
-
-public class MockDisposable : IDisposable
-{
-    public void Dispose()
-    {
-    }
-}
 
 }
 

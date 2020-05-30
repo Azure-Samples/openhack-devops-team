@@ -17,7 +17,7 @@ namespace UnitTests.Utility
   {
 
     [Fact]
-    public async void Foo()
+    public async void CheckHealthAsync_Returns_Result()
     {
       //arrange
       CancellationToken token = new CancellationToken();
