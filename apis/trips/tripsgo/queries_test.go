@@ -73,7 +73,7 @@ func TestUnitupdateTripPointQuery(t *testing.T) {
 	assert.Equal(t, expected, query)
 }
 
-func TestUnitSelectAllTripsQuery(t *testing.T) {
+func TestSelectAllTripsQueryUnit(t *testing.T) {
 	//arrange
 	var expected = `SELECT
 	Id,
@@ -99,7 +99,7 @@ func TestUnitSelectAllTripsQuery(t *testing.T) {
 	assert.Equal(t, expected, query)
 }
 
-func TestUnitSelectAllTripsForUserQuery(t *testing.T) {
+func TestSelectAllTripsForUserQueryUnit(t *testing.T) {
 	//arrange
 	var expected = `SELECT
 	Id,
@@ -126,7 +126,7 @@ func TestUnitSelectAllTripsForUserQuery(t *testing.T) {
 	assert.Equal(t, expected, query)
 }
 
-func TestUnitDeleteTripPointsForTripQuery(t *testing.T) {
+func TestDeleteTripPointsForTripQueryUnit(t *testing.T) {
 	//arrange
 	var expected = `UPDATE TripPoints SET Deleted = 1 WHERE TripId = 'trip_123'`
 	//act
@@ -135,11 +135,282 @@ func TestUnitDeleteTripPointsForTripQuery(t *testing.T) {
 	assert.Equal(t, expected, query)
 }
 
-func TestUnitDeleteTripQuery(t *testing.T) {
+func TestDeleteTripQueryUnit(t *testing.T) {
 	//arrange
 	var expected = `UPDAte Trips SET Deleted = 1 WHERE Id = 'trip_123'`
 	//act
 	query := DeleteTripQuery("trip_123")
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestSelectTripByIDQueryUnit(t *testing.T) {
+	//arrange
+	var expected = `SELECT
+		Id,
+		Name,
+		UserId,
+		RecordedTimeStamp,
+		EndTimeStamp,
+		Rating,
+		IsComplete,
+		HasSimulatedOBDData,
+		AverageSpeed,
+		FuelUsed,
+		HardStops,
+		HardAccelerations,
+		Distance,
+		CreatedAt,
+		UpdatedAt
+		FROM Trips
+		WHERE Id = 'trip_123'
+		AND Deleted = 0`
+	//act
+	query := SelectTripByIDQuery("trip_123")
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestSelectTripPointsForTripPointIDQueryUnit(t *testing.T) {
+	//arrange
+	var expected = `SELECT
+		[Id],
+		[TripId],
+		[Latitude],
+		[Longitude],
+		[Speed],
+		[RecordedTimeStamp],
+		[Sequence],
+		[RPM],
+		[ShortTermFuelBank],
+		[LongTermFuelBank],
+		[ThrottlePosition],
+		[RelativeThrottlePosition],
+		[Runtime],
+		[DistanceWithMalfunctionLight],
+		[EngineLoad],
+		[EngineFuelRate],
+		[VIN]
+		FROM TripPoints
+		WHERE Id = 'point_ab'
+		AND Deleted = 0`
+	//act
+	query := selectTripPointsForTripPointIDQuery("point_ab")
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestUpdateTripQueryUnit(t *testing.T) {
+	//arrange
+	trip := Trip{
+		ID:                  "abcd",
+		Name:                "fake Trip",
+		UserID:              "fake user",
+		RecordedTimeStamp:   "now",
+		EndTimeStamp:        "then",
+		Rating:              1,
+		IsComplete:          false,
+		HasSimulatedOBDData: false,
+		AverageSpeed:        88,
+		FuelUsed:            23.2,
+		HardStops:           8,
+		HardAccelerations:   12,
+		Distance:            5,
+		Created:             time.Now(),
+		UpdatedAt:           time.Now(),
+		Deleted:             false,
+	}
+	var expected = `UPDATE Trips SET
+	Name = 'fake Trip',
+	UserId = 'fake user',
+	RecordedTimeStamp = 'now',
+	EndTimeStamp = 'then',
+	Rating = 1,
+	IsComplete = 'false',
+	HasSimulatedOBDData = 'false',
+	AverageSpeed = 88,
+	FuelUsed = 23.2,
+	HardStops = 8,
+	HardAccelerations = 12,
+	Distance = 5,
+	UpdatedAt = GETDATE()
+	WHERE Id = 'abcd'`
+	//act
+	query := UpdateTripQuery(trip)
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestCreateTripQueryUnit(t *testing.T) {
+	//arrange
+	trip := Trip{
+		ID:                  "abcd",
+		Name:                "fake Trip",
+		UserID:              "fake user",
+		RecordedTimeStamp:   "now",
+		EndTimeStamp:        "then",
+		Rating:              1,
+		IsComplete:          false,
+		HasSimulatedOBDData: false,
+		AverageSpeed:        88,
+		FuelUsed:            23.2,
+		HardStops:           8,
+		HardAccelerations:   12,
+		Distance:            5,
+		Created:             time.Now(),
+		UpdatedAt:           time.Now(),
+		Deleted:             false,
+	}
+	var expected = `DECLARE @tempReturn
+		TABLE (TripId NVARCHAR(128));
+		INSERT INTO Trips (
+			Name,
+			UserId,
+			RecordedTimeStamp,
+			EndTimeStamp,
+			Rating,
+			IsComplete,
+			HasSimulatedOBDData,
+			AverageSpeed,
+			FuelUsed,
+			HardStops,
+			HardAccelerations,
+			Distance,
+			UpdatedAt,
+			Deleted)
+			OUTPUT Inserted.ID
+			INTO @tempReturn
+			VALUES (
+				'fake Trip',
+				'fake user',
+				'now',
+				'then',
+				1,
+				'false',
+				'false',
+				88,
+				23.2,
+				8,
+				12,
+				5,
+				GETDATE(),
+				'false');
+			SELECT TripId FROM @tempReturn`
+	//act
+	query := createTripQuery(trip)
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestSelectTripPointsForTripQueryUnit(t *testing.T) {
+	//arrange
+	var expected = `SELECT
+		[Id],
+		[TripId],
+		[Latitude],
+		[Longitude],
+		[Speed],
+		[RecordedTimeStamp],
+		[Sequence],
+		[RPM],
+		[ShortTermFuelBank],
+		[LongTermFuelBank],
+		[ThrottlePosition],
+		[RelativeThrottlePosition],
+		[Runtime],
+		[DistanceWithMalfunctionLight],
+		[EngineLoad],
+		[EngineFuelRate],
+		[VIN]
+	FROM [dbo].[TripPoints]
+	WHERE
+		TripId = 'trip_zzyzx'
+	AND Deleted = 0`
+	//act
+	query := selectTripPointsForTripQuery("trip_zzyzx")
+	//assert
+	assert.Equal(t, expected, query)
+}
+
+func TestCreateTripPointQueryUnit(t *testing.T) {
+	//arrange
+	tripPoint := TripPoint{
+		ID:                           "abcd",
+		TripID:                       "a_trip",
+		Latitude:                     51.5244282,
+		Longitude:                    -0.0784379,
+		Speed:                        185.2,
+		RecordedTimeStamp:            "a_timestamp",
+		Sequence:                     1,
+		RPM:                          4000,
+		ShortTermFuelBank:            1,
+		LongTermFuelBank:             2,
+		ThrottlePosition:             3,
+		RelativeThrottlePosition:     4,
+		Runtime:                      5,
+		DistanceWithMalfunctionLight: 6,
+		EngineLoad:                   7,
+		MassFlowRate:                 8,
+		EngineFuelRate:               9,
+		HasOBDData:                   true,
+		HasSimulatedOBDData:          false,
+		CreatedAt:                    time.Now(),
+		UpdatedAt:                    time.Now(),
+		Deleted:                      false,
+	}
+
+	var expected = `DECLARE @tempReturn TABLE (TripPointId NVARCHAR(128));
+	INSERT INTO TripPoints (
+		[TripId],
+		[Latitude],
+		[Longitude],
+		[Speed],
+		[RecordedTimeStamp],
+		[Sequence],
+		[RPM],
+		[ShortTermFuelBank],
+		[LongTermFuelBank],
+		[ThrottlePosition],
+		[RelativeThrottlePosition],
+		[Runtime],
+		[DistanceWithMalfunctionLight],
+		[EngineLoad],
+		[EngineFuelRate],
+		[MassFlowRate],
+		[HasOBDData],
+		[HasSimulatedOBDData],
+		[VIN],
+		[UpdatedAt],
+		[Deleted])
+	OUTPUT
+		Inserted.ID
+	INTO @tempReturn
+	VALUES (
+		'fake_trip_id',
+		51.52443,
+		-0.0784379,
+		185.2,
+		'a_timestamp',
+		1,
+		4000,
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		9,
+		'true',
+		'false',
+		'{ %!s(bool=false)}',
+		GETDATE(),
+		'false');
+	SELECT TripPointId
+	FROM @tempReturn`
+	//act
+	query := createTripPointQuery(tripPoint, "fake_trip_id")
 	//assert
 	assert.Equal(t, expected, query)
 }
