@@ -22,11 +22,6 @@ type APITestCase struct {
 	ActualResponse   string
 }
 
-func newRouter() *mux.Router {
-	router := NewRouter()
-	return router
-}
-
 func testAPI(router *mux.Router, method, URL, body string) *httptest.ResponseRecorder {
 	req, _ := http.NewRequest(method, URL, bytes.NewBufferString(body))
 	req.Header.Set("Content-Type", "application/json")
