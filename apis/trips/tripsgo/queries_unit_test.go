@@ -3,6 +3,8 @@ package tripsgo
 import (
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestUnitdeleteTripPointQuery(t *testing.T) {
@@ -68,9 +70,7 @@ func TestUnitupdateTripPointQuery(t *testing.T) {
 	//act
 	query := updateTripPointQuery(tripPoint)
 	//assert
-	if query != expected {
-		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
-	}
+	assert.Equal(t, expected, query)
 }
 
 func TestUnitSelectAllTripsQuery(t *testing.T) {
@@ -96,9 +96,7 @@ func TestUnitSelectAllTripsQuery(t *testing.T) {
 	//act
 	query := SelectAllTripsQuery()
 	//assert
-	if query != expected {
-		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
-	}
+	assert.Equal(t, expected, query)
 }
 
 func TestUnitSelectAllTripsForUserQuery(t *testing.T) {
@@ -125,9 +123,7 @@ func TestUnitSelectAllTripsForUserQuery(t *testing.T) {
 	//act
 	query := SelectAllTripsForUserQuery("fake_user")
 	//assert
-	if query != expected {
-		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
-	}
+	assert.Equal(t, expected, query)
 }
 
 func TestUnitDeleteTripPointsForTripQuery(t *testing.T) {
@@ -136,18 +132,14 @@ func TestUnitDeleteTripPointsForTripQuery(t *testing.T) {
 	//act
 	query := DeleteTripPointsForTripQuery("trip_123")
 	//assert
-	if query != expected {
-		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
-	}
+	assert.Equal(t, expected, query)
 }
 
 func TestUnitDeleteTripQuery(t *testing.T) {
 	//arrange
-	var expected = `UPDAte Trips SET Deleted = 1 WHERE Id = 'trip_12`
+	var expected = `UPDAte Trips SET Deleted = 1 WHERE Id = 'trip_123'`
 	//act
 	query := DeleteTripQuery("trip_123")
 	//assert
-	if query != expected {
-		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
-	}
+	assert.Equal(t, expected, query)
 }
