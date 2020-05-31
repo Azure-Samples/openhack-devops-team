@@ -72,3 +72,82 @@ func TestUnitupdateTripPointQuery(t *testing.T) {
 		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
 	}
 }
+
+func TestUnitSelectAllTripsQuery(t *testing.T) {
+	//arrange
+	var expected = `SELECT
+	Id,
+	Name,
+	UserId,
+	RecordedTimeStamp,
+	EndTimeStamp,
+	Rating,
+	IsComplete,
+	HasSimulatedOBDData,
+	AverageSpeed,
+	FuelUsed,
+	HardStops,
+	HardAccelerations,
+	Distance,
+	CreatedAt,
+	UpdatedAt
+	FROM Trips
+	WHERE Deleted = 0`
+	//act
+	query := SelectAllTripsQuery()
+	//assert
+	if query != expected {
+		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
+	}
+}
+
+func TestUnitSelectAllTripsForUserQuery(t *testing.T) {
+	//arrange
+	var expected = `SELECT
+	Id,
+	Name,
+	UserId,
+	RecordedTimeStamp,
+	EndTimeStamp,
+	Rating,
+	IsComplete,
+	HasSimulatedOBDData,
+	AverageSpeed,
+	FuelUsed,
+	HardStops,
+	HardAccelerations,
+	Distance
+	CreatedAt,
+	UpdatedAt
+	FROM Trips
+	WHERE UserId ='fake_user'
+	AND Deleted = 0`
+	//act
+	query := SelectAllTripsForUserQuery("fake_user")
+	//assert
+	if query != expected {
+		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
+	}
+}
+
+func TestUnitDeleteTripPointsForTripQuery(t *testing.T) {
+	//arrange
+	var expected = `UPDATE TripPoints SET Deleted = 1 WHERE TripId = 'trip_123'`
+	//act
+	query := DeleteTripPointsForTripQuery("trip_123")
+	//assert
+	if query != expected {
+		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
+	}
+}
+
+func TestUnitDeleteTripQuery(t *testing.T) {
+	//arrange
+	var expected = `UPDAte Trips SET Deleted = 1 WHERE Id = 'trip_12`
+	//act
+	query := DeleteTripQuery("trip_123")
+	//assert
+	if query != expected {
+		t.Errorf("Error \nExpected: %s \nGot: %s", expected, query)
+	}
+}
