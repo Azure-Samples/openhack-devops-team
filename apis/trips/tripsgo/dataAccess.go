@@ -6,7 +6,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
 )
+
+//load .env locally for integration tests
+//System Environment variables take precedence
+var dbEnv = godotenv.Load()
 
 func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {

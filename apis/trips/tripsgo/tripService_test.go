@@ -144,6 +144,12 @@ var apiTestList = []APITestCase{
 		URL:    "/api/trips/{tripID}",
 		Status: 200,
 	},
+	{
+		Tag:    "t11 - Get All Trips for User",
+		Method: "GET",
+		URL:    "/api/trips/user/SomeUser",
+		Status: 200,
+	},
 }
 
 func TestTripApis(t *testing.T) {
@@ -190,6 +196,8 @@ func TestTripApis(t *testing.T) {
 	apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
 	// run update test
 	RunAPITests(t, router, apiTestList[5:10])
+
+	RunAPITests(t, router, apiTestList[10:11])
 }
 
 func GetUpdateTrip(tripCreate string, tripUpdate string) string {

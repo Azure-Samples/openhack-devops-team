@@ -6,6 +6,7 @@
 # Go code coverage
 **/cover.sh
 apis/trips/**/cover.out
+apis/trips/**/cover.html
 
 #environment files
 .env

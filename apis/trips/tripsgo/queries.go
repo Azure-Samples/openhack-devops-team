@@ -65,7 +65,7 @@ func SelectAllTripsForUserQuery(userID string) string {
 	FuelUsed,
 	HardStops,
 	HardAccelerations,
-	Distance
+	Distance,
 	CreatedAt,
 	UpdatedAt
 	FROM Trips

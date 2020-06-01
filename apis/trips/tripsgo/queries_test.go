@@ -114,7 +114,7 @@ func TestSelectAllTripsForUserQueryUnit(t *testing.T) {
 	FuelUsed,
 	HardStops,
 	HardAccelerations,
-	Distance
+	Distance,
 	CreatedAt,
 	UpdatedAt
 	FROM Trips
