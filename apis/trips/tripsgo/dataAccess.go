@@ -28,17 +28,27 @@ var (
 	server   = flag.String("server", getEnv("SQL_SERVER", "changeme.database.windows.net"), "the database server")
 	user     = flag.String("user", getEnv("SQL_USER", "YourUserName"), "the database user")
 	database = flag.String("d", getEnv("SQL_DBNAME", "mydrivingDB"), "db_name")
+	driver   = flag.String("driver", getEnv("SQL_DRIVER", "mssql"), "db driver")
 )
+
+func RebindDataAccessEnvironmentVariables() {
+	s := getEnv("SQL_SERVER", "changeme.database.windows.net")
+	server = &s
+
+	dr := getEnv("SQL_DRIVER", "mssql")
+	driver = &dr
+}
 
 // ExecuteNonQuery - Execute a SQL query that has no records returned (Ex. Delete)
 func ExecuteNonQuery(query string) (string, error) {
 	connString := fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", *server, *database, *user, *password, *port)
 
 	if *debug {
-		fmt.Printf("connString:%s\n", connString)
+		message := fmt.Sprintf("connString:%s\n", connString)
+		logMessage(message)
 	}
 
-	conn, err := sql.Open("mssql", connString)
+	conn, err := sql.Open(*driver, connString)
 
 	if err != nil {
 		return "", err
@@ -69,14 +79,11 @@ func ExecuteNonQuery(query string) (string, error) {
 func ExecuteQuery(query string) (*sql.Rows, error) {
 	connString := fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", *server, *database, *user, *password, *port)
 
-	// Debug.Println("connString:%s\n", connString)
-
-	conn, err := sql.Open("mssql", connString)
+	conn, err := sql.Open(*driver, connString)
 
 	if err != nil {
 		logError(err, "Failed to connect to database.")
 		return nil, err
-
 	}
 
 	defer conn.Close()
@@ -105,10 +112,11 @@ func FirstOrDefault(query string) (*sql.Row, error) {
 	connString := fmt.Sprintf("server=%s;database=%s;user id=%s;password=%s;port=%d", *server, *database, *user, *password, *port)
 
 	if *debug {
-		fmt.Printf("connString:%s\n", connString)
+		message := fmt.Sprintf("connString:%s\n", connString)
+		logMessage(message)
 	}
 
-	conn, err := sql.Open("mssql", connString)
+	conn, err := sql.Open(*driver, connString)
 
 	if err != nil {
 		return nil, err
