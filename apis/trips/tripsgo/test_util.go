@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -55,4 +56,11 @@ func RunAPITestsPlainText(t *testing.T, router *mux.Router, tests []APITestCase)
 			assert.Equal(t, tests[i].ExpectedResponse, res.Body.String(), tests[i].Tag)
 		}
 	}
+}
+
+func resetDataAccessEnvVars() {
+	var fls bool = false
+	debug = &fls
+	godotenv.Overload()
+	RebindDataAccessEnvironmentVariables()
 }

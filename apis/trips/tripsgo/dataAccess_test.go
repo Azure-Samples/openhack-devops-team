@@ -6,7 +6,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -88,7 +87,7 @@ func TestExecuteNonQueryInvalidServerReturnsErr(t *testing.T) {
 
 	//arrange
 	InitLogging(os.Stdout, os.Stdout, os.Stdout)
-	os.Setenv("SQL_SERVER", "not_a_real_driver")
+	os.Setenv("SQL_SERVER", "not_a_real_server")
 	RebindDataAccessEnvironmentVariables()
 
 	//act
@@ -125,7 +124,7 @@ func TestFirstOrDefaultInvalidServerReturnsErr(t *testing.T) {
 
 	//arrange
 	InitLogging(os.Stdout, os.Stdout, os.Stdout)
-	os.Setenv("SQL_SERVER", "not_a_real_driver")
+	os.Setenv("SQL_SERVER", "not_a_real_server")
 	RebindDataAccessEnvironmentVariables()
 
 	//act
@@ -167,11 +166,4 @@ func TestFirstOrDefaultWritesLogIfDebugTrue(t *testing.T) {
 	//assert
 	actual := fmt.Sprint(info)
 	assert.True(t, actual != "")
-}
-
-func resetDataAccessEnvVars() {
-	var fls bool = false
-	debug = &fls
-	godotenv.Overload()
-	RebindDataAccessEnvironmentVariables()
 }
