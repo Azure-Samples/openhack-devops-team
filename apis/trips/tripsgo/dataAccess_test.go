@@ -113,6 +113,7 @@ func TestFirstOrDefaultInvalidDriverReturnsErr(t *testing.T) {
 
 func TestFirstOrDefaultConnectionSuccess(t *testing.T) {
 	//act
+	RebindDataAccessEnvironmentVariables()
 	_, err := FirstOrDefault("SELECT TOP 1 ID FROM Trips")
 
 	//assert
