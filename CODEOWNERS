@@ -1,0 +1,4 @@
+apis/poi/* @benc-ukms
+apis/trips/* @benc-ukms
+apis/user-java/* @benc-ukms
+apis/userprofile/* @benc-ukms
