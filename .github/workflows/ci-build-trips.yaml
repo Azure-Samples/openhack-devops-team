@@ -1,0 +1,96 @@
+name: CI Build POI
+
+on: 
+  push: 
+    branches: [master]
+    paths:
+      - 'apis/trips/**'
+  pull_request:
+    branches: [master]
+    
+env:
+  DB_SERVER: openhacku8t60444sql.database.windows.net
+  DB_USER: demousersa
+  DOCKER_REG: openhacku8t60444acr.azurecr.io
+  DOCKER_USER: openhacku8t60444acr
+  IMAGE_NAME: devopsoh/api-trips
+  IMAGE_TAG: ${{ github.run_id }}
+
+jobs:
+  #
+  # ===== Testing & code checking ======
+  #
+  runTests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v1
+
+    - name: Set Go version and paths
+      uses: actions/setup-go@v2
+      with:
+        go-version: '^1.11.1'
+
+    - name: Run all unit tests
+      run: |
+        go test ./tripsgo -v -debug=true -user=$DB_USER -password="${{ secrets.DB_PASSWORD }}" -server=$DB_SERVER
+      working-directory: apis/trips
+    
+    - name: Create issue on failure
+      if: ${{ failure() }}
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RUNID: ${{ github.run_id }}
+      with:
+        filename: .github/BUILD_FAILURE.md
+
+  #
+  # ===== Build container images ======
+  #
+  buildImages:
+    runs-on: ubuntu-latest
+    needs: runTests
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v1
+
+    - name: Run image builds
+      run: |
+        docker build . -t $DOCKER_REG/$IMAGE_NAME:$IMAGE_TAG
+      working-directory: apis/trips
+
+    # =====================================================================
+    # Steps after this are only run when merging or pushing into master
+    # =====================================================================
+
+    - name: Login to ACR 
+      if: github.event_name == 'push'
+      run:  docker login $DOCKER_REG -u $DOCKER_USER -p ${{ secrets.DOCKER_PASSWORD }} 
+
+    - name: Push to ACR
+      if: github.event_name == 'push'
+      run: |
+        docker push $DOCKER_REG/$IMAGE_NAME:$IMAGE_TAG
+
+    - name: Create issue on failure
+      if: ${{ failure() }}
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RUNID: ${{ github.run_id }}
+      with:
+        filename: .github/BUILD_FAILURE.md
+    # =====================================================================
+    # Optional deployment trigger
+    # =====================================================================
+
+    # - name: Trigger deployment
+    #   if: github.event_name == 'push'
+    #   uses: peter-evans/repository-dispatch@v1
+    #   with:
+    #     token: ${{ secrets.DEPLOYMENT_PAT }}
+    #     event-type: 'Continuous Deployment'
+    #     client-payload: '{"imageTag": "${{ github.run_id }}"}'        
