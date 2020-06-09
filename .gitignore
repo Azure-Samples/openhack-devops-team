@@ -3,6 +3,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+#coverage
+**/coverage.cobertura.xml
+**/CoverageReport
+**/cover.sh
+
+#environment files
+.env
+
 # User-specific files
 *.suo
 *.user
