@@ -4,12 +4,10 @@ on:
   push:
     paths: 
     - 'apis/user-java/**'
-    - '.github/**'
   pull_request:
     branches: [ master ]
     paths:
     - 'apis/user-java/**'
-    - '.github/**' 
 jobs:
   build:
     name: user-java build and test
