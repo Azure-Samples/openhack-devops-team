@@ -4,8 +4,6 @@ name: Userprofile CI
 on:
   push:
     branches: [ master ]
-    paths: 
-    - 'apis/userprofile/**'
   pull_request:
     branches: [ master ]
     paths:
