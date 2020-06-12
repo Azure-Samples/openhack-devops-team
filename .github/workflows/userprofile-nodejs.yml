@@ -5,12 +5,10 @@ on:
   push:
     paths: 
     - 'apis/userprofile/**'
-    - '.github/**'
   pull_request:
     branches: [ master ]
     paths:
     - 'apis/userprofile/**'
-    - '.github/**' 
 
 jobs:
   build:
