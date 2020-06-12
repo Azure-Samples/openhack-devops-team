@@ -3,12 +3,12 @@ on:
   push:
     paths: 
       - 'api/trips/**'
-      - '.github/**'
+
   pull_request:
     branches: [ master ]
     paths: 
       - 'api/trips/**'
-      - '.github/**'
+
 jobs:
   build:
     name: Trips Go Build & Test
