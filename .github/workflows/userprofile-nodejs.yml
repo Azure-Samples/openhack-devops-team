@@ -3,8 +3,7 @@
 name: Userprofile CI
 on:
   push:
-    paths: 
-    - 'apis/userprofile/**'
+    branches: [ master ]
   pull_request:
     branches: [ master ]
     paths:

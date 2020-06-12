@@ -1,0 +1,38 @@
+# every action has a name
+name: Create Issue Action
+# description
+description: This action creates an issue based on user inputs
+# input parameters to be taken from user
+inputs:
+  title: # name of variable. In action script it will be available in workflow as environment variable with name INPUT_TITLE
+    required: true # required variable possible values are true or false
+    description: Title of the issue
+  token: # token variable available in workflow as env var named INPUT_TOKEN
+    required: true
+    description: Token of the user that creates the issue
+  # available as INPUT_LABELS in github they expect this as list but in yaml we can't pass list
+  # so what we do we will pass the labels value as like this v1,bug,feature
+  # in our action we will split it by ,
+  labels:
+    required: false
+    default: ''
+    description: Labels of the issue
+  # assignees input in github api is just like labels we will do the same for assignees
+  assignees: # available as INPUT_ASSIGNEES
+    required: false
+    description: Assignees of the issue
+    default: '' # default value of variable if not provided
+  body: # body as INPUT_BODY
+    required: false
+    default: ''
+    description: Body of the issue
+
+# definition how we want our action
+runs:
+  using: docker # we are saying this action will run on docker
+  image: 'Dockerfile' # we will use our own Dockerfile to build an image and run it.
+
+# for publishing purposes
+branding: #generates a logo for our action
+  icon: arrow-down #icon of the image
+  color: blue # background color of the logo of our action
