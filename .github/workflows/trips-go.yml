@@ -2,9 +2,6 @@ name: API-Trips CI
 on:
   push:
     branches: [ master ]
-    paths: 
-      - 'api/trips/**'
-
   pull_request:
     branches: [ master ]
     paths: 
