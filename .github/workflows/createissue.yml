@@ -1,0 +1,20 @@
+name: Test Workflow
+on: push
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Action
+        # we can give directory path that contains action.yaml or repo address in username/repository_name format
+        # in our case it would be nashmaniac/create-issue-action
+        # for now we will give directory path. The directory must contain action.yaml
+        uses: ./
+        # pass user input as arguments
+        with:
+          title: Build Failed
+          token: ${{secrets.GITHUB_TOKEN}} # default token in GitHub Workflow
+          assignees: ${{github.actor}} # actor who started the workflow
+          labels: worflow-failed
+          body: Workflow failed for commit ${{github.sha}}
