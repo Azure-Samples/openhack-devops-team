@@ -1,6 +1,7 @@
 name: API-Trips CI    
 on:
   push:
+    branches: [ master ]
     paths: 
       - 'api/trips/**'
 
