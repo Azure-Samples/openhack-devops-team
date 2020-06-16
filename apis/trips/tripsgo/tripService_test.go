@@ -1,12 +1,16 @@
 package tripsgo
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var tripID string
@@ -144,6 +148,12 @@ var apiTestList = []APITestCase{
 		URL:    "/api/trips/{tripID}",
 		Status: 200,
 	},
+	{
+		Tag:    "t11 - Get All Trips for User",
+		Method: "GET",
+		URL:    "/api/trips/user/SomeUser",
+		Status: 200,
+	},
 }
 
 func TestTripApis(t *testing.T) {
@@ -190,6 +200,186 @@ func TestTripApis(t *testing.T) {
 	apiTestList[9].URL = strings.Replace(apiTestList[9].URL, "{tripID}", TripFromStr(apiTestList[2].ActualResponse).ID, 1)
 	// run update test
 	RunAPITests(t, router, apiTestList[5:10])
+
+	RunAPITests(t, router, apiTestList[10:11])
+}
+
+func TestGetAllTripsReturnsServerErrorIfBadDbConnection(t *testing.T) {
+	defer t.Cleanup(resetDataAccessEnvVars)
+
+	//arrange
+	os.Setenv("SQL_DRIVER", "not_a_real_driver")
+	RebindDataAccessEnvironmentVariables()
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+	var tr bool = true
+	debug = &tr
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t1 - Get all trips",
+			Method: "GET",
+			URL:    "/api/trips",
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "getAllTrips - Query Failed to Execute")
+}
+
+func TestGetAllTripsReturnsErrorScanningTripsIfMissingSqlFields(t *testing.T) {
+	defer t.Cleanup(resetDataAccessEnvVars)
+
+	//arrange
+	//oldSelectAllTripsQuery := func(SelectAllTripsQuery)
+	var OldSelectAllTripsQuery = SelectAllTripsQuery
+	SelectAllTripsQuery = func() string {
+		return `SELECT
+		Id
+		FROM Trips
+		WHERE Deleted = 0`
+	}
+	defer func() { SelectAllTripsQuery = OldSelectAllTripsQuery }()
+
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+	var tr bool = true
+	debug = &tr
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t1 - Get all trips",
+			Method: "GET",
+			URL:    "/api/trips",
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "GetAllTrips - Error scanning Trips")
+}
+
+func TestGetAllTripsForUsersReturnsServerErrorIfBadDbConnection(t *testing.T) {
+	defer t.Cleanup(resetDataAccessEnvVars)
+
+	//arrange
+	os.Setenv("SQL_DRIVER", "not_a_real_driver")
+	RebindDataAccessEnvironmentVariables()
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+	var tr bool = true
+	debug = &tr
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t11 - Get All Trips for User",
+			Method: "GET",
+			URL:    "/api/trips/user/SomeUser",
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "getAllTripsForUser - Error while retrieving trips from database")
+}
+
+func TestGetAllTripsForUserReturnsErrorScanningTripsIfMissingSqlFields(t *testing.T) {
+	defer t.Cleanup(resetDataAccessEnvVars)
+
+	//arrange
+	//oldSelectAllTripsQuery := func(SelectAllTripsQuery)
+	var OldSelectAllTripsForUserQuery = SelectAllTripsForUserQuery
+	SelectAllTripsForUserQuery = func(userID string) string {
+		return `SELECT
+		Id
+		FROM Trips
+		WHERE UserId ='` + userID + `'
+		AND Deleted = 0`
+	}
+	defer func() { SelectAllTripsForUserQuery = OldSelectAllTripsForUserQuery }()
+
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+	var tr bool = true
+	debug = &tr
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t11 - Get All Trips for User",
+			Method: "GET",
+			URL:    "/api/trips/user/SomeUser",
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "getAllTripsForUser - Error scanning Trips")
+}
+
+func TestCreateTripReturnsErrorifInvalidJsonBody(t *testing.T) {
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t3 - Create a Trip",
+			Method: "POST",
+			URL:    "/api/trips",
+			Body: `{
+				"Name":"Trip CREATE TEST",
+				"UserId":"GO_TEST",
+				"RecordedTimeStamp": "2018-04-19T19:08:16.03Z",
+				"EndTimeStamp": "2018-04-19T19:42:49.573Z",
+				"Rating":95,
+				"IsComplete":`,
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "Error while decoding json")
+}
+
+func TestUpdateTripReturnsErrorifInvalidJsonBody(t *testing.T) {
+	info := new(bytes.Buffer)
+	InitLogging(info, os.Stdout, os.Stdout)
+
+	//act
+	router := NewRouter()
+	RunAPITestsPlainText(t, router, []APITestCase{
+		{
+			Tag:    "t4 - Update a trip",
+			Method: "PATCH",
+			URL:    "/api/trips/{tripID}",
+			Body: `{
+				"Name":"Trip UPDATE TEST",
+				"UserId":"GO_TEST",
+				"RecordedTimeStamp": "2018-04-19T19:08:16.03Z",
+				"EndTimeStamp": "2018-04-19T19:42:49.573Z",
+				"Rating":`,
+			Status: 500,
+		},
+	})
+
+	//assert
+	actual := fmt.Sprint(info)
+	assert.Contains(t, actual, "Update Trip - Error while decoding trip json")
 }
 
 func GetUpdateTrip(tripCreate string, tripUpdate string) string {

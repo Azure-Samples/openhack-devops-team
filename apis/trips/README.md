@@ -16,16 +16,26 @@ go run main.go
 
 ## Testing
 
-To run unit tests, execute:
+* To run unit tests, execute:
 
-```shell
-go test ./tests
-```
+  ```shell
+  go test ./tripgo -run Unit
+  ```
 
-To run all integration tests, execute:
+To run all integration tests:
 
-```shell
-go test
-```
+* Add a file called .evn to the tripsgo folder with the following structue:
+  ```shell
+  SQL_SERVER="<-- your database server uri -- >"
+  SQL_PASSWORD="<-- your login password -- >"
+  SQL_USER="<-- your login user -- >"
+  SQL_DBNAME="<-- your database name -- >"
+  SQL_DRIVER="mssql"  
+  ```
+  You shouldn't need to change the SQL_DRIVER variable.
+* Execute:
+  ```shell
+  go test ./tripsgo
+  ```
 
 > Note: this requires an actual database connection, so the required ENV variables need to be present.
