@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "0.0.1",
+    "version": "0.0.3",
     "title": "MyDriving Trips API",
     "description": "API for the user in the My Driving example app. https://github.com/Azure-Samples/openhack-devops-team"
   },
