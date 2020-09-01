@@ -1,23 +1,40 @@
-name: API-POI
- 
+
+name: .NET Core
 on:
   push:
-    branches: [master]
- 
+    branches: [ master ]
+    paths: apis/poi/**
+  pull_request:
+    branches: [ master ]
+
 jobs:
-  BuildWebApi:
-    name: Build Web Api
+  
+  build:
     runs-on: ubuntu-latest
- 
+    continue-on-error: true
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.100-preview.6.20318.15
-      - name: Build API-POI
-        run: dotnet build 
-        #--configuration Release
-      - name: Execute Unit Tests API-POI
-        if: ${{ success() }}
-        run: dotnet test --no-restore --verbosity normal
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.1
+    - name: Install dependencies
+      working-directory: apis/poi
+      run: dotnet restore
+    - name: Build apo/poi
+      working-directory: apis/poi
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      id: Test
+      working-directory: apis/poi
+      run: dotnet test --no-restore --verbosity normal      
+    #- if: ${{ failure() }}      
+    #  name: Create Github Issue
+    #  uses: JasonEtco/create-an-issue@v2
+    #  env:
+    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # id: create-issue
+    #- run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
+    #- run: 'echo Created ${{ steps.create-issue.outputs.url }}'
+        
+      
