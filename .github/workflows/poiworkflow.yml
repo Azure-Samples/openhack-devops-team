@@ -33,13 +33,13 @@ jobs:
       with:
         name: published api poi
         path: apis/poi/    
-    #- if: ${{ failure() }}      
-    #  name: Create Github Issue
-    #  uses: JasonEtco/create-an-issue@v2
-    #  env:
-    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # id: create-issue
-    #- run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
-    #- run: 'echo Created ${{ steps.create-issue.outputs.url }}'
+    - if: ${{ failure() }}      
+      name: Create Github Issue
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      id: create-issue
+    - run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
+    - run: 'echo Created ${{ steps.create-issue.outputs.url }}'
         
       
