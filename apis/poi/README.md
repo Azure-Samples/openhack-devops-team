@@ -5,7 +5,7 @@
 
 ## Build the Application
 
-## Tests
+## Testsing
 
 ### Running the unit tests
 
