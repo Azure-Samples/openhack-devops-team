@@ -27,7 +27,12 @@ jobs:
     - name: Test
       id: Test
       working-directory: apis/poi
-      run: dotnet test --no-restore --verbosity normal      
+      run: dotnet test --no-restore --verbosity normal 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: published api poi
+        path: apis/poi/    
     #- if: ${{ failure() }}      
     #  name: Create Github Issue
     #  uses: JasonEtco/create-an-issue@v2
