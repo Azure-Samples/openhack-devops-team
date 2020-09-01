@@ -11,12 +11,13 @@ jobs:
  
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .Net
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.100-preview.6.20318.15
       - name: Build API-POI
-        run: dotnet build --configuration Release
+        run: dotnet build 
+        #--configuration Release
       - name: Execute Unit Tests API-POI
         if: ${{ success() }}
         run: dotnet test --no-restore --verbosity normal
