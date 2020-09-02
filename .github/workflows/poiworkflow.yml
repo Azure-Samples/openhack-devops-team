@@ -1,4 +1,4 @@
-name: API-POI CI BUILD
+name: API-POI CI/CD BUILD
 
 env:
   poi_path: apis/poi/**
