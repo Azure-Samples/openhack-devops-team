@@ -62,32 +62,64 @@ jobs:
               body: body
             });
       
-  docker_build_and_push:
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    needs: build_and_test
-    steps:
-      - name: ACR build
-        id: acr
-        uses: ams0/acr-task-github-action@v1
-        with:
-          service_principal: '${{ secrets.service_principal }}'
-          service_principal_password: '${{ secrets.service_principal_password }}'
-          tenant: '${{ secrets.tenant }}'
-          registry: '${{ secrets.registry }}'
-          repository: '${{ secrets.repository }}'
-          folder: apis/poi/web
-          image: api-poi
-          tag: '${{ github.run_number }}'
-      - name: Login via Az module
-        uses: azure/login@v1.1
-        with:
-          creds: '${{secrets.AZURE_CREDENTIALS}}'
-      - name: Deploy to Azure Web App for Container
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: $webapp_name
-          slot-name: staging
-          images: >-
-            $registry/$repository:${{github.run_number }}
-      #TESTING
+#  docker_build_and_push:
+#    if: github.ref == 'refs/heads/master'
+#    runs-on: ubuntu-latest
+#   needs: build_and_test
+#    steps:
+#      - name: ACR build
+#        id: acr
+#        uses: ams0/acr-task-github-action@v1
+#        with:
+#          service_principal: '${{ secrets.service_principal }}'
+#          service_principal_password: '${{ secrets.service_principal_password }}'
+#          tenant: '${{ secrets.tenant }}'
+#          registry: '${{ secrets.registry }}'
+#          repository: '${{ secrets.repository }}'
+#          folder: apis/poi/web
+#          image: api-poi
+#          tag: '${{ github.run_number }}'
+#      - name: Login via Az module
+#        uses: azure/login@v1.1
+#        with:
+#          creds: '${{secrets.AZURE_CREDENTIALS}}'
+#      - name: Deploy to Azure Web App for Container
+#        uses: azure/webapps-deploy@v2
+#        with:
+#          app-name: $webapp_name
+#          slot-name: staging
+#          images: >-
+#            $registry/$repository:${{github.run_number }}
+  
+  build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - run: |
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+
+        - name: 'Deploy to Azure WebApp'
+          uses: 'azure/webapps-deploy@v2'
+          with:
+            app-name: $webapp_name
+            slot-name: stagging
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}:${{github.run_number }}
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          
