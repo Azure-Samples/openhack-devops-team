@@ -77,8 +77,8 @@ jobs:
           username: '${{ secrets.REGISTRY_USERNAME }}'
           password: '${{ secrets.REGISTRY_PASSWORD }}'
       - run: >
-          docker docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
-          docker docker push $registry/$repository:${{github.run_number}}
+          docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
+          docker push $registry/$repository:${{github.run_number}}
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
