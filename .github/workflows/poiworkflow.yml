@@ -61,13 +61,14 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
+ 
 
-  build-and-deploy:
+  docker_build_and_push:
     needs: build_and_test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout GitHub Action
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
@@ -78,9 +79,9 @@ jobs:
           login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
           username: '${{ secrets.REGISTRY_USERNAME }}'
           password: '${{ secrets.REGISTRY_PASSWORD }}'
-      - run: >-
-          docker build -f apis/poi/web -t openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --build-arg build_version=${{github.run_number}}:${{ github.sha }}
-          docker push openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}:${{ github.sha }}
+      - run:
+          docker build -f apis/poi/web -t openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --build-arg build_version=${{github.run_number}}
+          docker push openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
