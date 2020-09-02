@@ -88,10 +88,11 @@ jobs:
         with:
           app-name: openhackk5a3rha7poi
           slot-name: stagging
-          image: '${{ secrets.REGISTRY_LOGIN_SERVER }}:${{github.run_number }}'
+          images: '${{ secrets.REGISTRY_LOGIN_SERVER }}:${{github.run_number }}'
           registry-login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
           registry-username: '${{ secrets.REGISTRY_USERNAME }}'
           registry-password: '${{ secrets.REGISTRY_PASSWORD }}'
+
       - uses: actions/github-script@0.9.0
         if: failure()
         with:
