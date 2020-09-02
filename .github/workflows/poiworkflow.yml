@@ -87,7 +87,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: openhackk5a3rha7poi
-          slot-name: stagging
+          slot-name: staging
           images: '${{ secrets.REGISTRY_LOGIN_SERVER }}:${{github.run_number }}'
           registry-login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
           registry-username: '${{ secrets.REGISTRY_USERNAME }}'
