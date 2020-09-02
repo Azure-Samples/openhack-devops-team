@@ -1,4 +1,3 @@
-
 name: API-POI CI BUILD
 on:
   #push:
@@ -23,23 +22,25 @@ jobs:
       run: dotnet restore
     - name: Build apo/poi
       working-directory: apis/poi
-      run: dotnetsssss build --configuration Release --no-restore
+      run: dotnetsss build --configuration Release --no-restore
     - name: Test
       id: Test
       working-directory: apis/poi
-      run: dotnet test --no-restore --verbosity normal 
+      run: dotnetssssss test --no-restore --verbosity normal 
     - name: Upload Artifact
       uses: actions/upload-artifact@v1.0.0
       with:
         name: published api poi
-        path: apis/poi/    
-    - if: ${{ failure() }}      
-      name: Create Github Issue
-      uses: JasonEtco/create-an-issue@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      id: create-issue
-    - run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
-    - run: 'echo Created ${{ steps.create-issue.outputs.url }}'
-        
-      
+        path: apis/poi/   
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });       
