@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
     - name: Build apo/poi
       working-directory: apis/poi
-      run: dotnetsss build --configuration Release --no-restore
+      run: dotnetsssss build --configuration Release --no-restore
     - name: Test
       id: Test
       working-directory: apis/poi
