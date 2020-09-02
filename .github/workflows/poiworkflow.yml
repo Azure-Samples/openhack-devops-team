@@ -1,8 +1,8 @@
 
 name: API-POI CI BUILD
 on:
-  push:
-    branches: [ master ]
+  #push:
+  #  branches: [ master ]
     #paths: apis/poi/**
   pull_request:
     branches: [ master ]
@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
     - name: Build apo/poi
       working-directory: apis/poi
-      run: dotnet build --configuration Release --no-restore
+      run: dotnetsss build --configuration Release --no-restore
     - name: Test
       id: Test
       working-directory: apis/poi
