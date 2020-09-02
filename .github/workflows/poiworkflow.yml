@@ -42,7 +42,13 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         name: published api poi
+<<<<<<< Updated upstream
         path: apis/poi/   
+=======
+        path: apis/poi/
+       - uses: actions/github-script@0.9.0
+        
+>>>>>>> Stashed changes
     - uses: actions/github-script@0.9.0
       if: failure()
       with:
@@ -54,6 +60,7 @@ jobs:
             repo: context.repo.repo,
             title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
             body: body
+<<<<<<< Updated upstream
           });
 
   docker_build_and_push:
@@ -84,3 +91,6 @@ jobs:
             title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
             body: body
           });   
+=======
+          });
+>>>>>>> Stashed changes
