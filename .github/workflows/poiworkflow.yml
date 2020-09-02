@@ -1,7 +1,18 @@
 name: API-POI CI BUILD
+
+env:
+  poi_path: apis/poi/**
+  registry: openhackk5a3rha7acr.azurecr.io
+  repository: devopsoh/api-poi
+  docker_path: apis/poi/web
+  staging_url: https://openhackk5a3rha7poi-staging.azurewebsites.net
+  prod_url: https://openhackk5a3rha7poi.azurewebsites.net
+  resource_group: openhackk5a3rha7rg
+  webapp_name: openhackk5a3rha7poi
+  build_name: POI
 on:
-  #push:
-  #  branches: [ master ]
+  push:
+    branches: [ master ]
     #paths: apis/poi/**
   pull_request:
     branches: [ master ]
@@ -43,4 +54,33 @@ jobs:
             repo: context.repo.repo,
             title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
             body: body
-          });       
+          });
+
+  docker_build_and_push:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:     
+    - uses: actions/checkout@v2
+
+    - name: Docker login     
+      run: docker login $registry -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Docker build
+      run: docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
+
+    - name: Docker Push
+      run: docker push $registry/$repository:${{github.run_number}}
+
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });   
