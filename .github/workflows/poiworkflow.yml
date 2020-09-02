@@ -1,5 +1,4 @@
 name: API-POI CI/CD BUILD
-
 env:
   poi_path: apis/poi/**
   registry: openhackk5a3rha7acr.azurecr.io
@@ -15,12 +14,12 @@ on:
     branches: [ master ]
     paths: 
       - apis/poi/**  
-      - .github/workflows/poi.yml
+      - .github/workflows/poiworkflow.yml
   pull_request:
     branches: [ master ]
     paths: 
       - apis/poi/**
-      - .github/workflows/poi.yml
+      - .github/workflows/poiworkflow.yml
 
 jobs:
   build_and_test:
