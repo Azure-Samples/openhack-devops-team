@@ -13,42 +13,49 @@ env:
 on:
   push:
     branches: [ master ]
-    #paths: apis/poi/**
+    paths: 
+      - apis/poi/**  
+      - .github/workflows/poi.yml
   pull_request:
     branches: [ master ]
+    paths: 
+      - apis/poi/**
+      - .github/workflows/poi.yml
 
 jobs:
-  
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.1
+        dotnet-version: '3.1.202'
+    - name: Add Code Coverage Tools
+      working-directory: apis/poi/tests/UnitTests
+      run: dotnet add package coverlet.msbuild
+
     - name: Install dependencies
-      working-directory: apis/poi
-      run: dotnet restore
-    - name: Build apo/poi
-      working-directory: apis/poi
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      id: Test
-      working-directory: apis/poi
-      run: dotnetsssssssss test --no-restore --verbosity normal 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
+      run: dotnet restore apis/poi/web/*.csproj
+      
+    - name: .NET Build Web
+      run: dotnet build --configuration Release --no-restore apis/poi/web/*.csproj
+
+    - name: .NET Build Unit Tests
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
+
+    - name: .NET Test
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests  /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
+      
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
       with:
-        name: published api poi
-<<<<<<< Updated upstream
-        path: apis/poi/   
-=======
-        path: apis/poi/
-       - uses: actions/github-script@0.9.0
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
+        base-path: apis/poi
+        flag-name: Unit
         
->>>>>>> Stashed changes
     - uses: actions/github-script@0.9.0
       if: failure()
       with:
@@ -60,9 +67,7 @@ jobs:
             repo: context.repo.repo,
             title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
             body: body
-<<<<<<< Updated upstream
           });
-
   docker_build_and_push:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
@@ -77,7 +82,7 @@ jobs:
       run: docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
 
     - name: Docker Push
-      run: docker push $registry/$repository:${{github.run_number}}
+      run: docker push $registry/$repository:${{github.run_number}}  
 
     - uses: actions/github-script@0.9.0
       if: failure()
@@ -90,7 +95,4 @@ jobs:
             repo: context.repo.repo,
             title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
             body: body
-          });   
-=======
           });
->>>>>>> Stashed changes
