@@ -90,3 +90,4 @@ jobs:
           slot-name: staging
           images: >-
             $registry/$repository:${{github.run_number }}
+      #TESTING
