@@ -80,7 +80,7 @@ jobs:
           folder: apis/poi/web
           image: api-poi
           tag: ${{ github.run_number }}
-          
+
       - name: Checkout GitHub Action
         uses: actions/checkout@v2
       - name: Login via Azure CLI
@@ -93,10 +93,6 @@ jobs:
           login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
           username: '${{ secrets.REGISTRY_USERNAME }}'
           password: '${{ secrets.REGISTRY_PASSWORD }}'
-
-      #- run:
-      #    docker build -f apis/poi/web -t openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --build-arg build_version=${{github.run_number}}
-      #    docker push openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
@@ -125,3 +121,7 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
+
+ #- run:
+      #    docker build -f apis/poi/web -t openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --build-arg build_version=${{github.run_number}}
+      #    docker push openhackk5a3rha7acr.azurecr.io/devopsoh/api-poi:${{github.run_number}}
