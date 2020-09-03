@@ -46,7 +46,6 @@ jobs:
         run: >-
           dotnet build --configuration Release
           apis/poi/tests/UnitTests/UnitTests.csproj
-
       - uses: actions/github-script@0.9.0
         if: failure()
         with:
@@ -57,26 +56,29 @@ jobs:
             github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{
             github.sha }}](https://github.com/${{ github.repository
             }}/commit/${{ github.sha }}) \n";
-
             github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
-
   docker_build_and_push:
     needs: build_and_test
     runs-on: ubuntu-latest
     steps:
-      - name: Docker login
-        run: docker login $registry -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
-
-      - name: Docker build
-        run: docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
-
-      - name: Docker Push
-        run: docker push $registry/$repository:${{github.run_number}}
+      
+      - name: ACR Build and PUSH IMAGE
+        id: acr
+        uses: ams0/acr-task-github-action@v1
+        with:
+          service_principal: ${{ secrets.service_principal }}
+          service_principal_password: ${{ secrets.service_principal_password }}
+          tenant: ${{ secrets.tenant }}
+          registry: ${{ secrets.registry }}
+          repository: ${{ secrets.repository }}          
+          folder: apis/poi/web
+          image: api-poi
+          tag: ${{ github.run_number }}
     
       - name: Checkout GitHub Action
         uses: actions/checkout@master
@@ -106,7 +108,6 @@ jobs:
             github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{
             github.sha }}](https://github.com/${{ github.repository
             }}/commit/${{ github.sha }}) \n";
-
             github.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
