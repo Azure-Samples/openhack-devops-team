@@ -3,7 +3,7 @@ env:
   poi_path: apis/poi/**
   registry: openhackk5a3rha7acr.azurecr.io
   repository: devopsoh/api-poi
-  docker_path: apis/poi/web
+  docker_path: apis/poi/web/*
   staging_url: 'https://openhackk5a3rha7poi-staging.azurewebsites.net'
   prod_url: 'https://openhackk5a3rha7poi.azurewebsites.net'
   resource_group: openhackk5a3rha7rg
@@ -73,7 +73,7 @@ jobs:
         run: docker login $registry -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
 
       - name: Docker build
-        run: docker build -f $docker_path -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} 
+        run: docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path 
 
       - name: Docker Push
         run: docker push $registry/$repository:${{github.run_number}}
