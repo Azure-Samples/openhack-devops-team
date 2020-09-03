@@ -34,8 +34,10 @@ jobs:
       - name: Add Code Coverage Tools
         working-directory: apis/poi/tests/UnitTests
         run: dotnet add package coverlet.msbuild
+
       - name: Install dependencies
         run: dotnet restore apis/poi/web/*.csproj
+
       - name: .NET Build Web
         run: >-
           dotnet build --configuration Release --no-restore
@@ -44,6 +46,7 @@ jobs:
         run: >-
           dotnet build --configuration Release
           apis/poi/tests/UnitTests/UnitTests.csproj
+
       - uses: actions/github-script@0.9.0
         if: failure()
         with:
@@ -61,7 +64,6 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
- 
 
   docker_build_and_push:
     needs: build_and_test
@@ -80,8 +82,16 @@ jobs:
           folder: apis/poi/web
           image: api-poi
           tag: ${{ github.run_number }}
+    
+      - name: Checkout GitHub Action
+        uses: actions/checkout@master
 
-      - name: Deploy to Azure WebApp
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+
+      - name: Deploy to Azure WebApp Service
         uses: azure/webapps-deploy@v2
         with:
           app-name: openhackk5a3rha7poi
