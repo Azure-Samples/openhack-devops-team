@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-      - name: ACR build
+      - name: ACR Build and PUSH IMAGE
         id: acr
         uses: ams0/acr-task-github-action@v1
         with:
@@ -78,21 +78,7 @@ jobs:
           registry: ${{ secrets.registry }}
           repository: ${{ secrets.repository }}          
           folder: apis/poi/web
-          image: api-poi
           tag: ${{ github.run_number }}
-
-      - name: Checkout GitHub Action
-        uses: actions/checkout@v2
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
-      - name: Build and push image
-        uses: azure/docker-login@v1
-        with:
-          login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
-          username: '${{ secrets.REGISTRY_USERNAME }}'
-          password: '${{ secrets.REGISTRY_PASSWORD }}'
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v2
