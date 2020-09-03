@@ -113,18 +113,3 @@ jobs:
               title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
               body: body
             });
-
-      
-            
-#      - name: ACR Build and PUSH IMAGE
-#       id: acr
-#        uses: ams0/acr-task-github-action@v1
-#        with:
-#          service_principal: ${{ secrets.service_principal }}
-#          service_principal_password: ${{ secrets.service_principal_password }}
-#          tenant: ${{ secrets.tenant }}
-#          registry: ${{ secrets.registry }}
-#          repository: ${{ secrets.repository }}          
-#          folder: apis/poi/web
-#          image: api-poi
-##          tag: ${{ github.run_number }}
