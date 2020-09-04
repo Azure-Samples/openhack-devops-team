@@ -9,108 +9,230 @@ env:
   resource_group: openhackk5a3rha7rg
   webapp_name: openhackk5a3rha7poi
   build_name: POI
-'on':
+on:
   push:
-    branches:
-      - master
-    paths:
-      - apis/poi/**
-      - .github/workflows/poiworkflow.yml
+    branches: [ master ]
+    paths: 
+      - apis/poi/**  
+      - .github/workflows/poi.yml
   pull_request:
-    branches:
-      - master
-    paths:
+    branches: [ master ]
+    paths: 
       - apis/poi/**
-      - .github/workflows/poiworkflow.yml
+      - .github/workflows/poi.yml
+
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.202
-      - name: Add Code Coverage Tools
-        working-directory: apis/poi/tests/UnitTests
-        run: dotnet add package coverlet.msbuild
+    - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: dotnet restore apis/poi/web/*.csproj
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.202'
+    - name: Add Code Coverage Tools
+      working-directory: apis/poi/tests/UnitTests
+      run: dotnet add package coverlet.msbuild
 
-      - name: .NET Build Web
-        run: >-
-          dotnet build --configuration Release --no-restore
-          apis/poi/web/*.csproj
-      - name: .NET Build Unit Tests
-        run: >-
-          dotnet build --configuration Release
-          apis/poi/tests/UnitTests/UnitTests.csproj
-      - uses: actions/github-script@0.9.0
-        if: failure()
-        with:
-          github-token: '${{secrets.GITHUB_TOKEN}}'
-          script: >
-            let body = "${{ env.build_name }} Worflow Failure \n Build Number:
-            ${{ github.run_number }} \n Build Log: https://github.com/${{
-            github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{
-            github.sha }}](https://github.com/${{ github.repository
-            }}/commit/${{ github.sha }}) \n";
-            github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
-              body: body
-            });
-  docker_build_and_push:
-    needs: build_and_test
-    runs-on: ubuntu-latest
-    steps:
+    - name: Install dependencies
+      run: dotnet restore apis/poi/web/*.csproj
       
-      - name: ACR Build and PUSH IMAGE
-        id: acr
-        uses: ams0/acr-task-github-action@v1
-        with:
-          service_principal: ${{ secrets.service_principal }}
-          service_principal_password: ${{ secrets.service_principal_password }}
-          tenant: ${{ secrets.tenant }}
-          registry: ${{ secrets.registry }}
-          repository: ${{ secrets.repository }}          
-          folder: apis/poi/web
-          image: api-poi
-          tag: ${{ github.run_number }}
-    
-      - name: Checkout GitHub Action
-        uses: actions/checkout@master
+    - name: .NET Build Web
+      run: dotnet build --configuration Release --no-restore apis/poi/web/*.csproj
 
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+    - name: .NET Build Unit Tests
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
 
-      - name: Deploy to Azure WebApp Service
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: openhackk5a3rha7poi
-          slot-name: Dev
-          images: '${{ secrets.REGISTRY_LOGIN_SERVER }}:${{github.run_number }}'
-          registry-login-server: '${{ secrets.REGISTRY_LOGIN_SERVER }}'
-          registry-username: '${{ secrets.REGISTRY_USERNAME }}'
-          registry-password: '${{ secrets.REGISTRY_PASSWORD }}'
+    - name: .NET Test
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests  /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
+      
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
+        base-path: apis/poi
+        flag-name: Unit
+        
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
 
-      - uses: actions/github-script@0.9.0
-        if: failure()
-        with:
-          github-token: '${{secrets.GITHUB_TOKEN}}'
-          script: >
-            let body = "${{ env.build_name }} Worflow Failure \n Build Number:
-            ${{ github.run_number }} \n Build Log: https://github.com/${{
-            github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{
-            github.sha }}](https://github.com/${{ github.repository
-            }}/commit/${{ github.sha }}) \n";
-            github.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
-              body: body
-            });
+  docker_build_and_push:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:     
+    - uses: actions/checkout@v2
+
+    - name: Docker login     
+      run: docker login $registry -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
+
+    - name: Docker build
+      run: docker build -t $registry/$repository:${{github.run_number}} --build-arg build_version=${{github.run_number}} $docker_path
+
+    - name: Docker Push
+      run: docker push $registry/$repository:${{github.run_number}}  
+
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
+
+  deploy_staging:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: docker_build_and_push
+    steps:
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.webapp_name }}
+        slot-name: staging
+        images: ${{ env.registry }}/${{ env.repository }}:${{github.run_number}}
+
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
+
+  validate_staging:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: deploy_staging
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Set Expected Validation Tag"
+      run: sed -i 's/<--tag-->/${{github.run_number}}/g' apis/poi/webvalidate/validate.json
+
+    - name: Build Validation Container
+      run: docker build -t poivalidate apis/poi/webvalidate
+
+    - name: Web Validate 
+      run: ./run.sh poivalidate $staging_url 
+
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
+
+  swap_slots:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: validate_staging
+    steps:
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+
+    - name: Swap staging to production
+      run: |
+        az webapp deployment slot swap --name $webapp_name --resource-group $resource_group --slot staging --target-slot production
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
+
+  validate_production:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: swap_slots
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Set Expected Validation Tag"
+      run: sed -i 's/<--tag-->/${{github.run_number}}/g' apis/poi/webvalidate/validate.json
+
+    - name: Build Validation Container
+      run: docker build -t poivalidate apis/poi/webvalidate
+
+    - name: Web Validate 
+      run: ./run.sh poivalidate $prod_url   
+
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
+
+  roll_back:
+    if: failure()
+    runs-on: ubuntu-latest
+    needs: validate_production
+    steps:
+    - name: Azure authentication
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+
+    - name: Swap production and staging
+      run: |
+        az webapp deployment slot swap --name $webapp_name --resource-group $resource_group --slot staging --target-slot production 
+    - uses: actions/github-script@0.9.0
+      if: failure()
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+          github.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+            body: body
+          });
