@@ -1,0 +1,12 @@
+# Hacker 1 owns the POI API 
+/apis/poi/ hacker1xsn@OTAPRD1576ops.onmicrosoft.com
+
+# Hacker 2 owns the Trips API
+/apis/trips/ hacker2n7y@OTAPRD1576ops.onmicrosoft.com
+
+# Hacker 3 owns the User-Java API
+/apis/user-java/ hacker36yi@OTAPRD1576ops.onmicrosoft.com
+
+# Hacker 4 owns the User Profile API
+/apis/userprofile/ hacker46y2@OTAPRD1576ops.onmicrosoft.com
+
