@@ -37,19 +37,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
         assignees: anujb
-      - run: 'echo Created issue number ${{ steps.create-issue.outputs.number }}'
-      - run: 'echo Created ${{ steps.create-issue.outputs.url }}'
-
-
-- name: Create an issue
-  # You may pin to the exact commit or the version.
-  # uses: JasonEtco/create-an-issue@e6b4b190af80961b6462c725454e7828d0247a68
-
-  with:
-    # GitHub handle of the user(s) to assign the issue (comma-separated)
-    assignees: anujb
-    # Number of the milestone to assign the issue to
-    milestone: # optional
-    # The name of the file to use as the issue template
-    filename: # optional, default is .github/ISSUE_TEMPLATE.md
-      
