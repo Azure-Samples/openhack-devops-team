@@ -3,7 +3,7 @@
 
 * @shooker
 
-/apis/poi/ @selleny
-/apis/trips/ @hraffaele
-/apis/user-java/ @MSFTDELANEY
-/apis/userprofile/ @JSandersMSFT
+/apis/poi/ @selleny @hraffaele
+/apis/trips/ @hraffaele @shooker
+/apis/user-java/ @MSFTDELANEY @selleny
+/apis/userprofile/ @JSandersMSFT @MSFTDELANEY 
