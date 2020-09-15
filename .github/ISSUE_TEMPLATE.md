@@ -1,8 +1,11 @@
-<!--
-IF SUFFICIENT INFORMATION IS NOT PROVIDED VIA THE FOLLOWING TEMPLATE THE ISSUE MIGHT BE CLOSED WITHOUT FURTHER CONSIDERATION OR INVESTIGATION
--->
-> Please provide us with the following information:
-> ---------------------------------------------------------------
+---
+title: Issue from build failure
+assignees: anujb
+labels: bug
+---
+
+Oh no — someone just pushed a failing build! Here's who did it: {{ payload.sender.login }}.
+
 
 ### This issue is for a: (mark with an `x`)
 ```
