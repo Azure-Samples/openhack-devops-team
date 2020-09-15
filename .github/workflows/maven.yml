@@ -6,7 +6,7 @@ name: Java CI with Maven
 on:
   push:
     paths:
-      - apis/user-java/**
+      - 'apis/user-java/**'
 on:
   push:
     branches: [ master ]
