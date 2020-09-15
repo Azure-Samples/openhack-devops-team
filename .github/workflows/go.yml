@@ -3,7 +3,7 @@ name: Go
 on:
   push:
     paths: 
-      - 'apis/trips/**.go'
+      - 'apis/trips/**'
     branches: [ master ]
   pull_request:
     branches: [ master ]
