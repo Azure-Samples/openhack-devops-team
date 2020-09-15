@@ -7,8 +7,6 @@ on:
   push:
     paths:
       - 'apis/user-java/**'
-on:
-  push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
