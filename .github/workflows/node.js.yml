@@ -11,7 +11,10 @@ on:
   pull_request:
     branches: [ master ]
 
-    
+defaults:
+  run:
+    working-directory: apis/userprofile/
+
 jobs:
   build:
 
