@@ -7,6 +7,12 @@ on:
   push:
     paths: 
       - 'apis/userprofile/**'
+    branches:
+      - master
+# This would not satisfy Challenge 4 becuase the PR would trigger the workflow
+#   pull_request:
+#     branches:
+#       - master
 
 defaults:
   run:
@@ -14,7 +20,6 @@ defaults:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
