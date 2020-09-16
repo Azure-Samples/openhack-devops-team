@@ -41,3 +41,11 @@ jobs:
 
     - name: Test
       run: go test -v .
+    
+    - name: Create issue if job failed
+      uses: JasonEtco/create-an-issue@v2.4.0
+      if: ${{ failure() }} #https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#failure
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:      
+        assignees: iamjenetzler #this could be parameterized if production...
