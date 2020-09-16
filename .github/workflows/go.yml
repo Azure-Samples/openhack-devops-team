@@ -48,4 +48,4 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
-        assignees: iamjenetzler
+        assignees: iamjenetzler #this could be parameterized if production...
