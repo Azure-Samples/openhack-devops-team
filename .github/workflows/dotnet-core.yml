@@ -24,4 +24,4 @@ jobs:
     - name: BuildTest
       run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
     - name: Test
-      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTest
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests
