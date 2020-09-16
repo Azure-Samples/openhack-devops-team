@@ -28,3 +28,10 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Create issue if job failed
+      uses: JasonEtco/create-an-issue@v2.4.0
+      if: ${{ failure() }} #https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#failure
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:      
+        assignees: travisliles
