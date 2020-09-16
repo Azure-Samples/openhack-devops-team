@@ -48,18 +48,6 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
-        assignees: iamjenetzler #this could be parameterized if production...             
+        assignees: iamjenetzler #this could be parameterized if production...           
         
-  build-and-deploy:  
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2 #checks out the file
-    - uses: azure/docker-login@v1
-      with:
-        login-server: openhackscu6b3d6acr.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-    - name: build and push docker image
-      run: |
-        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
-        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
+ 
