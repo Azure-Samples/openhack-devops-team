@@ -5,8 +5,6 @@ on:
     - apis/poi/**
   pull_request:
     branches: [master]
-    paths:
-    - apis/poi/**
 
 jobs:
   build:
