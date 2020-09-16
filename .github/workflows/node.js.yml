@@ -7,8 +7,6 @@ on:
   push:
     paths: 
       - 'apis/userprofile/**'
-    branches:
-      - master
 # This would not satisfy Challenge 4 becuase the PR would trigger the workflow
 #   pull_request:
 #     branches:
@@ -42,27 +40,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
         assignees: anujb
-  build-and-deploy:  
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: azure/docker-login@v1
-      with:
-        login-server: openhackscu6b3d6acr.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-    - name: build and push docker image
-      run: |
-        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
-        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
-
-#     - name: 'Deploy to Azure Container Instances'
-#       uses: 'azure/aci-deploy@v1'
-#       with:
-#         resource-group: contoso
-#         dns-name-label: url-for-container
-#         image: contoso.azurecr.io/nodejssampleapp:${{ github.sha }}
-#         registry-username: ${{ secrets.REGISTRY_USERNAME }}
-#         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-#         name: contoso-container
-#         location: 'west us'
