@@ -8,8 +8,8 @@ on:
     paths:
       - 'apis/user-java/**'
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
 
 defaults:
   run:
