@@ -24,6 +24,8 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore 
+    - name: BuildTest
+      run: dotnet build --configuration Release --no-restore apis/poi/tests/UnitTests/UtilityTests.csproj
     - name: Test
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTest
