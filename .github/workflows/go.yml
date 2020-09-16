@@ -5,8 +5,8 @@ on:
     paths: 
       - 'apis/trips/**'
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  #pull_request: #This wouldn't satisfy the ch4 requirements (no build on PRs)
+    #branches: [ master ]
     
 defaults:
   run:
@@ -53,7 +53,7 @@ jobs:
   build-and-deploy:  
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2 #checks out the file
     - uses: azure/docker-login@v1
       with:
         login-server: openhackscu6b3d6acr.azurecr.io
@@ -61,5 +61,5 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - name: build and push docker image
       run: |
-        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
-        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
+        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
+        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
