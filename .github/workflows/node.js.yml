@@ -48,7 +48,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - name: build docker image
       run: |
-        docker build -t openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
+        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
         docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
 
 #     - name: 'Deploy to Azure Container Instances'
