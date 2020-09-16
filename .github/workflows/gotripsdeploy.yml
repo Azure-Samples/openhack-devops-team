@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Node Build and Deploy
+name: Go Trips Build and Deploy
 
 on:
   push:
