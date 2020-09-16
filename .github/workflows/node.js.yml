@@ -46,7 +46,7 @@ jobs:
         login-server: openhackscu6b3d6acr.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-    - name: build docker image
+    - name: build and push docker image
       run: |
         docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
         docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
