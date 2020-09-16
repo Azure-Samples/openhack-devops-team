@@ -5,6 +5,8 @@ on:
     - apis/poi/**
   pull_request:
     branches: [master]
+    paths:
+    - apis/poi/**
 
 jobs:
   build:
@@ -32,4 +34,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
         assignees: brianlo-ms
-
