@@ -5,6 +5,8 @@ on:
     - apis/poi/**
   pull_request:
     branches: [master]
+    paths:
+    - apis/poi/**
 
 jobs:
   build:
@@ -25,3 +27,10 @@ jobs:
       run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
     - name: Test
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests
+    - name: Create issue if job failed
+      uses: JasonEtco/create-an-issue@v2.4.0
+      if: ${{ failure() }} #https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#failure
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:      
+        assignees: brianlo-ms
