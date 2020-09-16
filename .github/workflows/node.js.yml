@@ -37,14 +37,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:      
         assignees: anujb
+  build-and-deploy:  
+    runs-on: ubuntu-latest
+    steps:
     - uses: azure/docker-login@v1
       with:
         login-server: openhackscu6b3d6acr.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-#     - run: |
-#         docker build .t contoso.azurecr.io/nodejssampleapp:${{ github.sha }}
-#         docker push contoso.azurecr.io/nodejssampleapp:${{ github.sha }}
+    - name: build docker image
+      run: |
+        docker build -t openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
+        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-userprofile:${{ github.sha }}
 
 #     - name: 'Deploy to Azure Container Instances'
 #       uses: 'azure/aci-deploy@v1'
