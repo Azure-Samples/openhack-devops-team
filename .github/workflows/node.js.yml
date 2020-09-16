@@ -40,6 +40,7 @@ jobs:
   build-and-deploy:  
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
       with:
         login-server: openhackscu6b3d6acr.azurecr.io
