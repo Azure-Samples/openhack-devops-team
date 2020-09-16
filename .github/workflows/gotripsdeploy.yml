@@ -1,0 +1,27 @@
+# This is a basic workflow that is manually triggered
+
+name: Node Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+defaults:
+  run:
+    working-directory: apis/trips/
+
+jobs:
+  build-and-deploy:  
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+        login-server: openhackscu6b3d6acr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - name: build and push docker image
+      run: |
+        docker build . --file Dockerfile --tag openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
+        docker push openhackscu6b3d6acr.azurecr.io/devopsoh/api-trips:${{ github.sha }}
