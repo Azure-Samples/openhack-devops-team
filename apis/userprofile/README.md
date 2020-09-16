@@ -26,4 +26,4 @@ npm run test
 
 There will be a junit formatted report file called userprofile-report.xml under the current userprofile directory `/reports` subfolder.
 
-## Hello World Test at 2:57PM
+## Hello World Test at 11:43AM
