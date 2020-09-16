@@ -22,10 +22,10 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore apis/poi/web/*.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore 
+      run: dotnet build --configuration Release --no-restore apis/poi/web/*.csproj
     - name: BuildTest
-      run: dotnet build --configuration Release --no-restore apis/poi/tests/UnitTests/UnitTests.csproj
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
     - name: Test
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTest
