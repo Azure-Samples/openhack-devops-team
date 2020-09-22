@@ -1,0 +1,35 @@
+name: .NET Core
+
+on:
+  push:
+    branches-ignore: 'master'
+    paths: 'apis/poi/**'
+  pull_request:
+    paths: 'apis/poi/**'
+    branches-ignore: 'master'
+
+env:
+  POI_PATH: './apis/poi/web'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.103
+    - name: Install dependencies
+      run: dotnet restore './apis/poi/web'
+    - name: Build
+      run: dotnet build './apis/poi/web' --configuration Release
+    - name: .NET Build Unit Tests
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
+    - name: Test
+      run: dotnet test './apis/poi/tests/UnitTests'
+    - name: Publish
+      run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
+
