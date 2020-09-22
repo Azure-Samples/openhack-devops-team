@@ -26,6 +26,8 @@ jobs:
       run: dotnet restore './apis/poi/web'
     - name: Build
       run: dotnet build './apis/poi/web' --configuration Release
+    - name: .NET Build Unit Tests
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
     - name: Test
       run: dotnet test './apis/poi/tests/UnitTests'
     - name: Publish
