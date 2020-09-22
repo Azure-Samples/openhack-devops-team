@@ -7,7 +7,7 @@ on:
     branches: [ openhack-team7 ]
 
 env:
-  POI_PATH: './apis/poi'
+  POI_PATH: '/apis/poi'
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore './apis/poi/web/poi.cspoj'
+      run: dotnet restore '/apis/poi/web/poi.cspoj'
     - name: Build
       run: dotnet build --configuration Release
     - name: Publish
