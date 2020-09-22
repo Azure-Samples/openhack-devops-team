@@ -3,10 +3,10 @@ name: .NET Core
 on:
   push:
     branches: [ openhack-team7 ]
-    paths: 'apis/poi/web/**'
+    paths: 'apis/poi/**'
   pull_request:
     branches: [ openhack-team7 ]
-    paths: 'apis/poi/web/**'
+    paths: 'apis/poi/**'
 
 env:
   POI_PATH: './apis/poi/web'
