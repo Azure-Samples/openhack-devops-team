@@ -7,7 +7,7 @@ on:
     branches: [ openhack-team7 ]
 
 env:
-  POI_PATH: '/apis/poi/web'
+  POI_PATH: './apis/poi/web'
 
 jobs:
   build:
@@ -24,6 +24,8 @@ jobs:
       run: dotnet restore './apis/poi/web'
     - name: Build
       run: dotnet build './apis/poi/web' --configuration Release
+    - name: Test
+      run: dotnet test './apis/poi/tests' --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
 
