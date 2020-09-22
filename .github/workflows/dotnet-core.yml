@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build './apis/poi/web' --configuration Release
     - name: Test
-      run: dotnet test './apis/poi/tests' --no-restore --verbosity normal
+      run: dotnet test './apis/poi/tests/UnitTests' --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
 
