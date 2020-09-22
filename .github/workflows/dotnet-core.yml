@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore './apis/poi/web'
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build './apis/poi/web' --configuration Release
     - name: Publish
       run: dotnet publish -c Release -o '${{env.POI_PATH}}/output'
 
