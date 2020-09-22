@@ -2,11 +2,13 @@ name: .NET Core
 
 on:
   push:
-    branches: [ openhack-team7 ]
+    branches: '**'
+    branches-ignore: 'master'
     paths: 'apis/poi/**'
   pull_request:
-    branches: [ openhack-team7 ]
+    branches: '**'
     paths: 'apis/poi/**'
+    branches-ignore: 'master'
 
 env:
   POI_PATH: './apis/poi/web'
