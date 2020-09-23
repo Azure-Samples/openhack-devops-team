@@ -2,10 +2,10 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master ]
+    branches: '**'
     paths: 'apis/poi/**'
   pull_request:
-    branches: [ master ]
+    branches: '**'
     paths: 'apis/poi/**'
 
 env:
@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: job1
     
+    if: ${{ github.ref == 'master' }}
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@master
