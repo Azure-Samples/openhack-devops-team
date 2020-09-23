@@ -1,4 +1,7 @@
-on: [push]
+on: 
+  push:
+    branches: [ master ]
+    paths: 'apis/poi/**'
 
 name: Linux_Container_dotnet_poi_Workflow
 
