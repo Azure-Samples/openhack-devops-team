@@ -12,8 +12,7 @@ env:
   POI_PATH: './apis/poi/web'
 
 jobs:
-  build:
-
+  job1:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +29,33 @@ jobs:
       run: dotnet test './apis/poi/tests/UnitTests' --no-restore
     - name: Publish
       run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@master
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: openhackjqh6rwn6acr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - run: |
+        docker build ./apis/poi/web/ -t openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+        docker push openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'openhackjqh6rwn6poi'
+        images: 'openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}'
+    
+    - name: Azure logout
+      run: |
+        az logout
