@@ -1,6 +1,6 @@
 on: [push]
 
-name: Linux_Container_Node_Workflow
+name: Linux_Container_dotnet_poi_Workflow
 
 jobs:
   build-and-deploy:
