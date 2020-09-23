@@ -21,15 +21,13 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.103
+        dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet restore './apis/poi/web'
     - name: Build
       run: dotnet build './apis/poi/web' --configuration Release
-    - name: .NET Build Unit Tests
-      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
     - name: Test
-      run: dotnet test './apis/poi/tests/UnitTests'
+      run: dotnet test './apis/poi/tests/UnitTests' --no-restore
     - name: Publish
       run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
 
