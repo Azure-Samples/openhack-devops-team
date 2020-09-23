@@ -30,4 +30,3 @@ jobs:
       run: dotnet test './apis/poi/tests/UnitTests' --no-restore
     - name: Publish
       run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
-
