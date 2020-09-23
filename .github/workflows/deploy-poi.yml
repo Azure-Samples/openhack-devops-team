@@ -1,6 +1,4 @@
-on:
- push:
-  branches: [ master ]
+on: [push]
 
 name: Linux_Container_Node_Workflow
 
