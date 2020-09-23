@@ -17,18 +17,17 @@ jobs:
     
     - uses: azure/docker-login@v1
       with:
-        login-server: contoso.azurecr.io
+        login-server: openhackjqh6rwn6acr.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - run: |
-        docker build . -t contoso.azurecr.io/nodejssampleapp:${{ github.sha }}
-        docker push contoso.azurecr.io/nodejssampleapp:${{ github.sha }} 
-      
-    - uses: azure/webapps-container-deploy@v1
+        docker build ./apis/poi/web/ -t openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+        docker push openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+    - uses: azure/webapps-deploy@v2
       with:
-        app-name: 'node-rnc'
-        images: 'contoso.azurecr.io/nodejssampleapp:${{ github.sha }}'
+        app-name: 'openhackjqh6rwn6poi'
+        images: 'openhackjqh6rwn6acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}'
     
     - name: Azure logout
       run: |
