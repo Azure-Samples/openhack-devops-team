@@ -3,9 +3,7 @@ name: .NET Core
 on:
   push:
     branches-ignore: 'master'
-    paths: 'apis/poi/**'
   pull_request:
-    paths: 'apis/poi/**'
     branches-ignore: 'master'
 
 env:
