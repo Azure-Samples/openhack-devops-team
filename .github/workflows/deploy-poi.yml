@@ -1,41 +1,16 @@
-name: .NET Core
-
-on:
+on: 
   push:
-    branches: '**'
-    paths: 'apis/poi/**'
-  pull_request:
-    branches: '**'
+    branches: [ master ]
     paths: 'apis/poi/**'
 
-env:
-  POI_PATH: './apis/poi/web'
+name: Linux_Container_dotnet_poi_Workflow
 
 jobs:
-  job1:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: dotnet restore './apis/poi/web'
-    - name: Build
-      run: dotnet build './apis/poi/web' --configuration Release
-    - name: Test
-      run: dotnet test './apis/poi/tests/UnitTests' --no-restore
-    - name: Publish
-      run: dotnet publish './apis/poi/web' -c Release -o '${{env.POI_PATH}}/output'
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    
-    if: ${{ github.ref == 'master' }}
-    steps:
-    - name: 'Checkout GitHub Action'
+    # checkout the repo
+    - name: 'Checkout GitHub Action' 
       uses: actions/checkout@master
     
     - name: 'Login via Azure CLI'
