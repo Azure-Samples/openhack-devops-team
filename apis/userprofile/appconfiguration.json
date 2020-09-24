@@ -1,0 +1,52 @@
+[
+{
+    "name": "CONTAINER_AVAILABILITY_CHECK_MODE",
+    "value": "Off",
+    "slotSetting": false
+},
+{
+    "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+    "value": "7iv1QcVdCG+RNCyDVfk4oAtq9LiYDH3n",
+    "slotSetting": false
+},
+{
+    "name": "DOCKER_REGISTRY_SERVER_URL",
+    "value": "openhacky708ijk5acr.azurecr.io/devopsoh",
+    "slotSetting": false
+},
+{
+    "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+    "value": "openhacky708ijk5acr",
+    "slotSetting": false
+},
+{
+    "name": "SQL_DBNAME",
+    "value": "@Microsoft.KeyVault(SecretUri=https://openhacky708ijk5kv.vault.azure.net/secrets/SQLDBNAME/2511292131ff4f388745f47d83f6ccf9)",
+    "slotSetting": false
+},
+{
+    "name": "SQL_PASSWORD",
+    "value": "@Microsoft.KeyVault(SecretUri=https://openhacky708ijk5kv.vault.azure.net/secrets/SQLPASSWORD/e9dd48714f664e6783ad4cbdae555513)",
+    "slotSetting": false
+},
+{
+    "name": "SQL_SERVER",
+    "value": "@Microsoft.KeyVault(SecretUri=https://openhacky708ijk5kv.vault.azure.net/secrets/SQLSERVER/97ccb2519c96465e9713ff2b8de6051d)",
+    "slotSetting": false
+},
+{
+    "name": "SQL_USER",
+    "value": "@Microsoft.KeyVault(SecretUri=https://openhacky708ijk5kv.vault.azure.net/secrets/SQLUSER/b582455afd3940f7a56642970ac0a4e5)",
+    "slotSetting": false
+},
+{
+    "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+    "value": "false",
+    "slotSetting": false
+},
+{
+    "name": "WEBSITES_PORT",
+    "value": "8080",
+    "slotSetting": false
+}
+]
