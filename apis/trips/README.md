@@ -1,3 +1,5 @@
+[![Build status](https://dev.azure.com/hacker2otc/openhack-devops-team/_apis/build/status/openhack-devops-team-trips-CI)](https://dev.azure.com/hacker2otc/openhack-devops-team/_build/latest?definitionId=2)
+
 # Overview
 
 This is the Trips API for the MyDriving service.
@@ -29,3 +31,5 @@ go test
 ```
 
 > Note: this requires an actual database connection, so the required ENV variables need to be present.
+
+This is a change.
