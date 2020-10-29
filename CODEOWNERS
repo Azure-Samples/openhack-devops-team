@@ -1,5 +1,4 @@
-# Lines starting with '#' are comments.
-# Each line is a file pattern followed by one or more owners.
-
-# These owners will be the default owners for everything in the repo.
-*       @liamfoneill
+/apis/poi @liamfoneill
+/apis/userprofile @liamfoneill
+/apis/user-java @liamfoneill
+/trips @liamfoneill
