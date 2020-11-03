@@ -2,7 +2,7 @@
 # POI Service
 
 ## Overview
-GitHub Action 1.0 trigger
+GitHub Action RH 1.0 trigger
 ## Build the Application
 
 ## Tests
