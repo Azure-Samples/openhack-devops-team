@@ -1,0 +1,21 @@
+name: .NET Core
+
+on:
+  pull_request:
+    paths: 
+      - '/apis/poi/**'
+    branches: [ master ]
+  
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Run a multi-line script
+      shell: bash
+      run: echo "test"  
+
