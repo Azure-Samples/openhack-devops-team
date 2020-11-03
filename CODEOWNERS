@@ -1,1 +1,7 @@
+# In this example, @zmgit owns any files in the apis/poi
+# directory at the root of the repository and any of its
+# subdirectories.
+apis/poi @zmgit
+apis/userprofile @martinabrle
+apis/trips @1lomeno3
 apis/user-java @robert4os
