@@ -2,7 +2,7 @@
 # POI Service
 
 ## Overview
-GitHub Action 3.0 trigger
+GitHub Action 4.0 trigger
 ## Build the Application
 
 ## Tests
