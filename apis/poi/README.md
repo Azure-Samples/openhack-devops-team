@@ -2,7 +2,7 @@
 # POI Service
 
 ## Overview
-
+GitHub Action 1.0 trigger
 ## Build the Application
 
 ## Tests
@@ -10,6 +10,7 @@
 ### Running the unit tests
 
 ### Running the Integration Test
+
 
 ## References
 
