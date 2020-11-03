@@ -1,5 +1,5 @@
 
-# POI Service Update CH. 2 
+# POI Service Update Challenge 2 
 
 ## Overview
 
