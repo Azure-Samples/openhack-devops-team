@@ -2,11 +2,9 @@ name: .NET Core
 
 on:
   pull_request:
-    paths: 
-      - '/apis/poi/**'
-    branches: [ master ]
-  
-
+    branches: 
+    - master
+      
 jobs:
   build:
 
