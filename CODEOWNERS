@@ -2,4 +2,7 @@
 # directory at the root of the repository and any of its
 # subdirectories.
 apis/poi @zmgit
+martinabrle-patch-setting-martin-owner-userprofile
 apis/userprofile @martinabrle
+apis/trips @1lomeno3
+
