@@ -17,6 +17,8 @@ jobs:
         go-version: [1.14.x, 1.15.x]
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      working-directory: ./apis/trips/
     steps:
 
     - name: Checkout code
@@ -41,4 +43,4 @@ jobs:
         golint .
 
     - name: Run Tests
-      run: cd ./apis/trips/tests/ && go test -v .
+      run: cd ./tests && go test -v .
