@@ -1,10 +1,9 @@
 name: .NET Core
 
 on:
-  push:
+  pull_request:
     branches: 
       - master
-      - devops-poi
     paths:
       - 'apis/poi/**'
 
