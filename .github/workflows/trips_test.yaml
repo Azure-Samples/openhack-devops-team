@@ -24,6 +24,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Get go packages
-      run: go get
+      run: go get github.com/Azure-Samples/openhack-devops-team/apis/trips/tripsgo
     - name: Test
       run: go test ./apis/trips/tests/healthroute_test.go 
