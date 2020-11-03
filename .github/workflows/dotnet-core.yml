@@ -3,7 +3,7 @@ name: .NET Core
 on:
   pull_request:
     paths: 
-      - /apis/poi/**
+      - '/apis/poi/**'
       
 jobs:
   build:
