@@ -1,4 +1,11 @@
-on: [push, pull_request]
+on:
+  push:
+    paths:
+    - 'apis/trips'
+  pull_request:
+    paths:
+    - 'apis/trips'
+
 name: Test poi API
 jobs:
   test:
