@@ -33,14 +33,18 @@ jobs:
       run: |
         go version
         go get -u golang.org/x/lint/golint
+      working-directory: ${{env.working-directory}}
 
     - name: Run build
       run: go build .
+      working-directory: ${{env.working-directory}}
 
     - name: Run vet & lint
       run: |
         go vet .
         golint .
+      working-directory: ${{env.working-directory}}
 
     - name: Run Tests
       run: cd ./tests && go test -v .
+      working-directory: ${{env.working-directory}}
