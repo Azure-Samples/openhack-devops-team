@@ -23,5 +23,7 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Get go packages
+      run: go get
     - name: Test
       run: go test ./apis/trips/tests/healthroute_test.go 
