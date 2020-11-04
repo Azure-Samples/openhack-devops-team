@@ -1,12 +1,11 @@
-name: RH CD for user-java API
+name: CI for user-java API
 
 on:
   push:
     branches: 
-    - unittest-rh
     - master
-#    paths:
-#    - 'apis/user-java/**'
+    paths:
+    - 'apis/user-java/**'
 
   pull_request:
     branches:
@@ -22,23 +21,33 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Echo Test
-      run: echo 'Build container vs2'
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds:  ${{ secrets.RHSPAZ }}
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.0.72
-        inlineScript: |
-          az account show
-          az storage -h
-    - name: Run build
-      run: az acr build --image "devopsoh/api-user:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
-      working-directory: ${{env.working-directory}}
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds:  ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az account show
+
+      - name: Run build
+        run: az acr build --image "devopsoh/api-user-java:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
+        working-directory: ${{env.working-directory}}
+
+      - name: The job has failed
+        if: ${{ failure() }}
+        run: |
+          curl --request POST \
+            --url https://api.github.com/repos/${{ github.repository }}/issues \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            --header 'content-type: application/json' \
+            --data '{
+              "title": "User-Java Service Build has failed: ${{ github.run_id }}",
+              "body": "User-Java Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
+              }'
