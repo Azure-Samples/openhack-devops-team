@@ -1,0 +1,44 @@
+name: RH CD for user-java API
+
+on:
+  push:
+    branches: 
+    - unittest-rh
+    - master
+#    paths:
+#    - 'apis/user-java/**'
+
+  pull_request:
+    branches:
+    - master
+    paths:
+    - 'apis/user-java/**'
+
+env:
+  working-directory: ./apis/user-java
+  acrname: openhackdz41qgg3acr.azurecr.io
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Echo Test
+      run: echo 'Build container vs2'
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds:  ${{ secrets.RHSPAZ }}
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          az account show
+          az storage -h
+    - name: Run build
+      run: az acr build --image "devopsoh/api-user:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
+      working-directory: ${{env.working-directory}}
