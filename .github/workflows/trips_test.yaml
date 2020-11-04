@@ -3,10 +3,10 @@ name: Test trips service
 on:
   push:
     paths:
-    - 'apis/trips'
+    - 'apis/trips/*'
   pull_request:
     paths:
-    - 'apis/trips'
+    - 'apis/trips/*'
 
 env:
   working-directory: ./apis/trips/
