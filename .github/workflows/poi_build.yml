@@ -35,7 +35,7 @@ jobs:
             az account show
             
       - name: Run build
-        run: az acr build --image "devopsoh/${{ github.app_name }}:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
+        run: az acr build --image "devopsoh/${{ env.app_name }}:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
         working-directory: ${{env.working-directory}}
 
       - name: The job has failed
@@ -46,6 +46,6 @@ jobs:
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
             --header 'content-type: application/json' \
             --data '{
-              "title": "${{ github.app_name }} Service Build has failed: ${{ github.run_id }}",
-              "body": "${{ github.app_name }} Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
+              "title": "${{ env.app_name }} Service Build has failed: ${{ github.run_id }}",
+              "body": "${{ env.app_name }} Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
               }'
