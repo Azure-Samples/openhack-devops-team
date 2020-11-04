@@ -3,7 +3,7 @@ name: .NET Core
 on:
   push:
     branches: 
-    - unittest-rh/*
+    - unittest-rh
 #  pull_request:
 #    branches: [ master ]
 
