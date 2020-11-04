@@ -9,9 +9,9 @@ FROM openjdk:11-jre-slim
 
 EXPOSE 8080
 
-ENV SQL_USER="YourUserName" \
-SQL_PASSWORD="changeme" \
-SQL_SERVER="changeme.database.windows.net" \
+ENV SQL_USER="demousersa" \
+SQL_PASSWORD="demo@pass123" \
+SQL_SERVER="openhackdz41qgg3sql.database.windows.net" \
 SQL_DBNAME="mydrivingDB"
 
 # Add the application's jar to the container

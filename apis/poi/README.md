@@ -3,6 +3,7 @@
 
 ## Overview
 GitHub Action RH 10.0 trigger
+
 ## Build the Application
 
 ## Tests

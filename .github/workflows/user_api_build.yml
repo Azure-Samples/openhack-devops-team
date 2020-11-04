@@ -1,28 +1,26 @@
-name: Build trips service
+name: CI for user-java API
 
 on:
   push:
-    branches:
+    branches: 
     - master
     paths:
-    - 'apis/trips/**'
+    - 'apis/user-java/**'
+
   pull_request:
     branches:
     - master
     paths:
-    - 'apis/trips/**'
+    - 'apis/user-java/**'
 
 env:
-  working-directory: ./apis/trips/
+  working-directory: ./apis/user-java
   acrname: openhackdz41qgg3acr.azurecr.io
-
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,16 +28,16 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
+          creds:  ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Azure CLI script
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az account show
-            
+
       - name: Run build
-        run: az acr build --image "devopsoh/api-trips:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
+        run: az acr build --image "devopsoh/api-user-java:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
         working-directory: ${{env.working-directory}}
 
       - name: The job has failed
@@ -50,6 +48,6 @@ jobs:
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
             --header 'content-type: application/json' \
             --data '{
-              "title": "Trips Service Build has failed: ${{ github.run_id }}",
-              "body": "Trips Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
+              "title": "User-Java Service Build has failed: ${{ github.run_id }}",
+              "body": "User-Java Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
               }'
