@@ -1,4 +1,4 @@
-name: POI API (.NET Core)
+name: POI API .NET Core
 
 on:
   pull_request:
