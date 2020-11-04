@@ -51,8 +51,8 @@ jobs:
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
             --header 'content-type: application/json' \
             --data '{
-              "title": "Issue created due to workflow fialure: ${{ github.run_id }}",
-              "body": "This issue was automatically created by the GitHub Action workflow **${{ github.workflow }}**. \n\n due to failure in run: _${{ github.run_id }}_."
+              "title": "Trips Service Tests has failed: ${{ github.run_id }}",
+              "body": "Trips Service Tests has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
               }'
 
   build:
@@ -80,3 +80,15 @@ jobs:
       - name: Run build
         run: go build .
         working-directory: ${{env.working-directory}}
+
+      - name: The job has failed
+        if: ${{ failure() }}
+        run: |
+          curl --request POST \
+            --url https://api.github.com/repos/${{ github.repository }}/issues \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            --header 'content-type: application/json' \
+            --data '{
+              "title": "Trips Service Build has failed: ${{ github.run_id }}",
+              "body": "Trips Service Build has failed: **${{ github.workflow }}**. \n\n Failure in run: _${{ github.run_id }}_."
+              }'
