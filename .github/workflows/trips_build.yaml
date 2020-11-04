@@ -27,10 +27,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
       - name: Azure Login
         uses: azure/login@v1
         with:
