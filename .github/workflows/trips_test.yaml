@@ -1,21 +1,17 @@
 name: Test trips service
 
-# on:
-#   push:
-#     paths:
-#     - 'apis/trips'
-#   pull_request:
-#     paths:
-#     - 'apis/trips'
-
-on: [push, pull_request]
+on:
+  push:
+    paths:
+    - 'apis/trips'
+  pull_request:
+    paths:
+    - 'apis/trips'
 
 env:
   working-directory: ./apis/trips/
 
-
 jobs:
-
   test:
     strategy:
       matrix:
@@ -36,10 +32,6 @@ jobs:
           go version
           go get -u golang.org/x/lint/golint
         working-directory: ${{env.working-directory}}
-
-      # - name: Run build
-      #   run: go build .
-      #   working-directory: ${{env.working-directory}}
 
       - name: Run vet & lint
         run: |
@@ -76,13 +68,3 @@ jobs:
       - name: Run build
         run: go build .
         working-directory: ${{env.working-directory}}
-
-      # - name: Run vet & lint
-      #   run: |
-      #     go vet .
-      #     golint .
-      #   working-directory: ${{env.working-directory}}
-
-      # - name: Run Tests
-      #   run: cd ./tests && go test -v .
-      #   working-directory: ${{env.working-directory}}
