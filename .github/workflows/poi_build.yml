@@ -8,7 +8,7 @@ on:
     - 'apis/poi/**'
 
 env:
-  working-directory: ./apis/poi/
+  working-directory: ./apis/poi/web/
   acrname: openhackdz41qgg3acr.azurecr.io
   app_name: api-poi
 
