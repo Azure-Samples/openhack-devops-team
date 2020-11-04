@@ -6,11 +6,6 @@ on:
     - master
     paths:
     - 'apis/trips/**'
-  pull_request:
-    branches:
-    - master
-    paths:
-    - 'apis/trips/**'
 
 env:
   working-directory: ./apis/trips/
