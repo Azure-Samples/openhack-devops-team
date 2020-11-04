@@ -43,7 +43,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.appname }}
-          slot-mame: staging
+          slot-name: staging
           images: ${{ env.acrname }}/devopsoh/api-poi:${{ github.run_id }}
       
       - name: The job has failed
