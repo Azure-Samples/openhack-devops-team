@@ -5,6 +5,22 @@ on:
     branches: 
     - unittest-rh
 
+#on:
+#  push:
+#    branches:
+#    - master
+#    paths:
+#    - 'apis/user-java/**'
+#  pull_request:
+#    branches:
+#    - master
+#    paths:
+#    - 'apis/user-java/**'
+
+env:
+  working-directory: ./apis/user-java
+  acrname: openhackdz41qgg3acr.azurecr.io
+
 jobs:
   build:
 
@@ -26,3 +42,6 @@ jobs:
         inlineScript: |
           az account show
           az storage -h
+    - name: Run build
+      run: az acr build --image "devopsoh/api-user:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
+      working-directory: ${{env.working-directory}}
