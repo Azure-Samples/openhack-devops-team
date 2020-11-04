@@ -18,13 +18,7 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds:  '{
-    "clientId": "0ce1b998-6a34-4557-bc95-1d799d04a637",
-    "clientSecret": ${{ secrets.RHSPAZ }},
-    "subscriptionId": "d6d59390-bfc8-4657-b325-c7509df85862",
-    "tenantId": "6860f1d1-df7d-4b1f-ba81-3443a2578da2"
-   }'
-            
+        creds:  ${{ secrets.RHSPAZ }}
     - name: Azure CLI script
       uses: azure/CLI@v1
       with:
