@@ -1,0 +1,70 @@
+name: Test trips service
+
+on:
+  push:
+    paths:
+    - 'apis/trips/*'
+  pull_request:
+    paths:
+    - 'apis/trips/*'
+
+env:
+  working-directory: ./apis/trips/
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.14.x, 1.15.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u golang.org/x/lint/golint
+        working-directory: ${{env.working-directory}}
+
+      - name: Run vet & lint
+        run: |
+          go vet .
+          golint .
+        working-directory: ${{env.working-directory}}
+
+      - name: Run Tests
+        run: cd ./tests && go test -v .
+        working-directory: ${{env.working-directory}}
+
+  build:
+    strategy:
+      matrix:
+        go-version: [1.14.x, 1.15.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    needs: [test]
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u golang.org/x/lint/golint
+        working-directory: ${{env.working-directory}}
+
+      - name: Run build
+        run: go build .
+        working-directory: ${{env.working-directory}}
