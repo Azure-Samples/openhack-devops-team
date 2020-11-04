@@ -7,11 +7,11 @@ on:
     paths:
     - 'apis/user-java/**'
 
-  pull_request:
-    branches:
-    - master
-    paths:
-    - 'apis/user-java/**'
+  # pull_request:
+  #   branches:
+  #   - master
+  #   paths:
+  #   - 'apis/user-java/**'
 
 env:
   working-directory: ./apis/user-java
