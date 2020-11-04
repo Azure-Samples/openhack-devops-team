@@ -10,7 +10,7 @@ on:
 env:
   working-directory: ./apis/trips/
   acrname: openhackdz41qgg3acr.azurecr.io
-
+  appname: openhackdz41qgg3trips
 
 jobs:
   build:
@@ -36,6 +36,12 @@ jobs:
       - name: Run build
         run: az acr build --image "devopsoh/api-trips:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
         working-directory: ${{env.working-directory}}
+
+      - name: WebApp deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.appname }}
+          images: ${{ env.acrname }}/devopsoh/api-trips:${{ github.run_id }}
 
       - name: The job has failed
         if: ${{ failure() }}
