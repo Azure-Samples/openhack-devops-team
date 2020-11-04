@@ -41,6 +41,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.appname }}
+          slot-name: staging
           images: ${{ env.acrname }}/devopsoh/api-trips:${{ github.run_id }}
 
       - name: The job has failed
