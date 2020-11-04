@@ -11,6 +11,7 @@ env:
   working-directory: ./apis/poi/web/
   acrname: openhackdz41qgg3acr.azurecr.io
   app_name: api-poi
+  appname: openhackdz41qgg3poi
 
 
 jobs:
@@ -37,7 +38,14 @@ jobs:
       - name: Run build
         run: az acr build --image "devopsoh/${{ env.app_name }}:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
         working-directory: ${{env.working-directory}}
-
+        
+      - name: WebApp deploy
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.appname }}
+          slot-mame: staging
+          images: ${{ env.acrname }}/devopsoh/api-poi:${{ github.run_id }}
+      
       - name: The job has failed
         if: ${{ failure() }}
         run: |
