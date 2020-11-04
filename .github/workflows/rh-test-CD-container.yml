@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Echo Test
-      run: echo 'Build container'
+      run: echo 'Build container vs2'
 
     - name: Azure Login
       uses: azure/login@v1
