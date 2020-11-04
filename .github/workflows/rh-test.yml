@@ -11,10 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: Echo Test
       run: echo 'Hello World'
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+    - name: Install dependencies
+      run: dotnet restore
+      working-directory: 'apis/poi/'
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+      working-directory: 'apis/poi/'
+    - name: .Net Test
+      working-directory: 'apis/poi/'
+      run: dotnet test --no-restore --verbosity normal
+    - name: Check Failure
+      if: ${{ failure() }}
+      run: echo 'Instead we could create Issue here'  
     - name: Create Issue Test
-#        if: ${{ failure() }}
       run: |
           curl --request POST \
             --url https://api.github.com/repos/${{ github.repository }}/issues \
