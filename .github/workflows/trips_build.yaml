@@ -32,15 +32,15 @@ jobs:
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       - name: Azure Login
-          uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
         
       - name: Azure CLI script
-          uses: azure/CLI@v1
-          with:
-            inlineScript: |
-              az account show
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az account show
             
       - name: Run build
         run: az acr build --image "devopsoh/api-trips:${{ github.run_id }}" --registry ${{ env.acrname }} --file Dockerfile .
