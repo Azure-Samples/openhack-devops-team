@@ -1,4 +1,4 @@
-# Project Name is Team 6
+# Project Name is Team 7 hehe
 
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
 
