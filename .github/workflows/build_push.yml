@@ -3,7 +3,7 @@ name: Linux Container Workflow
 on:
   push:
     paths:
-    - 'apis/poi'
+    - 'apis/poi/*'
 
 jobs:
   build:
