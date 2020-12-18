@@ -1,9 +1,6 @@
 name: Linux Container Workflow
 
-on:
-  push:
-    paths:
-    - '**apis/poi/*'
+on: [push]
 
 jobs:
   build:
@@ -19,7 +16,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build apis/poi/web -t openhackcoachrw33acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
+        docker build apis/poi/web/ -t openhackcoachrw33acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
         docker push openhackcoachrw33acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}     
 
     - uses: azure/webapps-deploy@v2
