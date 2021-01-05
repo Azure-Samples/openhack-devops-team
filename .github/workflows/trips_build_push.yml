@@ -1,0 +1,31 @@
+name: Trips Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+    - 'apis/trips/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: openhackcoachrw33acr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build apis/trips/ -t openhackcoachrw33acr.azurecr.io/devopsoh/api-trip:${{ github.sha }}
+        docker push openhackcoachrw33acr.azurecr.io/devopsoh/api-trip:${{ github.sha }}     
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'api-trips'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_TRIPS }}
+        images: 'openhackcoachrw33acr.azurecr.io/devopsoh/api-trip:${{ github.sha }}'
