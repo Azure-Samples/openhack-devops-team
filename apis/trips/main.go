@@ -33,7 +33,7 @@ func main() {
 		sw.InitLogging(os.Stdout, ioutil.Discard, os.Stdout)
 	}
 
-	sw.Info.Println(fmt.Sprintf("%s%s", "Trips Service Server started on port ", *webServerPort))
+	sw.Info.Println(fmt.Sprintf("%s%s", "Trips Service Server started again on port ", *webServerPort))
 
 	router := sw.NewRouter()
 
