@@ -30,6 +30,8 @@ namespace poi
                     options.SerializerSettings.Formatting = Formatting.Indented;
                 }));
 
+            //adding this comment here for PR test
+            
             services.AddHealthChecks()
                     .AddDbContextCheck<POIContext>()
                     .AddCheck<Utility.HealthCheck>("poi_health_check");
