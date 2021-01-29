@@ -1,0 +1,58 @@
+name: POI CICD
+
+env:
+  poi_path: apis/poi/**
+  registry: docker.pkg.github.com
+  repository: hattan/openhack-devops-team-gh/api-poi
+  docker_path: apis/poi/web
+  staging_url: https://openhackxv61mxh2poi-staging.azurewebsites.net
+  prod_url: https://openhackxv61mxh2poi.azurewebsites.net
+  resource_group: openhackxv61mxh2rg
+  webapp_name: openhackxv61mxh2poi
+  build_name: POI
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - apis/poi/**  
+      - .github/workflows/poi.yml
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - apis/poi/**
+      - .github/workflows/poi.yml
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.202'
+    - name: Add Code Coverage Tools
+      working-directory: apis/poi/tests/UnitTests
+      run: dotnet add package coverlet.msbuild
+
+    - name: Install dependencies
+      run: dotnet restore apis/poi/web/*.csproj
+      
+    - name: .NET Build Web
+      run: dotnet build --configuration Release --no-restore apis/poi/web/*.csproj
+
+    - name: .NET Build Unit Tests
+      run: dotnet build --configuration Release apis/poi/tests/UnitTests/UnitTests.csproj
+
+    - name: .NET Test
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests  /p:CollectCoverage=true /p:CoverletOutput=lcov/ /p:CoverletOutputFormat=lcov
+      
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: apis/poi/tests/UnitTests/lcov/coverage.info
+        base-path: apis/poi
+        flag-name: Unit
