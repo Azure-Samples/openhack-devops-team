@@ -15,6 +15,8 @@ using poi.Data;
 using poi.Utility;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace poi
 {
@@ -33,7 +35,7 @@ namespace poi
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Formatting = Formatting.Indented;
+                    options.JsonSerializerOptions.WriteIndented = true;
                 });
 
             var connectionString = poi.Utility.POIConfiguration.GetConnectionString(this.Configuration);
@@ -43,17 +45,16 @@ namespace poi
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("docs", new Info { Title = "Points Of Interest(POI) API", Version = "v1" });
+                c.SwaggerDoc("docs", new OpenApiInfo { Title = "Points Of Interest(POI) API", Version = "v1" });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
 
             app.UseRewriter(new RewriteOptions().AddRedirect("(.*)api/docs/poi$", "$1api/docs/poi/index.html"));
@@ -72,7 +73,11 @@ namespace poi
                 c.RoutePrefix = "api/docs/poi";
             });
 
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

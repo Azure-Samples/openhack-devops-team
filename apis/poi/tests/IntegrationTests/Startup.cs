@@ -13,6 +13,7 @@ using System.Reflection;
 using poi.Data;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Hosting;
 
 namespace IntegrationTests
 {
@@ -31,33 +32,30 @@ namespace IntegrationTests
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Formatting = Formatting.Indented;
+                    options.JsonSerializerOptions.WriteIndented = true;
                 });
-
-                // Create a new service provider.
-                var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
 
                 // Add a database context (ApplicationDbContext) using an in-memory
                 // database for testing.
                 services.AddDbContext<POIContext>(options =>
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
-                    options.UseInternalServiceProvider(serviceProvider);
                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
 
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
