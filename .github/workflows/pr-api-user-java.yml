@@ -11,7 +11,7 @@ on:
 
 
 
-jobs
+jobs:
   quality-java:
     runs-on: ubuntu-latest
     steps:
