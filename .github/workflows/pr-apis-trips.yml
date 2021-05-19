@@ -9,18 +9,6 @@ branches: [ master ]
 paths:
 - 'apis/trips/**'
 
-jobs:
-quality-cs:
-runs-on: ubuntu-latest
-steps:
-- uses: actions/checkout@v2
-- name: Install dependencies
-run: dotnet restore
-- name: Build
-run: dotnet build
-- name: Test with the dotnet CLI
-run: dotnet test
-
 quality-go:
 runs-on: ubuntu-latest
 steps:
