@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build with Maven
+        run: mvn build
       - name: Quality
         run: |
           mvn test
