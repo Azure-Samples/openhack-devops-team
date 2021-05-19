@@ -1,0 +1,22 @@
+# This is a basic workflow to help you get started with Actions
+name: PR User-java
+
+# Controls when the action will run.
+on:
+# Triggers the workflow on push or pull request events but only for the master branch
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'apis/user-java/**'
+
+
+
+jobs
+  quality-java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build with Maven
+      - name: Quality
+        run: |
+          mvn test
