@@ -9,7 +9,6 @@ on:
     paths:
       - 'apis/trips/**'
 
-      
 jobs:
   quality-go:
     runs-on: ubuntu-latest
