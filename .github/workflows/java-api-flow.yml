@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: PR Trips
+name: PR User-java
 
 # Controls when the action will run.
 on:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - 'apis/trips/**'
+      - 'apis/user-java/**'
 
 
 
