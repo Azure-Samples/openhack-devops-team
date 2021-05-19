@@ -1,7 +1,7 @@
 {
     "name": "mydriving-user-api",
     "description": "This is the User API for the MyDriving service",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "repository": {
         "type": "git",
         "url": "git://github.com/Azure-Samples/openhack-devops-team.git"
