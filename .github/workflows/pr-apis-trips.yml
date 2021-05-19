@@ -4,15 +4,18 @@ name: PR Trips
 # Controls when the action will run.
 on:
 # Triggers the workflow on push or pull request events but only for the master branch
-pull_request:
-branches: [ master ]
-paths:
-- 'apis/trips/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'apis/trips/**'
 
-quality-go:
-runs-on: ubuntu-latest
-steps:
-- uses: actions/checkout@v2
-- name: Quality
-run: |
-go test ./tests
+      
+jobs:
+  quality-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Quality
+        run: |
+          cd apis/trips/tests
+          go test ./tests 
