@@ -10,8 +10,6 @@ on:
   pull_request:
     branches: [ master ]
 
-#on: push
-
 jobs:          
   quality-node:
     runs-on: ubuntu-latest
