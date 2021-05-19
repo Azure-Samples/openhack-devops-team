@@ -2,12 +2,15 @@
 name: PR POI
 
 # Controls when the action will run. 
-on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  pull_request:
-    branches: [ master ]
-    paths:
-      - 'apis/poi/**'
+#on:
+#  # Triggers the workflow on push or pull request events but only for the master branch
+#  pull_request:
+#    branches: 
+#      - master
+#    paths:
+#      - 'apis/poi/**'
+
+on: push
 
 jobs:
   quality-cs:    
@@ -20,3 +23,5 @@ jobs:
         run: dotnet build
       - name: Test with the dotnet CLI
         run: dotnet test
+
+        
