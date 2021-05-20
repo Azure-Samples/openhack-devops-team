@@ -8,7 +8,6 @@ on:
      paths:
       - 'apis/poi/**'
       - '!apis/userprofile/**'
-  pull_request:
 
 #on: push
 
