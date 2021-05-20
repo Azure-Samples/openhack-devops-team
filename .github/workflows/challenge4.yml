@@ -116,7 +116,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: openhackcgb03xk8poi
-          images: devopsoh/api-poi:${{github.sha}}
+          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-poi:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
 
   publish-trips:
@@ -129,7 +129,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: openhackcgb03xk8trips
-          images: devopsoh/api-trips:${{github.sha}}
+          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-trips:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
 
   publish-userprofile:
@@ -142,7 +142,7 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: openhackcgb03xk8userprofile
-          images: devopsoh/api-userprofile:${{github.sha}}
+          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-userprofile:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
 
   publish-user-java:
@@ -155,5 +155,5 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: openhackcgb03xk8userjava
-          images: devopsoh/api-user-java:${{github.sha}}
+          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-user-java:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
