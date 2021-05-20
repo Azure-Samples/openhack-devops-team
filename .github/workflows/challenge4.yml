@@ -31,7 +31,6 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
-            GITOHTEAMDIRPATH=${github.workspace}
 
             ls -la
             ls -la $GITOHTEAMDIRPATH
@@ -43,23 +42,23 @@ jobs:
 
 
             echo "Building API-POI image..."
-            echo "Changing directory to $GITOHTEAMDIRPATH/apis/poi/web..."
-            cd "$GITOHTEAMDIRPATH/apis/poi/web"
+            echo "Changing directory to $GITHUB_WORKSPACE/apis/poi/web..."
+            cd "$GITHUB_WORKSPACE/apis/poi/web"
             az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
             echo "Building API-TRIPS image..."
-            echo "Changing directory to $GITOHTEAMDIRPATH/apis/trips..."
-            cd "$GITOHTEAMDIRPATH/apis/trips"
+            echo "Changing directory to $GITHUB_WORKSPACE/apis/trips..."
+            cd "$GITHUB_WORKSPACE/apis/trips"
             az acr build --image "devopsoh/api-trips:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
             echo "Building API-USERPROFILE image..."
-            echo "Changing directory to $GITOHTEAMDIRPATH/apis/userprofile..."
-            cd "$GITOHTEAMDIRPATH/apis/userprofile"
+            echo "Changing directory to $GITHUB_WORKSPACE/apis/userprofile..."
+            cd "$GITHUB_WORKSPACE/apis/userprofile"
             az acr build --image "devopsoh/api-userprofile:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
             echo "Building API-USER-JAVA image..."
-            echo "Changing directory to $GITOHTEAMDIRPATH/apis/user-java..."
-            cd "$GITOHTEAMDIRPATH/apis/user-java"
+            echo "Changing directory to $GITHUB_WORKSPACE/apis/user-java..."
+            cd "$GITHUB_WORKSPACE/apis/user-java"
             az acr build --image "devopsoh/api-user-java:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
 #  publish:
