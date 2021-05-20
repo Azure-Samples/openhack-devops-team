@@ -27,7 +27,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+            BASEIMAGETAG=${{github.sha}}
 
             echo "Building API-POI image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/poi/web..."
@@ -51,7 +51,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+            BASEIMAGETAG=${{github.sha}}
 
             echo "Building API-TRIPS image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/trips..."
@@ -75,7 +75,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+            BASEIMAGETAG=${{github.sha}}
 
             echo "Building API-USERPROFILE image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/userprofile..."
@@ -99,7 +99,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+            BASEIMAGETAG=${{github.sha}}
 
             echo "Building API-USER-JAVA image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/user-java..."
@@ -112,15 +112,9 @@ jobs:
     needs:
       - build-poi
     runs-on: ubuntu-latest
-    env:
-      IMAGE: devopsoh/api-poi:$(git rev-parse --short "$GITHUB_SHA")
     steps:
-      - name: Check image name
-        run: |
-          echo "IMAGE: ${IMAGE}."
-          echo "env.IMAGE: ${env.IMAGE}."
       - uses: azure/webapps-deploy@v2
         with:
           app-name: 'openhackcgb03xk8poi'
-          images: ${IMAGE}
+          images: devopsoh/api-poi:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
