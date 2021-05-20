@@ -23,5 +23,14 @@ jobs:
         run: dotnet build
       - name: Test with the dotnet CLI
         run: dotnet test
+        
+        
+      - name: Assign issues to project
+        if: failure()
+        uses: technote-space/create-project-card-action@v1
+        with:
+          PROJECT: OpenHack
+          COLUMN: To do
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
         
