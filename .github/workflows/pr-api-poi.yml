@@ -26,11 +26,15 @@ jobs:
         
         
       - name: Assign issues to project
+      - uses: actions/github-script@0.9.0
         if: failure()
-        uses: technote-space/create-project-card-action@v1
         with:
-          PROJECT: OpenHack
-          COLUMN: To do
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-        
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            let body = "${{ env.build_name }} Worflow Failure \n Build Number: ${{ github.run_number }} \n Build Log: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }} \n SHA: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) \n";
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "${{ env.build_name }} Workflow ${{ github.run_number }} Failed! ",
+              body: body
+            });        
