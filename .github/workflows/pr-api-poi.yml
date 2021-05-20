@@ -4,11 +4,11 @@ name: PR POI
 # Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
- push:
-    paths:
+  push:
+     paths:
       - 'apis/poi/**'
- pull_request:
-   branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 #on: push
 
@@ -23,10 +23,9 @@ jobs:
         run: dotnet build
       - name: Test with the dotnet CLI
         run: dotnet test
-        
-        
-      - name: Assign issues to project
-      - uses: actions/github-script@0.9.0
+      
+      - name: BuildFailure
+        uses: actions/github-script@0.9.0
         if: failure()
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
