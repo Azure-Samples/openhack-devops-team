@@ -33,6 +33,13 @@ jobs:
             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
             GITOHTEAMDIRPATH=${pwd}
 
+            ls -la
+            echo "git sha: ${BASEIMAGETAG}"
+            echo "GITOHTEAMDIRPATH: ${GITOHTEAMDIRPATH}"
+            echo "ACRNAME: ${ACRNAME}"
+            echo "cmd: az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile ."
+
+
             echo "Building API-POI image..."
             echo "Changing directory to $GITOHTEAMDIRPATH/apis/poi/web..."
             cd "$GITOHTEAMDIRPATH/apis/poi/web"
