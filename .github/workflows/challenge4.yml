@@ -28,7 +28,7 @@ jobs:
       - name: Docker build
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.21.0
+          azcliversion: 2.0.72
           inlineScript: |
             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
             GITOHTEAMDIRPATH=${pwd}
