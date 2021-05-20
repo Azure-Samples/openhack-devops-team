@@ -3,11 +3,13 @@ name: PR Trips
 
 # Controls when the action will run.
 on:
-## Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+     paths:
+      - 'apis/trips/**'
   pull_request:
     branches: [ master ]
-    paths:
-      - 'apis/trips/**'
+
 
 jobs:
   quality-go:
