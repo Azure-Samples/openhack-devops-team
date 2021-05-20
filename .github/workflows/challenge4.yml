@@ -31,9 +31,11 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
-            GITOHTEAMDIRPATH=${pwd}
+            GITOHTEAMDIRPATH=${github.workspace}
 
             ls -la
+            ls -la $GITOHTEAMDIRPATH
+
             echo "git sha: ${BASEIMAGETAG}"
             echo "GITOHTEAMDIRPATH: ${GITOHTEAMDIRPATH}"
             echo "ACRNAME: ${ACRNAME}"
