@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-poi:
-    name: Build and Push Image
+    name: POI Build and Push Image
     runs-on: ubuntu-latest
     env:
       REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
@@ -35,7 +35,7 @@ jobs:
             az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
   build-trips:
-    name: Build and Push Image
+    name: Trips Build and Push Image
     runs-on: ubuntu-latest
     env:
       REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
@@ -59,7 +59,7 @@ jobs:
             az acr build --image "devopsoh/api-trips:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
   build-userprofile:
-    name: Build and Push Image
+    name: Userprofile Build and Push Image
     runs-on: ubuntu-latest
     env:
       REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
@@ -83,7 +83,7 @@ jobs:
             az acr build --image "devopsoh/api-userprofile:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
   build-user-java:
-    name: Build and Push Image
+    name: User Java Build and Push Image
     runs-on: ubuntu-latest
     env:
       REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
@@ -107,7 +107,7 @@ jobs:
             az acr build --image "devopsoh/api-user-java:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
   publish-poi:
-    name: Publish
+    name: Publish POI
     environment: poi
     needs:
       - build-poi
@@ -115,6 +115,45 @@ jobs:
     steps:
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: 'openhackcgb03xk8poi'
+          app-name: openhackcgb03xk8poi
           images: devopsoh/api-poi:${{github.sha}}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+
+  publish-trips:
+    name: Publish trips
+    environment: trips
+    needs:
+      - build-trips
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: openhackcgb03xk8trips
+          images: devopsoh/api-trips:${{github.sha}}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+
+  publish-userprofile:
+    name: Publish userprofile
+    environment: userprofile
+    needs:
+      - build-userprofile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: openhackcgb03xk8userprofile
+          images: devopsoh/api-userprofile:${{github.sha}}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+
+  publish-user-java:
+    name: Publish user java
+    environment: userjava
+    needs:
+      - build-user-java
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: openhackcgb03xk8userjava
+          images: devopsoh/api-user-java:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
