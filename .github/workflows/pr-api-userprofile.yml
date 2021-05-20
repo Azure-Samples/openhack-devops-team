@@ -7,8 +7,8 @@ on:
   push:
     paths:
       - 'apis/userprofile/**'
+      - '!apis/poi/**'
   pull_request:
-    branches: [ master ]
 
 jobs:          
   quality-node:
