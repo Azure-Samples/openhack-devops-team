@@ -1,0 +1,16 @@
+name: Move new issues into Triage
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  automate-project-columns:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alex-page/github-project-automation-plus@v0.7.1
+        with:
+          project: OpenHack
+          column: To do
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          
