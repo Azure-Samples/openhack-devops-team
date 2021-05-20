@@ -1,13 +1,16 @@
 name: PR
 
-on: [ pull_request ]
+on:
+  push:
+    branches:
+      - master
 
 env:
   ACRNAME: openhackcgb03xk8acr
   RESOURCE_GROUP: openhackcgb03xk8rg
 
 jobs:
-  build:
+  build-poi:
     name: Build and Push Image
     runs-on: ubuntu-latest
     env:
@@ -19,12 +22,6 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      #      - name: Azure ACR login
-      #        uses: azure/docker-login@v1
-      #        with:
-      #          login-server: $REGISTRY
-      #          username: ${{ secrets.REGISTRY_USERNAME }}
-      #          password: ${{ secrets.REGISTRY_PASSWORD }}
       - name: Docker build
         uses: azure/CLI@v1
         with:
@@ -32,72 +29,98 @@ jobs:
           inlineScript: |
             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
 
-            ls -la
-            ls -la $GITOHTEAMDIRPATH
-
-            echo "git sha: ${BASEIMAGETAG}"
-            echo "GITOHTEAMDIRPATH: ${GITOHTEAMDIRPATH}"
-            echo "ACRNAME: ${ACRNAME}"
-            echo "cmd: az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile ."
-
-
             echo "Building API-POI image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/poi/web..."
             cd "$GITHUB_WORKSPACE/apis/poi/web"
             az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
+
+  build-trips:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
+      REGISTRY_USERNAME: ${{ secrets.REG_USERNAME }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker build
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
 
             echo "Building API-TRIPS image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/trips..."
             cd "$GITHUB_WORKSPACE/apis/trips"
             az acr build --image "devopsoh/api-trips:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
+  build-userprofile:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
+      REGISTRY_USERNAME: ${{ secrets.REG_USERNAME }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker build
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+
             echo "Building API-USERPROFILE image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/userprofile..."
             cd "$GITHUB_WORKSPACE/apis/userprofile"
             az acr build --image "devopsoh/api-userprofile:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
+
+  build-user-java:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
+      REGISTRY_USERNAME: ${{ secrets.REG_USERNAME }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker build
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
 
             echo "Building API-USER-JAVA image..."
             echo "Changing directory to $GITHUB_WORKSPACE/apis/user-java..."
             cd "$GITHUB_WORKSPACE/apis/user-java"
             az acr build --image "devopsoh/api-user-java:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
-#  publish:
-#    name: Publish
-#    needs:
-#      - vars
-#      - build
-#    runs-on: ubuntu-latest
-#    env:
-#      PACKAGE_NAME: ${{needs.vars.outputs.PACKAGE_NAME}}
-#      TAG_VERSION_BRANCH: ${{needs.vars.outputs.TAG_VERSION_BRANCH}}
-#      GITHUB_BRANCH: ${{needs.vars.outputs.GITHUB_BRANCH}}
-#      SLOT_REF: ${{needs.vars.outputs.SLOT_REF}}
-#      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-#      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-#      APP_SERVICE_PLAN: ${{ secrets.APP_SERVICE_PLAN }}
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Azure Login
-#        uses: azure/login@v1
-#        with:
-#          creds: ${{ secrets.AZURE_CREDENTIALS }}
-#      - name: 'Write docker-compose-deploy.yml'
-#        run: |
-#          export DOCKER_IMAGE=$TAG_VERSION_BRANCH
-#          envsubst < docker-compose-tmpl.yml > docker-compose-deploy.yml
-#          cat docker-compose-deploy.yml
-#        env:
-#          NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
-#          NEXT_PUBLIC_BING_MAPS_API_KEY: ${{ secrets.NEXT_PUBLIC_BING_MAPS_API_KEY }}
-#          NEXT_PUBLIC_MNS_API_KEY: ${{ secrets.NEXT_PUBLIC_MNS_API_KEY }}
-#      - name: Deploy PR slot
-#        uses: azure/CLI@v1
-#        with:
-#          azcliversion: 2.21.0
-#          inlineScript: |
-#            ./scripts/deploy-web-app-pr.sh
-#
-##            az webapp deployment slot swap \
-##            -n ${PACKAGE_NAME} \
-##            -g $RESOURCE_GROUP \
-##            -s $SLOT_REF
+  publish-poi:
+    name: Publish
+    environment: poi
+    needs:
+      - build-poi
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: devopsoh/api-poi:$(git rev-parse --short "$GITHUB_SHA")
+    steps:
+      - name: Check image name
+        run: |
+          echo "IMAGE: ${IMAGE}."
+          echo "env.IMAGE: ${env.IMAGE}."
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'openhackcgb03xk8poi'
+          images: ${IMAGE}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
