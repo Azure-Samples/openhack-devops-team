@@ -30,9 +30,8 @@ jobs:
         with:
           azcliversion: 2.21.0
           inlineScript: |
-             BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
-             GITOHTEAMDIRPATH=${pwd}
-#            openhackcgb03xk8acr.azurecr.io
+            BASEIMAGETAG=$(git rev-parse --short "$GITHUB_SHA")
+            GITOHTEAMDIRPATH=${pwd}
 
             echo "Building API-POI image..."
             echo "Changing directory to $GITOHTEAMDIRPATH/apis/poi/web..."
