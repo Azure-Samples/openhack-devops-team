@@ -49,3 +49,8 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_504ec676dbbd4413a3112aa44dbc7d78 }}
         images: 'openhackcgb03xk8acr.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_100abd9229ae4db0879a72a8eeb0c7b3 }}/devopsoh/api-poi:${{ github.sha }}'
+
+        # https://openhackcgb03xk8poi.azurewebsites.net/api/healthcheck/poi
+        # https://openhackcgb03xk8trips.azurewebsites.net/api/healthcheck/trips
+        # https://openhackcgb03xk8userprofile.azurewebsites.net/api/healthcheck/user
+        # http://openhackcgb03xk8userjava.azurewebsites.net/api/healthcheck/user-java
