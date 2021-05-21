@@ -162,7 +162,7 @@ jobs:
   healthcheck-user-java:
     name: HealthCheck user java
     needs:
-      - publish-user-java
+      - publish-user-java-staging
     runs-on: ubuntu-latest
     steps:
       - name: Check the deployed service URL
