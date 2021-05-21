@@ -81,7 +81,7 @@ jobs:
       - name: Auto Swap
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
+          azcliversion: 2.23.0
           inlineScript: |
             echo "running auto swap"
             az webapp deployment slot swap -g ${{env.RESOURCE_GROUP}} \
