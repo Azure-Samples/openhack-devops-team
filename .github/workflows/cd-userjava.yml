@@ -74,7 +74,11 @@ jobs:
         - healthcheck-staging
     runs-on: ubuntu-latest
     steps:
-      - name: auto Swap
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Auto Swap
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
