@@ -90,26 +90,20 @@ jobs:
             --slot staging \
             --target-slot production
 
-         # az webapp deployment slot swap \
-            # --resource-group MyResourceGroup \
-            # --name MyUniqueApp \
-            # --slot staging \
-            # --target-slot production
-
-# az webapp deployment slot swap --name MyUniqueApp --resource-group MyResourceGroup --slot staging
-# az webapp deployment slot swap -g ${{env.RESOURCE_GROUP}} \
-# -n openhackcgb03xk8userjava \
-# --slot staging \ 
-# --target-slot production
-# az webapp deployment slot auto-swap --slot
-#     [--auto-swap-slot staging]
-#     [--disable production]
-#     [--ids c980ff52-04fb-4505-8329-b9c5fd48d859]
-#     [--name openhackcgb03xk8userjava]
-#     [--resource-group openhackcgb03xk8rg]
-#     [--subscription c980ff52-04fb-4505-8329-b9c5fd48d859]
-
- # az webapp deployment slot swap --slot staging \ 
-            # --target-slot production \
-            # --name openhackcgb03xk8userjava \
-            # --resource-group openhackcgb03xk8rg  
+#   revert: 
+#     name: revert Swap 
+#     needs:
+#         - healthcheck-staging
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Azure Login
+#         uses: azure/login@v1
+#         with:
+#           creds: ${{ secrets.AZURE_CREDENTIALS }}
+#       - name: revert swap
+#         uses: azure/CLI@v1
+#         with:
+#           azcliversion: 2.23.0
+#           inlineScript: |
+#             echo "reverting"
+         

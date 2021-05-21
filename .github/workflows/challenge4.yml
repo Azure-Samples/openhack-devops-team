@@ -108,7 +108,7 @@ jobs:
           images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-trips:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
 
-  publish-userprofile:
+  publish-userprofile-staging:
     name: Publish userprofile
     environment: userprofile
     needs:
