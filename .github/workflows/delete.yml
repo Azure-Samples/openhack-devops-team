@@ -10,7 +10,7 @@ env:
   
   jobs:
     revertSwap: 
-      name: Revert userjava 
+      name: Delte userjava 
       # needs:
       #     - healthcheck-staging
       runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ env:
           uses: azure/login@v1
           with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
-        - name: revert Swap
+        - name: Delete resource
           uses: azure/CLI@v1
           with:
             azcliversion: 2.23.0
