@@ -169,7 +169,7 @@ jobs:
         uses: jtalk/url-health-check-action@v1.5
         with:
             # Check the following URLs one by one sequentially
-            url: http://openhackcgb03xk8userjava.azurewebsites.net/api/healthcheck/user-java
+            url: http://openhackcgb03xk8userjava-staging.azurewebsites.net/api/healthcheck/user-java
             # Follow redirects, or just report success on 3xx status codes
             follow-redirect: no # Optional, defaults to "no"
             # Fail this action after this many failed attempts
