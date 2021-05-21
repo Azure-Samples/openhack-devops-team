@@ -4,9 +4,9 @@ on:
     # * is a special character in YAML so you have to quote this string
     - cron:  '*/5 * * * *'
 
-  env:
-    ACRNAME: openhackcgb03xk8acr
-    RESOURCE_GROUP: openhackcgb03xk8rg
+env:
+  ACRNAME: openhackcgb03xk8acr
+  RESOURCE_GROUP: openhackcgb03xk8rg
   
   jobs:
     revertSwap: 
@@ -29,4 +29,4 @@ on:
               --name openhackcgb03xk8userjava \
               --resource-group ${{env.RESOURCE_GROUP}} \
               --slot staging
-              
+
