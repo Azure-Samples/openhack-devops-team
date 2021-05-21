@@ -1,0 +1,94 @@
+name: cd userjava
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  ACRNAME: openhackcgb03xk8acr
+  RESOURCE_GROUP: openhackcgb03xk8rg
+
+jobs: 
+  build:
+    name: User Java Build and Push Image
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY_PASSWORD: ${{ secrets.REG_PASSWORD }}
+      REGISTRY_USERNAME: ${{ secrets.REG_USERNAME }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Docker build
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            BASEIMAGETAG=${{github.sha}}
+
+            echo "Building API-USER-JAVA image..."
+            echo "Changing directory to $GITHUB_WORKSPACE/apis/user-java..."
+            cd "$GITHUB_WORKSPACE/apis/user-java"
+            az acr build --image "devopsoh/api-user-java:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
+
+  publish-staging:
+    name: Publish user java staging
+    environment: userjava
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: openhackcgb03xk8userjava
+          slot-name: staging
+          images: openhackcgb03xk8acr-staging.azurecr.io/devopsoh/api-user-java:${{github.sha}}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_STAGING }}
+
+  healthcheck-staging:
+    name: HealthCheck user java
+    needs:
+      - publish-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v1.5
+        with:
+            # Check the following URLs one by one sequentially
+            url: http://openhackcgb03xk8userjava-staging.azurewebsites.net/api/healthcheck/user-java
+            # Follow redirects, or just report success on 3xx status codes
+            follow-redirect: no # Optional, defaults to "no"
+            # Fail this action after this many failed attempts
+            max-attempts: 3 # Optional, defaults to 1
+            # Delay between retries
+            retry-delay: 5s # Optional, only applicable to max-attempts > 1
+            # Retry all errors, including 404
+            retry-all: no # Optional, defaults to "no"
+
+  autoSwap: 
+    name: auto Swap usejava 
+    needs:
+        - healthcheck-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: auto Swap
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            echo "running auto swap"
+            az webapp deployment slot swap --slot --auto-swap-slot staging \
+            --name openhackcgb03xk8userjava\
+            --resource-group openhackcgb03xk8rg  \
+            --subscription c980ff52-04fb-4505-8329-b9c5fd48d859
+
+# az webapp deployment slot auto-swap --slot
+#     [--auto-swap-slot staging]
+#     [--disable production]
+#     [--ids c980ff52-04fb-4505-8329-b9c5fd48d859]
+#     [--name openhackcgb03xk8userjava]
+#     [--resource-group openhackcgb03xk8rg]
+#     [--subscription c980ff52-04fb-4505-8329-b9c5fd48d859]
