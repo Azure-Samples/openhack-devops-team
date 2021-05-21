@@ -80,10 +80,10 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             echo "running auto swap"
-            az webapp deployment slot swap --slot --auto-swap-slot staging \
-            --name openhackcgb03xk8userjava\
-            --resource-group openhackcgb03xk8rg  \
-            --subscription c980ff52-04fb-4505-8329-b9c5fd48d859
+            az webapp deployment slot swap --slot staging \ 
+            --target-slot production \
+            --name openhackcgb03xk8userjava \
+            --resource-group openhackcgb03xk8rg  
 
 # az webapp deployment slot auto-swap --slot
 #     [--auto-swap-slot staging]
