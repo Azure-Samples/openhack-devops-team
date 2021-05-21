@@ -84,11 +84,23 @@ jobs:
           azcliversion: 2.23.0
           inlineScript: |
             echo "running auto swap"
-            az webapp deployment slot swap -g ${{env.RESOURCE_GROUP}} \
-            -n openhackcgb03xk8userjava \
-            --slot staging \ 
+            az webapp deployment slot swap \
+            --name openhackcgb03xk8userjava \
+            --resource-group ${{env.RESOURCE_GROUP}} \
+            --slot staging \
             --target-slot production
 
+         # az webapp deployment slot swap \
+            # --resource-group MyResourceGroup \
+            # --name MyUniqueApp \
+            # --slot staging \
+            # --target-slot production
+
+# az webapp deployment slot swap --name MyUniqueApp --resource-group MyResourceGroup --slot staging
+# az webapp deployment slot swap -g ${{env.RESOURCE_GROUP}} \
+# -n openhackcgb03xk8userjava \
+# --slot staging \ 
+# --target-slot production
 # az webapp deployment slot auto-swap --slot
 #     [--auto-swap-slot staging]
 #     [--disable production]
