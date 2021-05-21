@@ -145,8 +145,8 @@ jobs:
           images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-userprofile:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE }}
 
-  publish-user-java:
-    name: Publish user java
+  publish-user-java-staging:
+    name: Publish user java staging
     environment: userjava
     needs:
       - build-user-java
@@ -154,10 +154,10 @@ jobs:
     steps:
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: openhackcgb03xk8userjava
+          app-name: openhackcgb03xk8userjava-staging
           slot-name: 'staging'
-          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-user-java:${{github.sha}}
-          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
+          images: openhackcgb03xk8acr-staging.azurecr.io/devopsoh/api-user-java:${{github.sha}}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_STAGING }}
 
   healthcheck-user-java:
     name: HealthCheck user java
