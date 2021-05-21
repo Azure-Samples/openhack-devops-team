@@ -45,7 +45,7 @@ jobs:
         with:
           app-name: openhackcgb03xk8userjava
           slot-name: staging
-          images: openhackcgb03xk8acr-staging.azurecr.io/devopsoh/api-user-java:${{github.sha}}
+          images: openhackcgb03xk8acr.azurecr.io/devopsoh/api-user-java:${{github.sha}}
           publish-profile: ${{ secrets.PUBLISH_PROFILE_STAGING }}
 
   healthcheck-staging:
