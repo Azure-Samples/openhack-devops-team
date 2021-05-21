@@ -1,0 +1,30 @@
+
+on: 
+  workflow_dispatch:
+
+env:
+  ACRNAME: openhackcgb03xk8acr
+  RESOURCE_GROUP: openhackcgb03xk8rg
+
+jobs:
+  revertSwap: 
+    name: Revert userjava 
+    # needs:
+    #     - healthcheck-staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: revert Swap
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.23.0
+          inlineScript: |
+            echo "running auto swap"
+            az webapp deployment slot swap \
+            --name openhackcgb03xk8userjava \
+            --resource-group ${{env.RESOURCE_GROUP}} \
+            --slot staging \
+            --target-slot production
