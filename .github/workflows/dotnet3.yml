@@ -11,8 +11,8 @@ on:
   push:
     branches: [ master ]
     paths:
-    - '/apis/poi/**'
- 
+    - '/apis/poi/**.cs'
+    - '/apis/poi/**.csproj'
  
 
 jobs:
