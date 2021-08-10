@@ -1,0 +1,9 @@
+total 9
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10  2021 .
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:44 ..
+-rwxrwxrwx 1 tmalone tmalone  720 Aug 10 10:44 README.md
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:44 charts
+-rwxrwxrwx 1 tmalone tmalone    0 Aug 10  2021 dummyfile.txt
+-rwxrwxrwx 1 tmalone tmalone 4099 Aug 10 10:44 poi.sln
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:44 tests
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:44 web
