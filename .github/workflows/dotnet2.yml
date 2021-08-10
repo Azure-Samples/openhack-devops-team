@@ -3,7 +3,7 @@ name: .NET2
 on:
   push:
     branches: 
-    - master
+      - master
 
 jobs:
   build:
