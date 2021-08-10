@@ -21,7 +21,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job:
+- job: Build
   steps:
   - task: NuGetToolInstaller@1
   - task: NuGetCommand@2
@@ -40,7 +40,7 @@ jobs:
 
 # This job creates a work item, and only runs if the previous job failed
 - job: ErrorHandler
-  dependsOn: Work
+  dependsOn: Build
   condition: failed()
   steps: 
   - bash: |
