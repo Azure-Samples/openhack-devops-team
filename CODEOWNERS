@@ -1,0 +1,7 @@
+# In this example, any change inside the `/apps` directory
+# will require approval from @doctocat.
+/apis/poi/ @rbmathis
+/apis/trips/ @radabala1
+/apis/user-java/ @ushakrishnan
+/apis/userprofile/ @joelst
+/apis/ @faansar
