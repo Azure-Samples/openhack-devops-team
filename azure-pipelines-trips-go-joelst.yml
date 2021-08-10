@@ -28,20 +28,24 @@ jobs:
     inputs:
       version: '1.13.5'
   - task: Go@0
+    displayName: Go Get
     inputs:
       command: 'get'
       arguments: '-d'
       workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/*'
   - task: Go@0
+    displayName: Go Build
     inputs:
       command: 'build'
       workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/main.go'
   - task: Go@0
+    displayName: Go Test
     inputs:
       command: 'test'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/tests/healthroute_test.go'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/tests/'
 
   - task: CopyFiles@2
+    displayName: Copy files
     inputs:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
