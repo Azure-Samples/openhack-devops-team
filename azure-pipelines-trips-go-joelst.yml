@@ -6,7 +6,7 @@ name: Trips-Go-Build
 
 parameters:
 - name: succeed
-  displayName: Succeed or fail
+  displayName: Check true to fail
   type: boolean
   default: false
 
@@ -36,6 +36,11 @@ jobs:
     inputs:
       command: 'build'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
+  - task: Go@0
+    inputs:
+      command: 'test'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+
   - task: CopyFiles@2
     inputs:
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
