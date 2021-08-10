@@ -35,11 +35,11 @@ jobs:
   - task: Go@0
     inputs:
       command: 'build'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/main.go'
   - task: Go@0
     inputs:
       command: 'test'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/tests/healthroute_test.go'
 
   - task: CopyFiles@2
     inputs:
