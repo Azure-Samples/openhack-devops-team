@@ -3,28 +3,57 @@
 # Add steps that test, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/go
 name: Trips-Go-Build
+
+parameters:
+- name: succeed
+  displayName: Succeed or fail
+  type: boolean
+  default: false
+
 trigger:
-- master
+  branches: 
+    include:
+    - master 
+  paths:
+    include:
+    - apis/trips/*
 
 pool:
   vmImage: ubuntu-latest
 
-steps: 
-- task: GoTool@0
-  inputs:
-    version: '1.13.5'
-- task: Go@0
-  inputs:
-    command: 'get'
-    arguments: '-d'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-- task: Go@0
-  inputs:
-    command: 'build'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-- task: CopyFiles@2
-  inputs:
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-     artifactName: drop
+jobs:
+- job: Build
+  steps: 
+  - task: GoTool@0
+    inputs:
+      version: '1.13.5'
+  - task: Go@0
+    inputs:
+      command: 'get'
+      arguments: '-d'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+  - task: Go@0
+    inputs:
+      command: 'build'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+  - task: CopyFiles@2
+    inputs:
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: drop
+
+# This job creates a work item, and only runs if the previous job failed
+- job: ErrorHandler
+  dependsOn: Build
+  condition: failed()
+  steps: 
+  - bash: |
+      az boards work-item create \
+        --title "Build $(build.buildNumber) failed" \
+        --type bug \
+        --org $(System.TeamFoundationCollectionUri) \
+        --project $(System.TeamProject)
+    env: 
+      AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+    displayName: 'Create work item on failure'
