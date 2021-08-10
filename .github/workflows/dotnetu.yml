@@ -1,9 +1,10 @@
-name: .NET
+name: .NETu
 
 on:
   push:
     branches:
     - master
+    
 
 jobs:
   build:
