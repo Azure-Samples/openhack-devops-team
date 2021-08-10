@@ -1,10 +1,7 @@
-name: .NET
+name: RAMESH
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  [push]
 
 jobs:
   build:
