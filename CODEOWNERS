@@ -1,4 +1,4 @@
-# In this example, any change inside the `/apps` directory
+# In this example assign owners for `/apis` directory
 # will require approval from @doctocat.
 /apis/poi/ @rbmathis
 /apis/trips/ @radabala1
