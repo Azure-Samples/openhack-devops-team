@@ -31,7 +31,7 @@ jobs:
     inputs:
       command: 'get'
       arguments: '-d'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/apis/trips/*'
   - task: Go@0
     inputs:
       command: 'build'
