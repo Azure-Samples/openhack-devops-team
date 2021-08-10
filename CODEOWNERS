@@ -1,0 +1,10 @@
+# In this example, @doctocat owns any files in the build/logs
+# directory at the root of the repository and any of its
+# subdirectories.
+# /build/logs/ @doctocat
+
+ /apis/poi/ @mimran972
+ /apis/trips/ @samcloud2000
+ /apis/user-java/ @L31a0rgana
+ /apis/user-profile/ @Udayansarma
+ 
