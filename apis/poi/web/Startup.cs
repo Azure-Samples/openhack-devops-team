@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Rewrite;
 namespace poi
 {
     public class Startup
-    {
+    { 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
