@@ -17,8 +17,7 @@ trigger:
     - master 
   paths:
     include:
-    - /api/poi/*
-
+    - apis/poi/*
 pool:
   vmImage: 'windows-latest'
 
