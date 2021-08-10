@@ -1,0 +1,15 @@
+total 20
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10  2021 .
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:16 ..
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:32 .git
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:16 .github
+-rwxrwxrwx 1 tmalone tmalone 5141 Aug 10 10:16 .gitignore
+-rwxrwxrwx 1 tmalone tmalone  338 Aug 10 10:16 CHANGELOG.md
+-rwxrwxrwx 1 tmalone tmalone  288 Aug 10 10:20 CODEOWNERS
+-rwxrwxrwx 1 tmalone tmalone 3999 Aug 10 10:16 CONTRIBUTING.md
+-rwxrwxrwx 1 tmalone tmalone 1181 Aug 10 10:16 LICENSE.md
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:17 MobileApps
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:17 OBDLibrary
+-rwxrwxrwx 1 tmalone tmalone 1537 Aug 10 10:17 README.md
+drwxrwxrwx 1 tmalone tmalone  512 Aug 10 10:17 apis
+-rwxrwxrwx 1 tmalone tmalone    0 Aug 10  2021 dummy.txt
