@@ -10,7 +10,12 @@ parameters:
   default: false
 
 trigger:
-- master
+  branches: 
+    include:
+    - master 
+  paths:
+    include:
+    - /api/poi/*
 
 pool:
   vmImage: 'windows-latest'
