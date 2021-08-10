@@ -1,6 +1,13 @@
 name: .NET
 
 on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'The reason for running the workflow'
+        required: true
+        default: 'Manual run'
+  # additional events omitted for brevity
   push:
     branches: [ master ]
     paths:
