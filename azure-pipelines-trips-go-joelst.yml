@@ -14,7 +14,7 @@ parameters:
 trigger:
   branches: 
     include:
-    - master 
+    - none 
   paths:
     include:
     - apis/trips/*
