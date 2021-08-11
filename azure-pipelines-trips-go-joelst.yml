@@ -17,7 +17,7 @@ trigger:
     - none 
   paths:
     include:
-    - apis/trips/*
+      - apis/trips/*
     exclude:
       - apis/poi/*
       - apis/user-java/*
