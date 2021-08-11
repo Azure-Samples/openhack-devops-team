@@ -16,6 +16,46 @@ variables:
 - name: tag
   value: '$(Build.BuildId)'
 stages:
+- stage: rununittest
+  displayName: Run unit tests
+  jobs:  
+  - job: rununittest
+    displayName: Run unit tests
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Maven@3
+        displayName: Build User-Java
+        inputs:
+          mavenPomFile: 'apis/user-java/pom.xml'
+          publishJUnitResults: false
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: Maven@3
+        displayName: Test User-Java
+        inputs:
+          mavenPomFile: 'apis/user-java/pom.xml'
+          goals: 'test'
+          publishJUnitResults: true
+          testResultsFiles: '**/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+  - job: createworkitem
+    displayName: Create work item on failure
+    dependsOn: rununittest
+    condition: failed() # this job will only run if rununittest fails
+    steps:
+      - task: CreateWorkItem@1
+        displayName: Create work item on failure
+        inputs:
+          workItemType: 'Issue'
+          title: 'Build $(Build.BuildId) failed'
 - stage: Build
   displayName: Build image
   jobs:
