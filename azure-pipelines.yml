@@ -17,7 +17,12 @@ trigger:
     - master 
   paths:
     include:
+    - apis/trips/*
+    exclude:
     - apis/poi/*
+    - apis/user-java/*
+    - apis/userprofile/*
+
 pool:
   vmImage: 'windows-latest'
 
