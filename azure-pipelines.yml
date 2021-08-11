@@ -5,12 +5,6 @@
 
 name: Poi Services Build
 
-parameters:
-- name: succeed
-  displayName: Select to cause build failure
-  type: boolean
-  default: false
-
 trigger:
   branches: 
     include:
@@ -44,10 +38,12 @@ jobs:
       msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
-  - task: VSTest@2
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+
+# This job creates a work item, and only runs if the previous job failed
+- job: ErrorHandler
+  dependsOn: Build
+  condition: failed()
+  steps: 
   - task: CreateWorkItem@1
     inputs:
       workItemType: bug
@@ -55,7 +51,7 @@ jobs:
       linkWorkItems: true
       authToken: $(System.AccessToken)
       linkPR: true
-    condition: failed()
+    
     env:
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
     displayName: 'Create work item on failure'
