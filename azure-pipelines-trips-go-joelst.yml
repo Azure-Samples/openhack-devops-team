@@ -7,7 +7,7 @@ name: Trips-Go-Build
 
 parameters:
 - name: succeed
-  displayName: Check true to fail
+  displayName: Check to simulate failure
   type: boolean
   default: false
 
@@ -17,11 +17,11 @@ trigger:
     - none 
   paths:
     include:
-      - apis/trips/*
+    - apis/trips/*
     exclude:
-      - apis/poi/*
-      - apis/user-java/*
-      - apis/userprofile/*
+    - apis/poi/*
+    - apis/user-java/*
+    - apis/userprofile/*
 
 pool:
   vmImage: ubuntu-latest
