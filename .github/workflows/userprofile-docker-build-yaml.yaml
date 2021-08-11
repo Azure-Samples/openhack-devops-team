@@ -4,10 +4,10 @@ trigger:
     - master
   paths:
     include:
-    - apis/trips/*
-    exclude:
-    - apis/user-java/*
     - apis/userprofile/*
+    exclude:
+    - apis/trips/*
+    - apis/user-java/*
     - apis/poi/*
 resources:
   repositories:
@@ -34,8 +34,8 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: OpenHackACR
-        repository: devopsoh/api-trips
-        dockerfile: '$(Build.SourcesDirectory)/apis/trips/Dockerfile'
+        repository: devopsoh/api-userprofile
+        dockerfile: '$(Build.SourcesDirectory)/apis/userprofile/Dockerfile'
         tags: |
           $(tag)
   - job: ErrorHandler
