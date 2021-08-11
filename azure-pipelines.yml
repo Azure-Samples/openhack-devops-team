@@ -48,11 +48,6 @@ jobs:
     inputs:
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
-
-# This job creates a work item, and only runs if the previous job failed
-- job: ErrorHandler
-  dependsOn: Build
-  steps: 
   - task: CreateWorkItem@1
     inputs:
       workItemType: bug
