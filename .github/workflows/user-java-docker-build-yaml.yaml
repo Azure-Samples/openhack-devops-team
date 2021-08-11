@@ -32,9 +32,23 @@ stages:
     - task: Docker@2
       displayName: Build and Push image
       inputs:
+        command: build
+        containerRegistry: OpenHackACR
+        repository: devopsoh/api-userprofile
+        dockerfile: '$(Build.SourcesDirectory)/apis/user-java/Dockerfile'
+        tags: |
+          $(tag)
+  - job: BuildAndPush
+    dependsOn:
+    - Build
+    condition: and(eq(variables['Build.Reason'], 'ResourceTrigger'),success())
+    steps:
+    - task: Docker@2
+      displayName: Build and Push image
+      inputs:
         command: buildAndPush
         containerRegistry: OpenHackACR
-        repository: devopsoh/api-user-java
+        repository: devopsoh/api-userprofile
         dockerfile: '$(Build.SourcesDirectory)/apis/user-java/Dockerfile'
         tags: |
           $(tag)
