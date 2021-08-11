@@ -52,12 +52,15 @@ jobs:
 # This job creates a work item, and only runs if the previous job failed
 - job: ErrorHandler
   dependsOn: Build
-  condition: failed()
   steps: 
-  - bash: |
-      az boards work-item create --title "Build $(Build.BuildNumber) failed" \
-        --description "Build failed $(Build.BuildUri) Built because $(Build.Reason)" --type bug \
-        --org $(System.TeamFoundationCollectionUri) --project $(System.TeamProject)
-    env: 
+  - task: CreateWorkItem@1
+    inputs:
+      workItemType: bug
+      title: 'Build failed ($Build.BuildId)'
+      linkWorkItems: true
+      authToken: $(System.AccessToken)
+      linkPR: true
+    condition: failed()
+    env:
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
     displayName: 'Create work item on failure'
