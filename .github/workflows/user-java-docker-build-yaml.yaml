@@ -74,7 +74,7 @@ stages:
       inputs:
         command: build
         containerRegistry: OpenHackACR
-        repository: devopsoh/api-userprofile
+        repository: devopsoh/api-user-java
         dockerfile: '$(Build.SourcesDirectory)/apis/user-java/Dockerfile'
         tags: |
           $(tag)
@@ -88,7 +88,7 @@ stages:
       inputs:
         command: buildAndPush
         containerRegistry: OpenHackACR
-        repository: devopsoh/api-userprofile
+        repository: devopsoh/api-user-java
         dockerfile: '$(Build.SourcesDirectory)/apis/user-java/Dockerfile'
         tags: |
           $(tag)
