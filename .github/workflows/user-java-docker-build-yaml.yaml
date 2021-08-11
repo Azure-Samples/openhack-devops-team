@@ -41,7 +41,7 @@ stages:
   - job: BuildAndPush
     dependsOn:
     - Build
-    condition: and(neq(variables['Build.Reason'], 'pr'),success())
+    condition: and(eq(variables['Build.Reason'], 'ResourceTrigger'),success())
     steps:
     - task: Docker@2
       displayName: Build and Push image
