@@ -17,6 +17,10 @@ trigger:
   paths:
     include:
     - apis/trips/*
+    exclude:
+      - apis/poi/*
+      - apis/user-java/*
+      - apis/userprofile/*
 
 pool:
   vmImage: ubuntu-latest
@@ -58,10 +62,8 @@ jobs:
   condition: failed()
   steps: 
   - bash: |
-      az boards work-item create \
-        --title "Build $(build.buildNumber) failed" \
-        --type bug \
-        --org $(System.TeamFoundationCollectionUri) \
+      az boards work-item create --title "Build $(build.buildNumber) failed" \
+        --type bug --org $(System.TeamFoundationCollectionUri) \
         --project $(System.TeamProject)
     env: 
       AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
