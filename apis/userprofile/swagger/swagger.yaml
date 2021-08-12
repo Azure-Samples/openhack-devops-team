@@ -25,6 +25,19 @@ paths:
           description: "An error occurred"
           schema:
             $ref: "#/definitions/error_response_default"
+  /version/user:
+    x-swagger-router-controller: version
+    get:
+      description: "Returns APP_VERSION environment variable to ensure API is running with a specific versionl"
+      responses:
+        200:
+          description: "BuildVersion"
+          schema:
+            $ref: "#/definitions/Version"
+        default:
+          description: "An error occurred"
+          schema:
+            $ref: "#/definitions/error_response_default"                       
   /user:
     get:
       description: "List all user profiles"
@@ -124,6 +137,8 @@ definitions:
       status:
         type: "string"
         description: ""
+  Version:
+    type: "string"         
   Profile:
     type: "object"
     properties:

@@ -9,23 +9,24 @@
     "bugs": "http://github.com/Azure-Samples/openhack-devops-team/issues",
     "dependencies": {
         "body-parser": "^1.18.3",
+        "dotenv": "^8.2.0",
         "express": "^4.16.3",
         "express4-tedious": "^0.3.0",
         "morgan": "^1.9.0",
+        "swagger-ui-express": "^3.0.10",
         "swaggerize-express": "^4.0.5",
         "swagmock": "1.0.0",
-        "swagger-ui-express": "^3.0.10",
         "tedious": "^2.6.4"
     },
     "devDependencies": {
-        "eslint": "^5",
-        "is-my-json-valid": "^2.17.2",
-        "js-yaml": "^3.12.0",
-        "nyc": "^13.0.1",
-        "supertest": "^3.1.0",
-        "swagger-parser": "^4.1.0",
-        "tap-junit": "^2.0.0",
-        "tape": "^4.9.1"
+        "eslint": "6.8.0",
+        "is-my-json-valid": "2.20.0",
+        "js-yaml": "3.13.1",
+        "nyc": "15.0.1",
+        "supertest": "4.0.2",
+        "swagger-parser": "9.0.1",
+        "tap-junit": "3.1.2",
+        "tape": "5.0.0"
     },
     "nyc": {
         "check-coverage": true,
@@ -35,15 +36,15 @@
         "functions": 9,
         "branches": 1,
         "reporter": [
-          "cobertura",
-          "html"
+            "cobertura",
+            "html"
         ],
         "require": [],
         "cache": true,
         "all": true,
         "temp-directory": "./reports-tmp",
         "report-dir": "./reports"
-      },
+    },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
         "cover": "nyc tape -- 'tests/**/*.js' --cov",

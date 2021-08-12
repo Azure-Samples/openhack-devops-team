@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/codemodus/swagui"
+	"github.com/codemodus/swagui/suidata3"
 	"github.com/gorilla/mux"
 )
 
@@ -60,44 +60,37 @@ func CreateHandler(router *mux.Router, route Route) {
 
 // CreateDocsHandler - Create route handler for docs using SwagUI
 func CreateDocsHandler(router *mux.Router, route Route) {
-	// var handler http.Handler
-	var options swagui.Options
-	options.PathPrefix = route.Pattern
-	options.DefaultURLParam = fmt.Sprintf("%s%s",
-		*du,
-		"/api/json/swagger.json")
+	var def = "/api/json/swagger.json"
 
-	ui, err := swagui.New(&options)
+	var provider = suidata3.New()
+
+	ui, err := swagui.New(http.NotFoundHandler(), provider)
 	if err != nil {
 		Info.Println(err)
 		os.Exit(1)
 	}
 
-	// handler = ui.Handler()
-	// handler = Logger(handler, route.Name)
-
 	router.
 		Methods(route.Method).
-		Path(ui.PathPrefix()).
 		Name(route.Name).
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 
 	router.
 		Methods(route.Method).
 		Path("/api/docs/trips/{dir}/{fileName}").
 		Name("*").
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 
 	router.
 		Methods(route.Method).
 		Path("/api/docs/trips/{fileName}").
 		Name("Swagger UI JS").
-		Handler(ui.Handler())
+		Handler(ui.Handler(def))
 }
 
 var docsRoute = Route{
 	"swagger-ui",
-	strings.ToUpper("Get"),
+	"GET",
 	"/api/docs/trips/",
 	nil,
 }
@@ -112,92 +105,99 @@ var routes = Routes{
 
 	Route{
 		"swagger-json",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/json/swagger.json",
 		swaggerDocsJSON,
 	},
 
 	Route{
 		"CreateTrip",
-		strings.ToUpper("Post"),
+		"POST",
 		"/api/trips",
 		createTrip,
 	},
 
 	Route{
 		"CreateTripPoint",
-		strings.ToUpper("Post"),
+		"POST",
 		"/api/trips/{tripID}/trippoints",
 		createTripPoint,
 	},
 
 	Route{
 		"DeleteTrip",
-		strings.ToUpper("Delete"),
+		"DELETE",
 		"/api/trips/{tripID}",
 		deleteTrip,
 	},
 
 	Route{
 		"DeleteTripPoint",
-		strings.ToUpper("Delete"),
+		"DELETE",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		deleteTripPoint,
 	},
 
 	Route{
 		"GetAllTrips",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips",
 		getAllTrips,
 	},
 
 	Route{
 		"GetAllTripsForUser",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/user/{userID}",
 		getAllTripsForUser,
 	},
 
 	Route{
 		"GetTripById",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}",
 		getTripByID,
 	},
 
 	Route{
 		"GetTripPointByID",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		getTripPointByID,
 	},
 
 	Route{
 		"GetTripPoints",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/trips/{tripID}/trippoints",
 		getTripPoints,
 	},
 
 	Route{
 		"HealthcheckGet",
-		strings.ToUpper("Get"),
+		"GET",
 		"/api/healthcheck/trips",
 		healthcheckGet,
 	},
 
 	Route{
 		"UpdateTrip",
-		strings.ToUpper("Patch"),
+		"PATCH",
 		"/api/trips/{tripID}",
 		updateTrip,
 	},
 
 	Route{
 		"UpdateTripPoint",
-		strings.ToUpper("Patch"),
+		"PATCH",
 		"/api/trips/{tripID}/trippoints/{tripPointID}",
 		updateTripPoint,
 	},
+
+	Route{
+		"VersionGet",
+		"GET",
+		"/api/version/trips",
+		versionGet,
+	},	
 }
