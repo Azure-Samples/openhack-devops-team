@@ -7,8 +7,16 @@ import (
 	"time"
 )
 
+func getSwaggerJsonPath() string {
+	if value, ok := os.LookupEnv("SWAGGER_JSON_PATH"); ok {
+		return value
+	}
+	return "./api/swagger.json"
+}
+
 func swaggerDocsJSON(w http.ResponseWriter, r *http.Request) {
-	fData, err := os.Open("./api/swagger.json")
+	swaggerPath := getSwaggerJsonPath()
+	fData, err := os.Open(swaggerPath)
 	if err != nil {
 		var msg = fmt.Sprintf("swaggerDocsJson - Unable to open and read swagger.json : %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
