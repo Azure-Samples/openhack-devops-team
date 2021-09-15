@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:3.1-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -12,12 +12,12 @@ COPY ./appsettings.*.json /app/out/
 COPY ./appsettings.json /app/out/
 
 # build runtime image
-FROM microsoft/dotnet:3.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 
 ENV SQL_USER="demousersa" \
 SQL_PASSWORD="demo@pass123" \
-SQL_SERVER="changeme.database.windows.net" \
+SQL_SERVER="openhackkbt43uu9sql.database.windows.net" \
 SQL_DBNAME="mydrivingDB" \
 WEB_PORT="8080" \
 WEB_SERVER_BASE_URI="http://0.0.0.0" \
