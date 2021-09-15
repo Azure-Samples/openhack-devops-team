@@ -42,6 +42,7 @@ jobs:
             body: body
           });         
   deploy:
+    needs: build
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
@@ -52,7 +53,7 @@ jobs:
     - name: Docker Build
       run: docker build -t "${{secrets.ACR_REPO}}/devopsoh/api-poi:${{ github.run_number }}" apis/poi/web
     - name: Docker Publish
-      run: docker push "${{secrets.ACR_REPO}}/devopsoh/api-poi:${{ github.run_number }}" apis/poi/web      
+      run: docker push "${{secrets.ACR_REPO}}/devopsoh/api-poi:${{ github.run_number }}"      
     - uses: actions/github-script@0.9.0
       if: failure()
       with:
