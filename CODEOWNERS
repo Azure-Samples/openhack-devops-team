@@ -1,0 +1,7 @@
+# Add code owners for the repo
+# that will require approval
+
+/apis/poi @ivegamsft
+/apis/trips @shadmsft
+/apis/user-java @jason-chong
+/apis/userprofile @techbunny
