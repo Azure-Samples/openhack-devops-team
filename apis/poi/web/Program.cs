@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using poi.Utility;
-FAILURE!!!
+FAILURE2!!!
 
 namespace poi
 {
@@ -18,7 +18,7 @@ namespace poi
         {
 
             BuildWebHost(args).Run();
-            FAILURE!!!
+            FAILURE2!!!
         }
 
         public static IWebHost BuildWebHost(string[] args) {
