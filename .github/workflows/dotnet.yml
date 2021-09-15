@@ -22,10 +22,10 @@ jobs:
       with:
         dotnet-version: 2.1.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore  apis/poi/
     - name: Build
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Docker Build
-      run: Docker Build .
+      run: docker build apis/poi/web
