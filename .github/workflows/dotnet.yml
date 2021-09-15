@@ -24,7 +24,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore  apis/poi/
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore apis/poi/
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Docker Build
