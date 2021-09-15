@@ -26,6 +26,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore apis/poi/
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal apis/poi/
     - name: Docker Build
       run: docker build apis/poi/web
