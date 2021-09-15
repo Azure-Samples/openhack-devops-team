@@ -27,4 +27,3 @@ COPY --from=build-env /app/out .
 
 ENTRYPOINT ["dotnet", "poi.dll"]
 
-#new
