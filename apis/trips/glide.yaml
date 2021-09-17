@@ -1,9 +1,9 @@
 package: github.com/Azure-Samples/openhack-devops-team/apis/trips
 import:
 - package: github.com/codemodus/swagui
-  version: ~0.1.0
+  version: ~0.4.1
 - package: github.com/denisenkom/go-mssqldb
 - package: github.com/gorilla/mux
-  version: ~1.6.2
+  version: ~1.7.4
 - package: github.com/stretchr/testify
-  version: ~1.2.2
+  version: ~1.6.1
