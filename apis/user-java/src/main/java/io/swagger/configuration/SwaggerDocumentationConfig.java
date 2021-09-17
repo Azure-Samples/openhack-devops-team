@@ -50,17 +50,16 @@ public class SwaggerDocumentationConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/documentation/user-java/api-docs", "/api-docs").setKeepQueryParams(true);
-        registry.addRedirectViewController("/documentation/user-java/swagger-resources/configuration/ui","/swagger-resources/configuration/ui");
-        registry.addRedirectViewController("/documentation/user-java/swagger-resources/configuration/security","/swagger-resources/configuration/security");
-        registry.addRedirectViewController("/documentation/user-java/swagger-resources", "/swagger-resources");
-        registry.addRedirectViewController("/documentation/user-java", "/documentation/user-java/swagger-ui.html");
-        registry.addRedirectViewController("/docs/user-java", "/documentation/user-java/swagger-ui.html");
+        registry.addRedirectViewController("/docs/user-java/api-docs", "/api-docs").setKeepQueryParams(true);
+        registry.addRedirectViewController("/docs/user-java/swagger-resources/configuration/ui","/swagger-resources/configuration/ui");
+        registry.addRedirectViewController("/docs/user-java/swagger-resources/configuration/security","/swagger-resources/configuration/security");
+        registry.addRedirectViewController("/docs/user-java/swagger-resources", "/swagger-resources");
+        registry.addRedirectViewController("/docs/user-java", "/docs/user-java/swagger-ui.html");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/documentation/user-java/**").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/docs/user-java/**").addResourceLocations("classpath:/META-INF/resources/");
     }
 
 }

@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config()
+
 var Http = require('http');
 var Express = require('express');
 var BodyParser = require('body-parser');
