@@ -1,14 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using poi.Data;
 
 namespace poi
@@ -78,9 +82,22 @@ namespace poi
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("api/healthcheck/poi", new HealthCheckOptions()
                 {
-                    AllowCachingResponses = false
+                    AllowCachingResponses = false,
+                    ResponseWriter = HealthCheckResponse
                 });
             });
+        }
+
+        private static Task HealthCheckResponse(HttpContext context, HealthReport result)
+        {
+            context.Response.ContentType = "application/json";
+
+            var json = new JObject(
+                new JProperty("message", "POI Service Healthcheck"),
+                new JProperty("status", result.Status.ToString()));
+
+            return context.Response.WriteAsync(
+                json.ToString(Formatting.Indented));
         }
     }
 }
