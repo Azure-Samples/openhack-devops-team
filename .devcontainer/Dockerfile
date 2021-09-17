@@ -21,7 +21,7 @@ RUN apt-get update \
 
 # Golang
 WORKDIR /tmp
-RUN curl -fsS https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o golang.tar.gz \
+RUN curl -fsS https://dl.google.com/go/go1.16.8.linux-amd64.tar.gz -o golang.tar.gz \
     && tar -xvf golang.tar.gz \
     && rm -rf /usr/local/go \
     && mv go /usr/local
