@@ -48,7 +48,7 @@
                     "default": {
                         "description": "An error occurred",
                         "schema": {
-                            "$ref": "#/definitions/error_response_default"
+                            "$ref": "#/definitions/DefaultErrorResponse"
                         }
                     }
                 }
@@ -294,6 +294,20 @@
                 }
             }
         },
+        "DefaultErrorResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "Error code (if available)",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "description": "Error Message",
+                    "type": "string"
+                }
+            }
+        },        
         "DefaultResponse": {
           "type": "object",
           "properties": {

@@ -47,6 +47,7 @@
     },
     "scripts": {
         "test": "tape 'tests/**/*.js' | tap-junit --output reports --name userprofile-report",
+        "test-noreport": "tape 'tests/**/*.js'",
         "cover": "nyc tape -- 'tests/**/*.js' --cov",
         "lint": "eslint .",
         "regenerate": "yo swaggerize:test --framework express --apiPath './config/swagger.json'"
