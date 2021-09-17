@@ -11,15 +11,17 @@ ARG USER_GID=$USER_UID
 # Configure apt, install base packages, SDKs & tools
 RUN apt-get update \
     && apt-get install -y git less procps lsb-release curl wget ca-certificates apt-transport-https gnupg \
-    && curl -sL https://packages.microsoft.com/config/debian/9/prod.list -o /etc/apt/sources.list.d/microsoft-prod.list \
+    && curl -sL https://packages.microsoft.com/config/debian/10/prod.list -o /etc/apt/sources.list.d/microsoft-prod.list \
     && curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null \
     && echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ buster main" | tee /etc/apt/sources.list.d/azure-cli.list \
+    # && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+    # && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian buster stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null \
     && apt-get update \
-    && apt-get install -y azure-cli openjdk-11-jdk dotnet-sdk-2.2
+    && apt-get install -y azure-cli openjdk-11-jdk dotnet-sdk-3.1
 
 # Golang
 WORKDIR /tmp
-RUN curl -fsS https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz -o golang.tar.gz \
+RUN curl -fsS https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz -o golang.tar.gz \
     && tar -xvf golang.tar.gz \
     && rm -rf /usr/local/go \
     && mv go /usr/local
@@ -37,7 +39,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install -y nodejs
 
 # Docker client
-RUN curl -sSL https://download.docker.com/linux/static/stable/x86_64/docker-19.03.8.tgz -o docker.tgz \
+RUN curl -sSL https://download.docker.com/linux/static/stable/x86_64/docker-20.10.8.tgz -o docker.tgz \
     && tar -zxvf docker.tgz docker/docker \
     && chmod +x docker/docker \
     && mv docker/docker /usr/bin/docker \
