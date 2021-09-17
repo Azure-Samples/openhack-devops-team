@@ -15,7 +15,13 @@
 		"redhat.vscode-yaml",
 		"github.vscode-pull-request-github",
 		"ms-vscode.azure-account",
-		"ms-azuretools.vscode-azureappservice"
+		"ms-azuretools.vscode-azureappservice",
+		"golang.go",
+		"vscjava.vscode-java-pack",
+		"hashicorp.terraform",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode.vscode-node-azure-pack",
+		"ms-azuretools.vscode-azureterraform"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
