@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,11 +21,6 @@ type APITestCase struct {
 	Status           int
 	ExpectedResponse string
 	ActualResponse   string
-}
-
-func newRouter() *mux.Router {
-	router := NewRouter()
-	return router
 }
 
 func testAPI(router *mux.Router, method, URL, body string) *httptest.ResponseRecorder {
@@ -47,4 +43,24 @@ func RunAPITests(t *testing.T, router *mux.Router, tests []APITestCase) {
 			assert.JSONEq(t, tests[i].ExpectedResponse, res.Body.String(), tests[i].Tag)
 		}
 	}
+}
+
+func RunAPITestsPlainText(t *testing.T, router *mux.Router, tests []APITestCase) {
+	for i := 0; i < len(tests); i++ {
+		res := testAPI(router, tests[i].Method, tests[i].URL, tests[i].Body)
+		tests[i].ActualResponse = res.Body.String()
+		Debug.Println(tests[i].Tag + " - " + tests[i].ActualResponse)
+		assert.Equal(t, tests[i].Status, res.Code, tests[i].Tag)
+		Info.Println(tests[i].Tag + "- Response Code:" + strconv.Itoa(res.Code))
+		if tests[i].ExpectedResponse != "" {
+			assert.Equal(t, tests[i].ExpectedResponse, res.Body.String(), tests[i].Tag)
+		}
+	}
+}
+
+func resetDataAccessEnvVars() {
+	var fls bool = false
+	debug = &fls
+	godotenv.Overload()
+	RebindDataAccessEnvironmentVariables()
 }
