@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-08-03T19:26:46.543Z")
 
-@Api(value = "user", description = "the user API")
+@Api(value = "User Java", description = "User-Java API", tags = { "User Java" })
 public interface UserApi {
 
     @ApiOperation(value = "", nickname = "updateUser", notes = "Update User", response = Profile.class, tags={  })
