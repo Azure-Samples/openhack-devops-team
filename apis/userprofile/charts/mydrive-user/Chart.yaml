@@ -1,4 +1,0 @@
-apiVersion: v1
-description: A chart for deploying the My Driving User API 
-name: mydrive-user
-version: 1.0.0
