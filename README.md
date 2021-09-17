@@ -1,3 +1,17 @@
+---
+page_type: sample
+languages:
+- csharp
+- java
+- go
+- javascript
+- powershell
+products:
+- azure
+description: "The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges."
+urlFragment: openhack-devops-team
+---
+
 # My Driving Team APIs
 
 The DevOps open hack event is designed to foster learning via implementing DevOps practices with a series of challenges.
