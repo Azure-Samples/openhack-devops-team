@@ -21,7 +21,8 @@
 		"hashicorp.terraform",
 		"ms-azuretools.vscode-docker",
 		"ms-vscode.vscode-node-azure-pack",
-		"ms-azuretools.vscode-azureterraform"
+		"ms-azuretools.vscode-azureterraform",
+		"msjsdiag.debugger-for-edge"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
