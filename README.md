@@ -46,4 +46,3 @@ It is useful but not required to have a basic knowledge of the following topics:
 ## Resources
 
 The provisioning of this environment for proctors can be found in the [DevOps Openhack Proctor](https://github.com/Azure-Samples/openhack-devops-proctor) Github repository.
-> **Note**: During the Dry Run relevant code can be found in the **openhack_refresh** branch. Post Dry Run these changes will be committed to master.
