@@ -1,9 +1,10 @@
 targetScope = 'subscription'
 
-param uniquer string = 'devopsoh1999'
+param uniquer string = uniqueString(newGuid())
 param location string = deployment().location
 
-var resourceGroupName = '${uniquer}rg'
+var varfile = json(loadTextContent('./variables.json'))
+var resourceGroupName = '${varfile.namePrefix}${uniquer}rg'
 
 module openhackResourceGroup './resourceGroup.bicep' = {
   name: 'resourceGroupDeployment'

@@ -1,8 +1,11 @@
 param uniquer string
 
+var varfile = json(loadTextContent('./variables.json'))
+var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
+
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.containerregistry/registries?tabs=bicep
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
-  name: '${uniquer}cr'
+  name: '${resourcesPrefix}cr'
   location: resourceGroup().location
   sku: {
     name: 'Standard'
