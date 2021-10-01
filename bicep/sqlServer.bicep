@@ -17,7 +17,8 @@ resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' = {
 }
 
 resource sqlFirewallRuleAzure 'Microsoft.Sql/servers/firewallRules@2021-02-01-preview' = {
-  name: '${sqlServer.name}/AzureAccess'
+  parent: sqlServer.name
+  name: 'AzureAccess'
   properties: {
     endIpAddress: '0.0.0.0'
     startIpAddress: '0.0.0.0'
@@ -26,7 +27,8 @@ resource sqlFirewallRuleAzure 'Microsoft.Sql/servers/firewallRules@2021-02-01-pr
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/databases?tabs=bicep
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
-  name: '${sqlServer.name}/mydrivingDB'
+  parent: sqlServer.name
+  name: 'mydrivingDB'
   location: location
   sku: {
     name: 'S0'
