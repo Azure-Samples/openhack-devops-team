@@ -13,9 +13,12 @@ param appServiceApiTripsHostname string
 param appServiceApiUserjavaHostname string
 param appServiceApiUserprofileHostname string
 
+var varfile = json(loadTextContent('./variables.json'))
+var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
+
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.containerinstance/containergroups?tabs=bicep
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
-  name: '${uniquer}simulator'
+  name: '${resourcesPrefix}simulator'
   location: resourceGroup().location
   properties: {
     containers: [

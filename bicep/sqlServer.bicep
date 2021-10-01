@@ -3,10 +3,11 @@ param uniquer string
 var location = resourceGroup().location
 
 var varfile = json(loadTextContent('./variables.json'))
+var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers?tabs=bicep
 resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' = {
-  name: '${uniquer}sql'
+  name: '${resourcesPrefix}sql'
   location: location
   properties: {
     administratorLogin: varfile.sqlServerAdminLogin
@@ -17,7 +18,7 @@ resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' = {
 }
 
 resource sqlFirewallRuleAzure 'Microsoft.Sql/servers/firewallRules@2021-02-01-preview' = {
-  parent: sqlServer.name
+  parent: sqlServer
   name: 'AzureAccess'
   properties: {
     endIpAddress: '0.0.0.0'
@@ -27,7 +28,7 @@ resource sqlFirewallRuleAzure 'Microsoft.Sql/servers/firewallRules@2021-02-01-pr
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/databases?tabs=bicep
 resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
-  parent: sqlServer.name
+  parent: sqlServer
   name: 'mydrivingDB'
   location: location
   sku: {
@@ -49,7 +50,7 @@ var contributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorizatio
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.managedidentity/userassignedidentities?tabs=bicep
 resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-  name: '${uniquer}sqluami'
+  name: '${resourcesPrefix}uami'
   location: location
 }
 
@@ -69,7 +70,7 @@ resource sqlContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.resources/deploymentscripts?tabs=bicep
 resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-  name: '${uniquer}dataInit'
+  name: '${resourcesPrefix}dataInit'
   location: location
   kind: 'AzureCLI'
   identity: {

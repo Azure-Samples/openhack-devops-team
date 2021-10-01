@@ -12,10 +12,11 @@ param containerRegistryAdminPassword string
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
+var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?tabs=bicep
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
-  name: '${uniquer}plan'
+  name: '${resourcesPrefix}plan'
   kind: 'linux'
   location: location
   properties: {
@@ -29,7 +30,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep
 resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
-  name: '${uniquer}tripviewer'
+  name: '${resourcesPrefix}tripviewer'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -76,7 +77,7 @@ resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
 }
 
 resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
-  name: '${uniquer}poi'
+  name: '${resourcesPrefix}poi'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -111,7 +112,7 @@ resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
 }
 
 resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
-  name: '${uniquer}trips'
+  name: '${resourcesPrefix}trips'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -142,7 +143,7 @@ resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
 }
 
 resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
-  name: '${uniquer}userjava'
+  name: '${resourcesPrefix}userjava'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -173,7 +174,7 @@ resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
 }
 
 resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
-  name: '${uniquer}userprofile'
+  name: '${resourcesPrefix}userprofile'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
