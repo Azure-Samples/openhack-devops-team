@@ -1,5 +1,4 @@
-param uniquer string
-
+param resourcesPrefix string
 param sqlServerAdminLogin string
 @secure()
 param sqlServerAdminPassword string
@@ -12,7 +11,6 @@ param containerRegistryAdminPassword string
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
-var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?tabs=bicep
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {

@@ -1,4 +1,4 @@
-param uniquer string
+param resourcesPrefix string
 param sqlServerAdminLogin string
 @secure()
 param sqlServerAdminPassword string
@@ -12,9 +12,6 @@ param appServiceApiPoiHostname string
 param appServiceApiTripsHostname string
 param appServiceApiUserjavaHostname string
 param appServiceApiUserprofileHostname string
-
-var varfile = json(loadTextContent('./variables.json'))
-var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.containerinstance/containergroups?tabs=bicep
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
@@ -44,7 +41,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
             }
             {
               name: 'TEAM_NAME'
-              value: uniquer
+              value: resourcesPrefix
             }
             {
               name: 'USER_ROOT_URL'
@@ -87,7 +84,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
       }
     ]
     ipAddress: {
-      dnsNameLabel: '${uniquer}simulator'
+      dnsNameLabel: '${resourcesPrefix}simulator'
       ports: [
         {
           port: 8080

@@ -12,7 +12,7 @@ data "external" "my_ip" {
 
 locals {
   uniquer                                   = var.uniquer != null ? var.uniquer : "${random_string.uniquer.id}"
-  resources_prefix                          = "${local._default.name_prefix}${local.uniquer}"
+  resources_prefix                          = var.resources_prefix != null ? var.resources_prefix : "${local._default.name_prefix}${local.uniquer}"
   team_name                                 = local.resources_prefix
   location                                  = var.location != null ? var.location : local._default.location
   resource_group_name                       = "${local.resources_prefix}rg"
