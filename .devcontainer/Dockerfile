@@ -7,9 +7,9 @@ FROM ubuntu:focal
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+ARG TZ="UTC"
 
 ENV ACCEPT_EULA=Y
-ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Configure apt, install base packages, SDKs & tools
@@ -37,8 +37,8 @@ WORKDIR /tmp
 RUN curl -fsS https://dl.google.com/go/go1.16.8.linux-amd64.tar.gz -o golang.tar.gz \
     && rm -rf /usr/local/go \
     && tar -C /usr/local -xzf golang.tar.gz
-ENV GO111MODULE=on
-ENV CGO_ENABLED=0
+ENV GO111MODULE=on \
+CGO_ENABLED=0
 RUN echo 'export PATH="$PATH:/usr/local/go/bin"' >> /etc/bash.bashrc
 
 # Create the user - https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user

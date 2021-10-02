@@ -64,23 +64,26 @@ _azure_logout() {
     az account clear
 }
 
+lint_bicep(){
+    az bicep build --file main.bicep
+    rm main.json
+}
+
 deploy_bicep(){
     _azure_login
-    az account set --subscription "${ARM_SUBSCRIPTION_ID}"
-    
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
         az deployment sub what-if --location "${LOCATION}" resources_prefix=${RESOURCES_PREFIX} --template-file main.bicep
-        az deployment sub create --location "${LOCATION}" resources_prefix=${RESOURCES_PREFIX} --template-file main.bicep
-    elif [ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]; then
+        #az deployment sub create --rollback-on-error --location "${LOCATION}" resources_prefix=${RESOURCES_PREFIX} --template-file main.bicep
+    elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
         az deployment sub what-if --location "${LOCATION}" uniquer=${UNIQUER} --template-file main.bicep
-        az deployment sub create --location "${LOCATION}" uniquer=${UNIQUER} --template-file main.bicep
+        #az deployment sub create --location "${LOCATION}" uniquer=${UNIQUER} --template-file main.bicep
     else
         az deployment sub what-if --location "${LOCATION}" --template-file main.bicep
-        az deployment sub create --location "${LOCATION}" --template-file main.bicep
+        #az deployment sub create --location "${LOCATION}" --template-file main.bicep
     fi
-    
     _azure_logout
 }
 
+lint_bicep
 deploy_bicep

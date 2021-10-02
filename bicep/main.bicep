@@ -2,7 +2,7 @@ targetScope = 'subscription'
 
 param uniquer string = uniqueString(newGuid())
 param location string = deployment().location
-param resourcesPrefix string
+param resourcesPrefix string = ''
 
 var varfile = json(loadTextContent('./variables.json'))
 var resourcesPrefixCalculated = empty(resourcesPrefix) ? '${varfile.namePrefix}${uniquer}' : resourcesPrefix

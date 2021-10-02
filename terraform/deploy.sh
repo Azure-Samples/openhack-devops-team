@@ -52,10 +52,15 @@ _azure_login_for_terraform() {
     export ARM_TENANT_ID=$(echo "${_azuresp_json}" | jq -r ".tenantId")
 }
 
+lint_terraform(){
+    terraform fmt
+    terraform init
+    terraform validate
+}
+
 deploy_terraform(){
     _azure_login_for_terraform
     terraform init
-    
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
         terraform plan --detailed-exitcode -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
@@ -77,4 +82,5 @@ deploy_terraform(){
     # rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
-deploy_terraform
+lint_terraform
+# deploy_terraform
