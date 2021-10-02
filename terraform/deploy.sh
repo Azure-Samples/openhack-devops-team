@@ -44,7 +44,7 @@ elif ! [ -x "$(command -v jq)" ]; then
     exit 1
 fi
 
-_azure_login_for_terraform() {
+_azure_login() {
     _azuresp_json=$(cat azuresp.json)
     export ARM_CLIENT_ID=$(echo "${_azuresp_json}" | jq -r ".clientId")
     export ARM_CLIENT_SECRET=$(echo "${_azuresp_json}" | jq -r ".clientSecret")
@@ -59,7 +59,7 @@ lint_terraform(){
 }
 
 deploy_terraform(){
-    _azure_login_for_terraform
+    _azure_login
     terraform init
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
