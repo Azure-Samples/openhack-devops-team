@@ -35,6 +35,12 @@ while getopts ":l:u:r:" arg; do
 done
 shift $((OPTIND - 1))
 
+if [ ${#LOCATION} -eq 0 ]; then
+    _error "Required LOCATION parameter is not set!"
+    _error "${USAGE_HELP}" 2>&1
+    exit 1
+fi
+
 # Check for programs
 if ! [ -x "$(command -v az)" ]; then
     _error "az is not installed!"
@@ -73,14 +79,17 @@ deploy_bicep(){
     _azure_login
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
-        az deployment sub what-if --location "${LOCATION}" resources_prefix=${RESOURCES_PREFIX} --template-file main.bicep
-        #az deployment sub create --rollback-on-error --location "${LOCATION}" resources_prefix=${RESOURCES_PREFIX} --template-file main.bicep
+        echo "Deploying with RESOURCES_PREFIX: ${RESOURCES_PREFIX}"
+        az deployment sub what-if --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}" --template-file main.bicep
+        az deployment sub create --rollback-on-error --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}" --template-file main.bicep
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
-        az deployment sub what-if --location "${LOCATION}" uniquer=${UNIQUER} --template-file main.bicep
-        #az deployment sub create --location "${LOCATION}" uniquer=${UNIQUER} --template-file main.bicep
+        echo "Deploying with UNIQUER: ${UNIQUER}"
+        az deployment sub what-if --location "${LOCATION}" --parameters uniquer="${UNIQUER}" --template-file main.bicep
+        az deployment sub create --location "${LOCATION}" --parameters uniquer=${UNIQUER} --template-file main.bicep
     else
-        az deployment sub what-if --location "${LOCATION}" --template-file main.bicep
-        #az deployment sub create --location "${LOCATION}" --template-file main.bicep
+        echo "Deploying with LOCATION only: ${LOCATION}"
+        az deployment sub what-if --no-pretty-print --location "${LOCATION}" --template-file main.bicep
+        az deployment sub create --location "${LOCATION}" --template-file main.bicep
     fi
     _azure_logout
 }

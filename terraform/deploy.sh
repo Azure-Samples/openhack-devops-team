@@ -35,6 +35,12 @@ while getopts ":l:u:r:" arg; do
 done
 shift $((OPTIND - 1))
 
+if [ ${#LOCATION} -eq 0 ]; then
+    _error "Required LOCATION parameter is not set!"
+    _error "${USAGE_HELP}" 2>&1
+    exit 1
+fi
+
 # Check for programs
 if ! [ -x "$(command -v terraform)" ]; then
     _error "terraform is not installed!"
@@ -63,24 +69,27 @@ deploy_terraform(){
     terraform init
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
+        echo "Deploying with RESOURCES_PREFIX: ${RESOURCES_PREFIX}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
         if [ $? -eq 2 ]; then
             terraform apply --auto-approve -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
         fi
-    elif [ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]; then
+    elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
+        echo "Deploying with UNIQUER: ${UNIQUER}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
         if [ $? -eq 2 ]; then
             terraform apply --auto-approve -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
         fi
     else
+        echo "Deploying with LOCATION only: ${LOCATION}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}"
         if [ $? -eq 2 ]; then
             terraform apply --auto-approve -var="location=${LOCATION}"
         fi
     fi
     rm -rf openhack-devops-proctor
-    # rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
+    #rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
 lint_terraform
-# deploy_terraform
+deploy_terraform
