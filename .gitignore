@@ -5,6 +5,8 @@
 
 azuresp.json
 testResults.xml
+testResultsNunit.xml
+testResultsJunit.xml
 
 # Local .terraform directories
 .terraform

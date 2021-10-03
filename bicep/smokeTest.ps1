@@ -19,7 +19,8 @@ Import-Module Pester
 $container = New-PesterContainer `
 -Path 'appService.Test.ps1' `
 -Data @{ HostNames = $HostNames }
-Invoke-Pester `
+$p = Invoke-Pester `
 -Container $container `
 -CI `
--OutputFormat JUnitXml
+-Passthru
+$p | ConvertTo-JUnitReport -AsString | Out-File -Encoding UTF8 -FilePath 'testResultsJunit.xml'
