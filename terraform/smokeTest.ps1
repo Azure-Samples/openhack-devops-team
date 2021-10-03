@@ -21,4 +21,5 @@ $container = New-PesterContainer `
 -Data @{ HostNames = $HostNames }
 Invoke-Pester `
 -Container $container `
--CI
+-CI `
+-OutputFormat JUnitXml
