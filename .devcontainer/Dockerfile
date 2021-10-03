@@ -29,8 +29,9 @@ RUN apt-get update \
     && apt-get install -y mssql-tools unixodbc-dev azure-cli maven dotnet-sdk-3.1 snapd nodejs build-essential docker-ce docker-ce-cli containerd.io terraform python3 python3-pip powershell jq unzip zip gh \
     && az bicep install \
     && az extension add --name azure-devops
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> /etc/bash.bashrc
-RUN echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> /etc/bash.bashrc
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> /etc/bash.bashrc \
+    && echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64' >> /etc/bash.bashrc
+RUN pwsh -Command {Install-Module Pester -AllowClobber -Force -Confirm:$False -SkipPublisherCheck}
 
 # Golang
 WORKDIR /tmp

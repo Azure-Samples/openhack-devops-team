@@ -48,6 +48,9 @@ if ! [ -x "$(command -v az)" ]; then
 elif ! [ -x "$(command -v jq)" ]; then
     _error "jq is not installed!"
     exit 1
+elif ! [ -x "$(command -v pwsh)" ]; then
+    _error "pwsh is not installed!"
+    exit 1
 fi
 
 _parse_azuresp_json() {
@@ -75,24 +78,60 @@ lint_bicep(){
     rm main.json
 }
 
+validate_bicep(){
+    _azure_login
+    if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
+        az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
+    elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
+        az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
+    else
+        az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}"
+    fi
+    _azure_logout
+}
+
+preview_bicep(){
+    _azure_login
+    if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
+        az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
+    elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
+        az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
+    else
+        az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}"
+    fi
+    _azure_logout
+}
+
 deploy_bicep(){
     _azure_login
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
         echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
         echo "Deploying with RESOURCES_PREFIX: ${RESOURCES_PREFIX}"
-        az deployment sub what-if --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}" --template-file main.bicep
-        az deployment sub create --rollback-on-error --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}" --template-file main.bicep
+        _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}")
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
         echo "Deploying with UNIQUER: ${UNIQUER}"
-        az deployment sub what-if --location "${LOCATION}" --parameters uniquer="${UNIQUER}" --template-file main.bicep
-        az deployment sub create --location "${LOCATION}" --parameters uniquer=${UNIQUER} --template-file main.bicep
+        _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer=${UNIQUER})
     else
         echo "Deploying with LOCATION only: ${LOCATION}"
-        az deployment sub what-if --no-pretty-print --location "${LOCATION}" --template-file main.bicep
-        az deployment sub create --location "${LOCATION}" --template-file main.bicep
+        _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}")
     fi
     _azure_logout
+
+    echo "${_deployment_output}"
 }
 
+smoke_test(){
+    local _hostnames="${1}"
+
+    pwsh -Command ./smokeTest.ps1 -HostNames "${hostnames}"
+}
+
+export BUILD_ID="${RANDOM:0:4}"
+
 lint_bicep
-deploy_bicep
+validate_bicep
+preview_bicep
+deployment_output=$(deploy_bicep)
+echo "${deployment_output}"
+hostnames=$(echo "${deployment_output}" | jq -r -c '.properties.outputs | map(.value) | join(",")')
+smoke_test "${hostnames}"

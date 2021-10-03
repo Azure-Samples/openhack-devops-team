@@ -46,9 +46,9 @@ module appService './appService.bicep' = {
     sqlServerAdminLogin: sqlServer.outputs.sqlServerAdminLogin
     sqlServerAdminPassword: sqlServer.outputs.sqlServerAdminPassword
     sqlDatabaseName: sqlServer.outputs.sqlDatabaseName
-    containerRegistryLoginServer: containerRegistry.outputs.containerRegistryLoginServer
-    containerRegistryAdminUsername: containerRegistry.outputs.containerRegistryAdminUsername
-    containerRegistryAdminPassword: containerRegistry.outputs.containerRegistryAdminPassword
+    // containerRegistryLoginServer: containerRegistry.outputs.containerRegistryLoginServer
+    // containerRegistryAdminUsername: containerRegistry.outputs.containerRegistryAdminUsername
+    // containerRegistryAdminPassword: containerRegistry.outputs.containerRegistryAdminPassword
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -56,6 +56,12 @@ module appService './appService.bicep' = {
     sqlServer
   ]
 }
+
+output appServiceTripviewerHostname string = appService.outputs.appServiceTripviewerHostname
+output appServiceApiPoiHostname string = appService.outputs.appServiceApiPoiHostname
+output appServiceApiTripsHostname string = appService.outputs.appServiceApiTripsHostname
+output appServiceApiUserjavaHostname string = appService.outputs.appServiceApiUserjavaHostname
+output appServiceApiUserprofileHostname string = appService.outputs.appServiceApiUserprofileHostname
 
 // module containerGroup './containerGroup.bicep' = {
 //   name: 'containerGroupDeployment'
