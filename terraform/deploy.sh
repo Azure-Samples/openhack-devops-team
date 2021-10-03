@@ -42,15 +42,18 @@ if [ ${#LOCATION} -eq 0 ]; then
 fi
 
 # Check for programs
-if ! [ -x "$(command -v terraform)" ]; then
-    _error "terraform is not installed!"
+if ! [ -x "$(command -v az)" ]; then
+    _error "az is not installed!"
     exit 1
 elif ! [ -x "$(command -v jq)" ]; then
     _error "jq is not installed!"
     exit 1
+elif ! [ -x "$(command -v terraform)" ]; then
+    _error "terraform is not installed!"
+    exit 1
 fi
 
-_azure_login() {
+azure_login() {
     _azuresp_json=$(cat azuresp.json)
     export ARM_CLIENT_ID=$(echo "${_azuresp_json}" | jq -r ".clientId")
     export ARM_CLIENT_SECRET=$(echo "${_azuresp_json}" | jq -r ".clientSecret")
@@ -59,37 +62,58 @@ _azure_login() {
 }
 
 lint_terraform(){
-    terraform fmt
-    terraform init
+    terraform fmt -check
+    if [ $? -ne 0 ]; then
+        _error "Terraform files are not properly formatted!"
+        exit 1
+    fi
+}
+
+validate_terraform(){
     terraform validate
 }
 
-deploy_terraform(){
-    _azure_login
-    terraform init
+preview_terraform(){
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
-        echo "If RESOURCES_PREFIX is set, then UNIQUER is ignored."
-        echo "Deploying with RESOURCES_PREFIX: ${RESOURCES_PREFIX}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
-        if [ $? -eq 2 ]; then
-            terraform apply --auto-approve -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
-        fi
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
-        echo "Deploying with UNIQUER: ${UNIQUER}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
-        if [ $? -eq 2 ]; then
-            terraform apply --auto-approve -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
-        fi
     else
-        echo "Deploying with LOCATION only: ${LOCATION}"
         terraform plan --detailed-exitcode -var="location=${LOCATION}"
-        if [ $? -eq 2 ]; then
+    fi
+
+    return $?
+}
+
+deploy_terraform(){
+    local _tfplan_exit_code=${1}
+
+    if [ "${_tfplan_exit_code}" -eq 2 ]; then
+        if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
+            terraform apply --auto-approve -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
+        elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
+            terraform apply --auto-approve -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
+        else
             terraform apply --auto-approve -var="location=${LOCATION}"
         fi
+        rm -rf openhack-devops-proctor
     fi
-    rm -rf openhack-devops-proctor
     #rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
+test_terraform(){
+    local _hostnames="${1}"
+    
+    pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
+}
+
+azure_login
+
 lint_terraform
-deploy_terraform
+terraform init
+validate_terraform
+preview_terraform
+deploy_terraform $?
+deployment_output=$(terraform output -json)
+hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
+test_terraform "${hostnames}"

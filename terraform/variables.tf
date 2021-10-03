@@ -1,9 +1,8 @@
-variable "uniquer" {
+variable "location" {
   description = ""
   type        = string
-  default     = null
 }
-variable "location" {
+variable "uniquer" {
   description = ""
   type        = string
   default     = null

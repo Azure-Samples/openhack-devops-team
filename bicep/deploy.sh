@@ -109,7 +109,7 @@ deploy_bicep(){
 test_bicep(){
     local _hostnames="${1}"
     
-    pwsh -Command ./smokeTest.ps1 -HostNames "${hostnames}"
+    pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
 }
 
 export BUILD_ID="${RANDOM:0:4}"
