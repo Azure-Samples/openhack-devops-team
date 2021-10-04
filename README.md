@@ -41,8 +41,8 @@ It is useful but not required to have a basic knowledge of the following topics:
 
 * Azure App Services
 * Azure Container Registry and Docker
-* GitHub, Azure DevOps (formally VSTS) or Jenkins
+* GitHub, Azure DevOps (formally VSTS)
 
 ## Resources
 
-The provisioning of this environment for proctors can be found in the [DevOps Openhack Proctor](https://github.com/Azure-Samples/openhack-devops-proctor) Github repository.
+The provisioning of this environment for proctors can be found in the [aka.ms/OpenHackBYOS](https://aka.ms/OpenHackBYOS) Github repository under **devops** directory.
