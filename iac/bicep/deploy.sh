@@ -5,6 +5,8 @@ declare LOCATION=""
 declare RESOURCES_PREFIX=""
 declare -r USAGE_HELP="Usage: ./deploy.sh -l <LOCATION> [-u <UNIQUER> -r <RESOURCES_PREFIX>]"
 
+declare -r BUILD_ID="${RANDOM:0:5}"
+
 _error() {
     echo "##[error] $@" 2>&1
 }
@@ -112,8 +114,6 @@ test_bicep(){
     pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
 }
 
-export BUILD_ID="${RANDOM:0:4}"
-
 azure_login
 
 lint_bicep
@@ -124,3 +124,5 @@ hostnames=$(echo "${deployment_output}" | jq -r -c '.properties.outputs | map(.v
 test_bicep "${hostnames}"
 
 azure_logout
+
+echo "${BUILD_ID}"
