@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DataObjects\Model\**" />
+    <Compile Remove="Scripts\Database\**" />
+    <EmbeddedResource Remove="DataObjects\Model\**" />
+    <EmbeddedResource Remove="Scripts\Database\**" />
+    <None Remove="DataObjects\Model\**" />
+    <None Remove="Scripts\Database\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DataObjects\MyDriving.Context.cs" />
+    <Compile Remove="Controllers\FileService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="helm\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Simulator.DataStore.API\Simulator.DataStore.API.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,84 @@
+﻿@model TripViewer.Utility.TripViewerConfiguration
+@{
+    ViewData["Title"] = "TripViewer Home Page";
+    //Swagger Endpoints
+    var urlUser = Model.USER_ROOT_URL + "/api/docs/user";
+    var urlUserJava = Model.USER_JAVA_ROOT_URL + "/api/docs/user-java";
+    var urlTrips = Model.TRIPS_ROOT_URL;
+    var urlPoi = Model.POI_ROOT_URL + "/api/docs/poi";
+    //Healthcheck EndPoints
+    var hcUser = Model.USER_ROOT_URL + "/api/healthcheck/user";
+    var hcUserJava = Model.USER_JAVA_ROOT_URL + "/api/healthcheck/user-java";
+    var hcTrips = Model.TRIPS_ROOT_URL + "/api/healthcheck/trips";
+    var hcPoi = Model.POI_ROOT_URL + "/api/healthcheck/poi";
+    //Version EndPoints
+    var vUser = Model.USER_ROOT_URL + "/api/version/user";
+    var vUserJava = Model.USER_JAVA_ROOT_URL + "/api/version/user-java";
+    var vTrips = Model.TRIPS_ROOT_URL + "/api/version/trips";
+    var vPoi = Model.POI_ROOT_URL + "/api/version/poi";
+}
+
+<div class="text-center">
+    <h2 class="display-4">DevOps OpenHack Team Resources</h2>
+    <p>
+        Welcome to your team's Trip viewer website running on Azure App Service on Linux.
+        The <a href="/Trip"> trip page </a> will replay the trips being sent via the simulator in your App Service.
+        The <a href="/UserProfile"> profile page </a> will show the total number of trips and distance traveled for the user of those simulated trips.
+        Both of these pages are one way to verify that all of your APIs are functioning.
+    </p>
+</div>
+
+<div style="width: 100%;">
+    <div style="float: left; width: 33%;">
+        <h3>Health Check Links</h3>
+        <ul>
+            <li>
+                <a href="@hcUser" title="View User Profile Health Check" target="_blank">User Profile API Health Check</a>
+            </li>
+            <li>
+                <a href="@hcUserJava" title="View User Health Check" target="_blank">User API (Java) Health Check</a>
+            </li>
+            <li>
+                <a href="@hcTrips" title="View Trips Health Check" target="_blank">Trips API (Golang) Health Check</a>
+            </li>
+            <li>
+                <a href="@hcPoi" title="View POI Health Check" target="_blank">POI API (dotnet) Health Check</a>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left; width: 33%;">
+        <h3>Swagger Docs Links</h3>
+        <ul>
+            <li>
+                <a href="@urlUser" title="User Node API swagger docs" target="_blank">User Profile API (Node.js)</a>
+            </li>
+            <li>
+                <a href="@urlUserJava" title="User Java API swagger docs" target="_blank">User API (Java)</a>
+            </li>
+            <li>
+                <a href="@urlTrips" title="Trips API swagger docs" target="_blank">Trips API (Golang)</a>
+            </li>
+            <li>
+                <a href="@urlPoi" title="POI API swagger docs" target="_blank">POI API (dotnet)</a>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left; width: 33%;">
+        <h3>Check Production Version</h3>
+        <ul>
+            <li>
+                <a href="@vUser" title="User Profile Node API version" target="_blank">User Profile API (Node.js) version</a>
+            </li>
+            <li>
+                <a href="@vUserJava" title="User Java API version" target="_blank">User API (Java) version</a>
+            </li>
+            <li>
+                <a href="@vTrips" title="Trips API version" target="_blank">Trips API (Golang) version</a>
+            </li>
+            <li>
+                <a href="@vPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
+            </li>
+        </ul>
+    </div>
+    <br style="clear: left;" />
+</div>
