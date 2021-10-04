@@ -1,7 +1,4 @@
-param uniquer string
-
-var varfile = json(loadTextContent('./variables.json'))
-var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
+param resourcesPrefix string
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.containerregistry/registries?tabs=bicep
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' = {
@@ -32,7 +29,7 @@ output containerRegistryAdminPassword string = containerRegistry.listCredentials
 
 // // https://docs.microsoft.com/en-us/azure/templates/microsoft.managedidentity/userassignedidentities?tabs=bicep
 // resource user_assigned_identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//   name: '${uniquer}uami'
+//   name: '${resourcesPrefix}uami'
 //   location: location
 // }
 
@@ -69,7 +66,7 @@ output containerRegistryAdminPassword string = containerRegistry.listCredentials
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.resources/deploymentscripts?tabs=bicep
 // resource deployment_simulator 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
-//   name: '${uniquer}simulator4'
+//   name: '${resourcesPrefix}simulator'
 //   location: location
 //   kind: 'AzureCLI'
 //   identity: {

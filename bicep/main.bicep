@@ -2,9 +2,11 @@ targetScope = 'subscription'
 
 param uniquer string = uniqueString(newGuid())
 param location string = deployment().location
+param resourcesPrefix string = ''
 
 var varfile = json(loadTextContent('./variables.json'))
-var resourceGroupName = '${varfile.namePrefix}${uniquer}rg'
+var resourcesPrefixCalculated = empty(resourcesPrefix) ? '${varfile.namePrefix}${uniquer}' : resourcesPrefix
+var resourceGroupName = '${resourcesPrefixCalculated}rg'
 
 module openhackResourceGroup './resourceGroup.bicep' = {
   name: 'resourceGroupDeployment'
@@ -17,7 +19,7 @@ module openhackResourceGroup './resourceGroup.bicep' = {
 module containerRegistry './containerRegistry.bicep' = {
   name: 'containerRegistryDeployment'
   params: {
-    uniquer: uniquer
+    resourcesPrefix: resourcesPrefixCalculated
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -28,7 +30,7 @@ module containerRegistry './containerRegistry.bicep' = {
 module sqlServer './sqlServer.bicep' = {
   name: 'sqlServerDeployment'
   params: {
-    uniquer: uniquer
+    resourcesPrefix: resourcesPrefixCalculated
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -39,14 +41,14 @@ module sqlServer './sqlServer.bicep' = {
 module appService './appService.bicep' = {
   name: 'appServiceDeployment'
   params: {
-    uniquer: uniquer
+    resourcesPrefix: resourcesPrefixCalculated
     sqlServerFqdn: sqlServer.outputs.sqlServerFqdn
     sqlServerAdminLogin: sqlServer.outputs.sqlServerAdminLogin
     sqlServerAdminPassword: sqlServer.outputs.sqlServerAdminPassword
     sqlDatabaseName: sqlServer.outputs.sqlDatabaseName
-    containerRegistryLoginServer: containerRegistry.outputs.containerRegistryLoginServer
-    containerRegistryAdminUsername: containerRegistry.outputs.containerRegistryAdminUsername
-    containerRegistryAdminPassword: containerRegistry.outputs.containerRegistryAdminPassword
+    // containerRegistryLoginServer: containerRegistry.outputs.containerRegistryLoginServer
+    // containerRegistryAdminUsername: containerRegistry.outputs.containerRegistryAdminUsername
+    // containerRegistryAdminPassword: containerRegistry.outputs.containerRegistryAdminPassword
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -55,10 +57,16 @@ module appService './appService.bicep' = {
   ]
 }
 
+output appServiceTripviewerHostname string = appService.outputs.appServiceTripviewerHostname
+output appServiceApiPoiHostname string = appService.outputs.appServiceApiPoiHostname
+output appServiceApiTripsHostname string = appService.outputs.appServiceApiTripsHostname
+output appServiceApiUserjavaHostname string = appService.outputs.appServiceApiUserjavaHostname
+output appServiceApiUserprofileHostname string = appService.outputs.appServiceApiUserprofileHostname
+
 // module containerGroup './containerGroup.bicep' = {
 //   name: 'containerGroupDeployment'
 //   params: {
-//     uniquer: uniquer
+//     resourcesPrefix: resourcesPrefixCalculated
 //     sqlServerFqdn: sqlServer.outputs.sqlServerFqdn
 //     sqlServerAdminLogin: sqlServer.outputs.sqlServerAdminLogin
 //     sqlServerAdminPassword: sqlServer.outputs.sqlServerAdminPassword

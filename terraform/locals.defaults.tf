@@ -1,7 +1,6 @@
 
 locals {
   _default = {
-    location       = "westus2"
     base_image_tag = "changeme"
     name_prefix    = "devopsoh"
   }

@@ -1,18 +1,16 @@
-param uniquer string
-
+param resourcesPrefix string
 param sqlServerAdminLogin string
 @secure()
 param sqlServerAdminPassword string
 param sqlServerFqdn string
 param sqlDatabaseName string
-param containerRegistryLoginServer string
-param containerRegistryAdminUsername string
-@secure()
-param containerRegistryAdminPassword string
+// param containerRegistryLoginServer string
+// param containerRegistryAdminUsername string
+// @secure()
+// param containerRegistryAdminPassword string
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
-var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?tabs=bicep
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
@@ -35,7 +33,7 @@ resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|todo.azurecr.io/devopsoh/tripviewer:latest'
+      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/tripviewer:latest'
       appSettings: [
         {
           name: 'BING_MAPS_KEY'
@@ -57,18 +55,18 @@ resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
           name: 'POI_ROOT_URL'
           value: 'https://${appServiceApiPoi.properties.defaultHostName}'
         }
-        {
-          name: 'DOCKER_REGISTRY_SERVER_URL'
-          value: 'https://${containerRegistryLoginServer}'
-        }
-        {
-          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-          value: containerRegistryAdminUsername
-        }
-        {
-          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-          value: containerRegistryAdminPassword
-        }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_URL'
+        //   value: 'https://${containerRegistryLoginServer}'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+        //   value: containerRegistryAdminUsername
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+        //   value: containerRegistryAdminPassword
+        // }
       ]
       alwaysOn: true
     }
@@ -82,12 +80,8 @@ resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-poi:${varfile.baseImageTag}'
+      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-poi:${varfile.baseImageTag}'
       appSettings: [
-        {
-          name: 'WEBSITES_PORT'
-          value: '8080'
-        }
         {
           name: 'SQL_USER'
           value: sqlServerAdminLogin
@@ -104,6 +98,22 @@ resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
+        // {
+        //   name: 'WEBSITES_PORT'
+        //   value: '8080'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_URL'
+        //   value: 'https://${containerRegistryLoginServer}'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+        //   value: containerRegistryAdminUsername
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+        //   value: containerRegistryAdminPassword
+        // }
       ]
       alwaysOn: true
     }
@@ -117,7 +127,7 @@ resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-trips:${varfile.baseImageTag}'
+      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-trips:${varfile.baseImageTag}'
       appSettings: [
         {
           name: 'SQL_USER'
@@ -135,6 +145,18 @@ resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_URL'
+        //   value: 'https://${containerRegistryLoginServer}'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+        //   value: containerRegistryAdminUsername
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+        //   value: containerRegistryAdminPassword
+        // }
       ]
       alwaysOn: true
     }
@@ -148,7 +170,7 @@ resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-user-java:${varfile.baseImageTag}'
+      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-user-java:${varfile.baseImageTag}'
       appSettings: [
         {
           name: 'SQL_USER'
@@ -166,6 +188,18 @@ resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_URL'
+        //   value: 'https://${containerRegistryLoginServer}'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+        //   value: containerRegistryAdminUsername
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+        //   value: containerRegistryAdminPassword
+        // }
       ]
       alwaysOn: true
     }
@@ -179,7 +213,7 @@ resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-userprofile:${varfile.baseImageTag}'
+      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-userprofile:${varfile.baseImageTag}'
       appSettings: [
         {
           name: 'SQL_USER'
@@ -197,6 +231,18 @@ resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_URL'
+        //   value: 'https://${containerRegistryLoginServer}'
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+        //   value: containerRegistryAdminUsername
+        // }
+        // {
+        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+        //   value: containerRegistryAdminPassword
+        // }
       ]
       alwaysOn: true
     }
@@ -204,6 +250,7 @@ resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+output appServiceTripviewerHostname string = appServiceTripviewer.properties.defaultHostName
 output appServiceApiPoiHostname string = appServiceApiPoi.properties.defaultHostName
 output appServiceApiTripsHostname string = appServiceApiTrips.properties.defaultHostName
 output appServiceApiUserjavaHostname string = appServiceApiUserjava.properties.defaultHostName

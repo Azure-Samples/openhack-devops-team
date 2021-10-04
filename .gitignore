@@ -4,6 +4,9 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 azuresp.json
+testResults.xml
+testResultsNunit.xml
+testResultsJunit.xml
 
 # Local .terraform directories
 .terraform

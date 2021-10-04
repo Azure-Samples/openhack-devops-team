@@ -1,9 +1,7 @@
-param uniquer string
+param resourcesPrefix string
 
 var location = resourceGroup().location
-
 var varfile = json(loadTextContent('./variables.json'))
-var resourcesPrefix = '${varfile.namePrefix}${uniquer}'
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers?tabs=bicep
 resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' = {
@@ -141,6 +139,7 @@ resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
       }
     ]
     retentionInterval: 'PT1H'
+    timeout: 'PT10M'
   }
   dependsOn: [
     sqlContributorRoleAssignment
