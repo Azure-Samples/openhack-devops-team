@@ -74,6 +74,7 @@ resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep
 resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
   name: '${resourcesPrefix}poi'
   location: location
@@ -121,6 +122,20 @@ resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/slots?tabs=bicep
+resource appServiceApiPoiStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
+  parent: appServiceApiPoi
+  name: 'staging'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    cloningInfo: {
+      sourceWebAppId: appServiceApiPoi.id
+    }	
+  }
+}
+
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep
 resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
   name: '${resourcesPrefix}trips'
   location: location
@@ -164,6 +179,20 @@ resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/slots?tabs=bicep
+resource appServiceApiTripsStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
+  parent: appServiceApiTrips
+  name: 'staging'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    cloningInfo: {
+      sourceWebAppId: appServiceApiTrips.id
+    }	
+  }
+}
+
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep
 resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
   name: '${resourcesPrefix}userjava'
   location: location
@@ -207,6 +236,20 @@ resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
   }
 }
 
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/slots?tabs=bicep
+resource appServiceApiUserjavaStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
+  parent: appServiceApiUserjava
+  name: 'staging'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    cloningInfo: {
+      sourceWebAppId: appServiceApiUserjava.id
+    }	
+  }
+}
+
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites?tabs=bicep
 resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
   name: '${resourcesPrefix}userprofile'
   location: location
@@ -247,6 +290,19 @@ resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
       alwaysOn: true
     }
     httpsOnly: true
+  }
+}
+
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/slots?tabs=bicep
+resource appServiceApiUserprofileStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
+  parent: appServiceApiUserprofile
+  name: 'staging'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    cloningInfo: {
+      sourceWebAppId: appServiceApiUserprofile.id
+    }	
   }
 }
 

@@ -3,6 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+devvars.sh
 azuresp.json
 testResults.xml
 testResultsNunit.xml

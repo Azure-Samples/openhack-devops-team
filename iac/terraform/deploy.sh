@@ -53,12 +53,18 @@ elif ! [ -x "$(command -v terraform)" ]; then
     exit 1
 fi
 
+if [ -f "devvars.sh" ]; then
+    . devvars.sh
+fi
+
 azure_login() {
     _azuresp_json=$(cat azuresp.json)
     export ARM_CLIENT_ID=$(echo "${_azuresp_json}" | jq -r ".clientId")
     export ARM_CLIENT_SECRET=$(echo "${_azuresp_json}" | jq -r ".clientSecret")
     export ARM_SUBSCRIPTION_ID=$(echo "${_azuresp_json}" | jq -r ".subscriptionId")
     export ARM_TENANT_ID=$(echo "${_azuresp_json}" | jq -r ".tenantId")
+    az login --service-principal --username "${ARM_CLIENT_ID}" --password "${ARM_CLIENT_SECRET}" --tenant "${ARM_TENANT_ID}"
+    az account set --subscription "${ARM_SUBSCRIPTION_ID}"
 }
 
 lint_terraform(){
@@ -67,6 +73,14 @@ lint_terraform(){
         _error "Terraform files are not properly formatted!"
         exit 1
     fi
+}
+
+init_terrafrom() {
+    terraform init -backend-config=storage_account_name="${TFSTATE_STORAGE_ACCOUNT_NAME}" -backend-config=container_name="${TFSTATE_STORAGE_CONTAINER_NAME}" -backend-config=key="${TFSTATE_KEY}" -backend-config=resource_group_name="${TFSTATE_RESOURCES_GROUP_NAME}"
+}
+
+init_terrafrom_local() {
+    terraform init
 }
 
 validate_terraform(){
@@ -96,7 +110,6 @@ deploy_terraform(){
         else
             terraform apply --auto-approve -var="location=${LOCATION}"
         fi
-        rm -rf openhack-devops-proctor
     fi
     #rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
@@ -110,7 +123,8 @@ test_terraform(){
 azure_login
 
 lint_terraform
-terraform init
+init_terrafrom
+# init_terrafrom_local
 validate_terraform
 preview_terraform
 deploy_terraform $?
