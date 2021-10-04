@@ -8,6 +8,7 @@ azuresp.json
 testResults.xml
 testResultsNunit.xml
 testResultsJunit.xml
+launchSettings.json
 
 # Local .terraform directories
 .terraform
