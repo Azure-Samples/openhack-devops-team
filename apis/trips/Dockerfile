@@ -1,4 +1,4 @@
-FROM golang:1.16.8 AS gobuild
+FROM golang:1.16.8-alpine AS gobuild
 
 WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
@@ -8,7 +8,7 @@ RUN go get
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-FROM alpine:3.12 AS gorun
+FROM golang:1.16.8-alpine AS gorun
 
 # docker build argument
 #    This can be specified during the docker build step by adding " --build-arg build_version=<value>"
