@@ -16,7 +16,7 @@
         public async Task<Trip> GetItemAsync(string id)
         {
             Trip trip = null;
-            HttpResponseMessage response = await Client.GetAsync($"api/trips/{id}");
+            HttpResponseMessage response = await Client.GetAsync($"/api/trips/{id}");
             if (response.IsSuccessStatusCode)
             {
                 response.Content.Headers.ContentType.MediaType = "application/json";
