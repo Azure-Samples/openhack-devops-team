@@ -1,5 +1,5 @@
 resource "random_string" "uniquer" {
-  length  = 6
+  length  = 5
   special = false
   number  = true
   lower   = false
@@ -11,7 +11,7 @@ data "external" "my_ip" {
 }
 
 locals {
-  uniquer                                   = var.uniquer != null ? var.uniquer : "${random_string.uniquer.result}"
+  uniquer                                   = var.uniquer != null ? var.uniquer : "${random_string.uniquer.id}"
   resources_prefix                          = var.resources_prefix != null ? var.resources_prefix : "${local._default.name_prefix}${local.uniquer}"
   team_name                                 = local.resources_prefix
   location                                  = var.location
