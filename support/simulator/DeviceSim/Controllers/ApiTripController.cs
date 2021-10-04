@@ -116,9 +116,9 @@ namespace DeviceSim.Controllers
                     {
                         await tripPointStore.CreateItemAsync(tripPoint);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        throw new Exception($"Could not update Trip Time Stamps from Samples at {DateTime.Now.ToString()}.");
+                        throw new Exception($"Could not update Trip Time Stamps from Samples at {DateTime.Now}. info: {ex.Message}");
                     }
 
                     //Console.WriteLine($"Processing Sequence No: {tripPoint.Sequence} on Thread : {Thread.CurrentThread.ManagedThreadId}");
@@ -146,7 +146,7 @@ namespace DeviceSim.Controllers
                 //Sort Trip Points By Sequence Number
                 CurrentTripPoints = CurrentTripPoints.OrderBy(p => p.Sequence).ToList();
 
-                List<timeInfo> timeToAdd = new List<timeInfo>();
+                List<TimeInfo> timeToAdd = new List<TimeInfo>();
                 System.TimeSpan tDiff;
 
                 //Create a Variable to Track the Time Range as it Changes
@@ -159,7 +159,7 @@ namespace DeviceSim.Controllers
                     {
                         tDiff = CurrentTripPoints.ElementAt(currentTripPoint).RecordedTimeStamp
                               - CurrentTripPoints.ElementAt(currentTripPoint - 1).RecordedTimeStamp;
-                        timeToAdd.Add(new timeInfo() { evtSeq = CurrentTripPoints.ElementAt(currentTripPoint).Sequence, tSpan = tDiff });
+                        timeToAdd.Add(new TimeInfo() { evtSeq = CurrentTripPoints.ElementAt(currentTripPoint).Sequence, tSpan = tDiff });
                     }
                 }
 
@@ -178,7 +178,7 @@ namespace DeviceSim.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not update Trip Time Stamps from Samples. for more info see:{ex.Message}.");
+                Console.WriteLine($"Could not update Trip Time Stamps from Samples. {DateTime.Now} For more info see:{ex.Message}.");
             }
         }
 
@@ -203,7 +203,7 @@ namespace DeviceSim.Controllers
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"POI Creation Failure : {DateTime.Now.ToString()}");
+                    Console.WriteLine($"POI Creation Failure: {DateTime.Now}");
                 }
             }
 
@@ -227,7 +227,7 @@ namespace DeviceSim.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine($"Trip Statistics Update Failure : {DateTime.Now.ToString()}");
+                Console.WriteLine($"Trip Statistics Update Failure : {DateTime.Now}");
             }
         }
 
@@ -251,7 +251,7 @@ namespace DeviceSim.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine($"User Profile Update Failure : {DateTime.Now.ToString()}");
+                Console.WriteLine($"User Profile Update Failure : {DateTime.Now}");
             }
         }
     }

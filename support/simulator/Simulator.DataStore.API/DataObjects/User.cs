@@ -68,7 +68,7 @@ namespace Simulator.DataObjects
 
     public static class UserSerializer
     {
-        public static string ToJson(this User self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this User self) => JsonConvert.SerializeObject(self);
     }
 
     internal class ParseStringConverter : JsonConverter

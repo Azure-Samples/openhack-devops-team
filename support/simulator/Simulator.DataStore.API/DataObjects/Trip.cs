@@ -58,6 +58,6 @@ namespace Simulator.DataObjects
 
     public static class TripSerializer
     {
-        public static string ToJson(this Trip self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this Trip self) => JsonConvert.SerializeObject(self);
     }
 }

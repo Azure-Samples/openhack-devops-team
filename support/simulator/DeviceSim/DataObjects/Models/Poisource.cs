@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DeviceSim.DataObjects.Models
+﻿namespace DeviceSim.DataObjects.Models
 {
     public partial class Poisource
     {

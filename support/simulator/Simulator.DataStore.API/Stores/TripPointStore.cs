@@ -59,7 +59,7 @@
 
         public async Task<TripPoint> CreateItemAsync(TripPoint item)
         {
-            string apiPath = $"api/trips/{item.TripId.ToString()}/trippoints";
+            string apiPath = $"api/trips/{item.TripId}/trippoints";
             HttpResponseMessage response = await Client.PostAsJsonAsync<TripPoint>(apiPath, item);
             response.EnsureSuccessStatusCode();
             response.Content.Headers.ContentType.MediaType = "application/json";

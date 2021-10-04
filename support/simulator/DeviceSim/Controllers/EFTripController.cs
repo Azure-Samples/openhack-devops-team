@@ -1,12 +1,8 @@
 ﻿using DeviceSim.DataObjects.Models;
 using DeviceSim.Helpers;
-
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 
@@ -202,7 +198,7 @@ namespace DeviceSim.Controllers
                 //Sort Trip Points By Sequence Number
                 CurrentTrip.TripPoints = CurrentTrip.TripPoints.OrderBy(p => p.Sequence).ToList();
 
-                List<timeInfo> timeToAdd = new List<timeInfo>();
+                List<TimeInfo> timeToAdd = new List<TimeInfo>();
                 System.TimeSpan tDiff;
 
                 //Create a Variable to Track the Time Range as it Changes
@@ -215,7 +211,7 @@ namespace DeviceSim.Controllers
                     {
                         tDiff = CurrentTrip.TripPoints.ElementAt(currentTripPoint).RecordedTimeStamp
                               - CurrentTrip.TripPoints.ElementAt(currentTripPoint - 1).RecordedTimeStamp;
-                        timeToAdd.Add(new timeInfo() { evtSeq = CurrentTrip.TripPoints.ElementAt(currentTripPoint).Sequence, tSpan = tDiff });
+                        timeToAdd.Add(new TimeInfo() { evtSeq = CurrentTrip.TripPoints.ElementAt(currentTripPoint).Sequence, tSpan = tDiff });
 
                     }
 
@@ -244,7 +240,7 @@ namespace DeviceSim.Controllers
     }
 
 
-    public struct timeInfo
+    public struct TimeInfo
     {
         public int evtSeq;
         public TimeSpan tSpan;

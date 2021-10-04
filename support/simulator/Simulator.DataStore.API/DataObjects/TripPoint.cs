@@ -80,14 +80,14 @@ namespace Simulator.DataObjects
 
     public static class TripPointSerializer
     {
-        public static string ToJson(this TripPoint self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this TripPoint self) => JsonConvert.SerializeObject(self);
     }
 
     internal static class Converter
     {
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            //MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
             //DateParseHandling = DateParseHandling.None,
             //Converters = {new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.None } },
         };

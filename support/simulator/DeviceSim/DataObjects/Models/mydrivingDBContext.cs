@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DeviceSim.DataObjects.Models
 {
-    public partial class mydrivingDBContext : DbContext
+    public partial class MydrivingDBContext : DbContext
     {
         public virtual DbSet<Devices> Devices { get; set; }
         public virtual DbSet<IothubDatas> IothubDatas { get; set; }
@@ -18,7 +16,7 @@ namespace DeviceSim.DataObjects.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(connString);
+                optionsBuilder.UseSqlServer(ConnString);
             }
         }
 
@@ -27,11 +25,11 @@ namespace DeviceSim.DataObjects.Models
             modelBuilder.Entity<Devices>(entity =>
             {
                 entity.HasIndex(e => e.CreatedAt)
-                    .HasName("IX_CreatedAt")
-                    .ForSqlServerIsClustered();
+                    .HasDatabaseName("IX_CreatedAt")
+                    .IsClustered();
 
                 entity.HasIndex(e => e.UserProfileId)
-                    .HasName("IX_UserProfile_Id");
+                    .HasDatabaseName("IX_UserProfile_Id");
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -59,8 +57,8 @@ namespace DeviceSim.DataObjects.Models
                 entity.ToTable("IOTHubDatas");
 
                 entity.HasIndex(e => e.CreatedAt)
-                    .HasName("IX_CreatedAt")
-                    .ForSqlServerIsClustered();
+                    .HasDatabaseName("IX_CreatedAt")
+                    .IsClustered();
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -112,11 +110,11 @@ namespace DeviceSim.DataObjects.Models
             modelBuilder.Entity<TripPoints>(entity =>
             {
                 entity.HasIndex(e => e.CreatedAt)
-                    .HasName("IX_CreatedAt")
-                    .ForSqlServerIsClustered();
+                    .HasDatabaseName("IX_CreatedAt")
+                    .IsClustered();
 
                 entity.HasIndex(e => e.TripId)
-                    .HasName("IX_TripId");
+                    .HasDatabaseName("IX_TripId");
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -222,8 +220,8 @@ namespace DeviceSim.DataObjects.Models
             modelBuilder.Entity<Trips>(entity =>
             {
                 entity.HasIndex(e => e.CreatedAt)
-                    .HasName("IX_CreatedAt")
-                    .ForSqlServerIsClustered();
+                    .HasDatabaseName("IX_CreatedAt")
+                    .IsClustered();
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)
@@ -245,8 +243,8 @@ namespace DeviceSim.DataObjects.Models
             modelBuilder.Entity<UserProfiles>(entity =>
             {
                 entity.HasIndex(e => e.CreatedAt)
-                    .HasName("IX_CreatedAt")
-                    .ForSqlServerIsClustered();
+                    .HasDatabaseName("IX_CreatedAt")
+                    .IsClustered();
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(128)

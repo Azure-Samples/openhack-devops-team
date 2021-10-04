@@ -34,6 +34,6 @@ namespace Simulator.DataObjects
 
     public static class PoiSerializer
     {
-        public static string ToJson(this Poi self) => JsonConvert.SerializeObject(self, Converter.Settings);
+        public static string ToJson(this Poi self) => JsonConvert.SerializeObject(self);
     }
 }

@@ -1,20 +1,15 @@
 ﻿using DeviceSim.DataObjects.Models;
 using DeviceSim.Helpers;
-
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 
 namespace DeviceSim.Controllers
 {
     public class BaseTripController
     {
-        protected internal mydrivingDBContext Ctx { get; set; }
+        protected internal MydrivingDBContext Ctx { get; set; }
         protected internal List<TripPointSource> TripPointSourceInfo { get; set; }
         protected internal List<Poisource> TripPOIsource { get; set; }
 
@@ -22,7 +17,7 @@ namespace DeviceSim.Controllers
 
         public BaseTripController(DBConnectionInfo dBConnectionInfo)
         {
-            Ctx = new mydrivingDBContext(dBConnectionInfo);
+            Ctx = new MydrivingDBContext(dBConnectionInfo);
             //Select Random Trip 
             GetSampleTrip();
             //Default Constructor

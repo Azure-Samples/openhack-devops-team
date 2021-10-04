@@ -13,8 +13,10 @@
 
         public Task InitializeStore(string EndPoint)
         {
-            Client = new HttpClient();
-            Client.BaseAddress = new Uri(EndPoint);
+            Client = new HttpClient
+            {
+                BaseAddress = new Uri(EndPoint)
+            };
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
