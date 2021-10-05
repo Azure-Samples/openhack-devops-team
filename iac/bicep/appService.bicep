@@ -4,13 +4,21 @@ param sqlServerAdminLogin string
 param sqlServerAdminPassword string
 param sqlServerFqdn string
 param sqlDatabaseName string
-// param containerRegistryLoginServer string
-// param containerRegistryAdminUsername string
-// @secure()
-// param containerRegistryAdminPassword string
+param containerRegistryLoginServer string
+param containerRegistryName string
+param containerRegistryAdminUsername string
+param containerRegistryAdminPassword string
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
+
+// https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
+// AcrPull
+var acrPullRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-06-01-preview' existing = {
+  name: containerRegistryName
+}
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/serverfarms?tabs=bicep
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
@@ -30,10 +38,14 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
 resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
   name: '${resourcesPrefix}tripviewer'
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      // linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/tripviewer:latest'
+      acrUseManagedIdentityCreds: true
+      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/tripviewer:latest'
       appSettings: [
         {
           name: 'BING_MAPS_KEY'
@@ -55,22 +67,24 @@ resource appServiceTripviewer 'Microsoft.Web/sites@2020-12-01' = {
           name: 'POI_ROOT_URL'
           value: 'https://${appServiceApiPoi.properties.defaultHostName}'
         }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_URL'
-        //   value: 'https://${containerRegistryLoginServer}'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-        //   value: containerRegistryAdminUsername
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-        //   value: containerRegistryAdminPassword
-        // }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
       ]
       alwaysOn: true
     }
     httpsOnly: true
+  }
+}
+
+// https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/roleassignments?tabs=bicep
+resource acrPullRoleAssignmentTripviewer 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
+  name: guid(resourceGroup().id, containerRegistry.id, 'tripviewer', acrPullRoleDefinitionId)
+  scope: containerRegistry
+  properties: {
+    roleDefinitionId: acrPullRoleDefinitionId
+    principalId: appServiceTripviewer.identity.principalId
   }
 }
 
@@ -99,22 +113,22 @@ resource appServiceApiPoi 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
-        // {
-        //   name: 'WEBSITES_PORT'
-        //   value: '8080'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_URL'
-        //   value: 'https://${containerRegistryLoginServer}'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-        //   value: containerRegistryAdminUsername
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-        //   value: containerRegistryAdminPassword
-        // }
+        {
+          name: 'WEBSITES_PORT'
+          value: '8080'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
       ]
       alwaysOn: true
     }
@@ -160,18 +174,18 @@ resource appServiceApiTrips 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_URL'
-        //   value: 'https://${containerRegistryLoginServer}'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-        //   value: containerRegistryAdminUsername
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-        //   value: containerRegistryAdminPassword
-        // }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
       ]
       alwaysOn: true
     }
@@ -217,18 +231,18 @@ resource appServiceApiUserjava 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_URL'
-        //   value: 'https://${containerRegistryLoginServer}'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-        //   value: containerRegistryAdminUsername
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-        //   value: containerRegistryAdminPassword
-        // }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
       ]
       alwaysOn: true
     }
@@ -274,18 +288,18 @@ resource appServiceApiUserprofile 'Microsoft.Web/sites@2020-12-01' = {
           name: 'SQL_DBNAME'
           value: sqlDatabaseName
         }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_URL'
-        //   value: 'https://${containerRegistryLoginServer}'
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-        //   value: containerRegistryAdminUsername
-        // }
-        // {
-        //   name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-        //   value: containerRegistryAdminPassword
-        // }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
       ]
       alwaysOn: true
     }
@@ -306,7 +320,6 @@ resource appServiceApiUserprofileStaging 'Microsoft.Web/sites/slots@2020-12-01' 
   }
 }
 
-output appServiceTripviewerHostname string = appServiceTripviewer.properties.defaultHostName
 output appServiceApiPoiHostname string = appServiceApiPoi.properties.defaultHostName
 output appServiceApiTripsHostname string = appServiceApiTrips.properties.defaultHostName
 output appServiceApiUserjavaHostname string = appServiceApiUserjava.properties.defaultHostName

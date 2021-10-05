@@ -32,3 +32,9 @@ resource "null_resource" "docker_simulator" {
     command = "az acr build --image devopsoh/simulator:latest --registry ${azurerm_container_registry.container_registry.login_server} --file ../../support/simulator/Dockerfile ../../support/simulator"
   }
 }
+
+resource "null_resource" "docker_tripviewer" {
+  provisioner "local-exec" {
+    command = "az acr build --image devopsoh/tripviewer:latest --registry ${azurerm_container_registry.container_registry.login_server} --file ../../support/tripviewer/Dockerfile ../../support/tripviewer"
+  }
+}
