@@ -29,6 +29,7 @@ locals {
   app_service_api-trips_name                = "${local.resources_prefix}trips"
   app_service_api-user-java_name            = "${local.resources_prefix}userjava"
   app_service_api-userprofile_name          = "${local.resources_prefix}userprofile"
+  user_assigned_identity_name               = "${local.resources_prefix}uami"
   container_group_simulator_name            = "${local.resources_prefix}simulator"
   base_image_tag                            = local._default.base_image_tag
 }

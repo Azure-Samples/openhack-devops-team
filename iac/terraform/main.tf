@@ -81,28 +81,37 @@ resource "azurerm_app_service_plan" "app_service_plan" {
 
 resource "azurerm_app_service" "app_service_tripviewer" {
   depends_on = [
+    null_resource.docker_tripviewer
   ]
   name                = local.app_service_tripviewer_name
   location            = azurerm_resource_group.resource_group.location
   resource_group_name = azurerm_resource_group.resource_group.name
   app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
   https_only          = true
+  identity {
+    type = "SystemAssigned"
+  }
 
   app_settings = {
-    "BING_MAPS_KEY"      = local.bing_maps_key
-    "USER_ROOT_URL"      = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
-    "USER_JAVA_ROOT_URL" = "https://${azurerm_app_service.app_service_api-user-java.default_site_hostname}"
-    "TRIPS_ROOT_URL"     = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
-    "POI_ROOT_URL"       = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "BING_MAPS_KEY"              = local.bing_maps_key
+    "USER_ROOT_URL"              = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
+    "USER_JAVA_ROOT_URL"         = "https://${azurerm_app_service.app_service_api-user-java.default_site_hostname}"
+    "TRIPS_ROOT_URL"             = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
+    "POI_ROOT_URL"               = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
+    "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.container_registry.login_server}"
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/tripviewer:latest"
+    acr_use_managed_identity_credentials = true
+    always_on                            = true
+    linux_fx_version                     = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/tripviewer:latest"
   }
+}
+
+resource "azurerm_role_assignment" "cr_role_assignment_tripviewer" {
+  scope                = azurerm_container_registry.container_registry.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_app_service.app_service_tripviewer.identity.0.principal_id
 }
 
 ############################################
@@ -120,14 +129,14 @@ resource "azurerm_app_service" "app_service_api-poi" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"      = local.mssql_server_administrator_login
-    "SQL_PASSWORD"  = local.mssql_server_administrator_login_password
-    "SQL_SERVER"    = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"    = local.mssql_database_name
-    "WEBSITES_PORT" = "8080"
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "WEBSITES_PORT"                   = "8080"
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -145,14 +154,14 @@ resource "azurerm_app_service_slot" "app_service_api-poi_staging" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"      = local.mssql_server_administrator_login
-    "SQL_PASSWORD"  = local.mssql_server_administrator_login_password
-    "SQL_SERVER"    = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"    = local.mssql_database_name
-    "WEBSITES_PORT" = "8080"
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "WEBSITES_PORT"                   = "8080"
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
   site_config {
     always_on = true
@@ -175,13 +184,13 @@ resource "azurerm_app_service" "app_service_api-trips" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -199,13 +208,13 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -229,13 +238,13 @@ resource "azurerm_app_service" "app_service_api-user-java" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -253,13 +262,13 @@ resource "azurerm_app_service_slot" "app_service_api-user-java_staging" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -283,13 +292,13 @@ resource "azurerm_app_service" "app_service_api-userprofile" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -307,13 +316,13 @@ resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
   https_only          = true
 
   app_settings = {
-    "SQL_USER"     = local.mssql_server_administrator_login
-    "SQL_PASSWORD" = local.mssql_server_administrator_login_password
-    "SQL_SERVER"   = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"   = local.mssql_database_name
-    # "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    # "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    # "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "SQL_USER"                        = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                      = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
 
   site_config {
@@ -323,12 +332,23 @@ resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
 }
 
 ############################################
+## UAMI                                   ##
+############################################
+
+# resource "azurerm_user_assigned_identity" "user_assigned_identity" {
+#   name                = local.user_assigned_identity_name
+#   resource_group_name = azurerm_resource_group.resource_group.name
+#   location            = azurerm_resource_group.resource_group.location
+# }
+
+############################################
 ## CONTAINER GROUP - SIMULATOR            ##
 ############################################
 
 resource "azurerm_container_group" "container_group_simulator" {
   depends_on = [
     null_resource.docker_simulator
+    # azurerm_role_assignment.cr_role_assignment_simulator
   ]
   name                = local.container_group_simulator_name
   location            = azurerm_resource_group.resource_group.location
@@ -336,6 +356,13 @@ resource "azurerm_container_group" "container_group_simulator" {
   ip_address_type     = "public"
   dns_name_label      = local.container_group_simulator_name
   os_type             = "Linux"
+
+  # identity {
+  #   type = "UserAssigned"
+  #   identity_ids = [
+  #     azurerm_user_assigned_identity.user_assigned_identity.id
+  #   ]
+  # }
 
   image_registry_credential {
     username = azurerm_container_registry.container_registry.admin_username
@@ -370,3 +397,9 @@ resource "azurerm_container_group" "container_group_simulator" {
     }
   }
 }
+
+# resource "azurerm_role_assignment" "cr_role_assignment_simulator" {
+#   scope                = azurerm_container_registry.container_registry.id
+#   role_definition_name = "AcrPull"
+#   principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
+# }

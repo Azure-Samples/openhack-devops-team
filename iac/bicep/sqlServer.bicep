@@ -1,5 +1,4 @@
 param resourcesPrefix string
-param userAssignedManagedIdentityPrincipalId string
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
@@ -36,23 +35,6 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
   }
-}
-
-// https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
-// Contributor
-var contributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-
-// https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/roleassignments?tabs=bicep
-resource sqlContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
-  name: guid(sqlServer.id, contributorRoleDefinitionId)
-  scope: sqlServer
-  properties: {
-    roleDefinitionId: contributorRoleDefinitionId
-    principalId: userAssignedManagedIdentityPrincipalId
-  }
-  dependsOn: [
-    sqlServer
-  ]
 }
 
 output sqlServerAdminLogin string = varfile.sqlServerAdminLogin

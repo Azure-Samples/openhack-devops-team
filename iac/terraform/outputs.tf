@@ -1,7 +1,3 @@
-output "appServiceTripviewerHostname" {
-  description = "Hostname of Tripviewer"
-  value       = azurerm_app_service.app_service_tripviewer.default_site_hostname
-}
 output "appServiceApiPoiHostname" {
   description = "Hostname of API-POI"
   value       = azurerm_app_service.app_service_api-poi.default_site_hostname
