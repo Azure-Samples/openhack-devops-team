@@ -21,6 +21,8 @@ echo "SQL_ADMIN_LOGIN: ${SQL_ADMIN_LOGIN}"
 echo "SQL_SERVER_FQDN: ${SQL_SERVER_FQDN}"
 echo "SQL_DB_NAME: ${SQL_DB_NAME}"
 
+az account show
+
 echo 1
 MYIP="$(dig +short myip.opendns.com @resolver1.opendns.com -4)"
 az sql server firewall-rule create --resource-group ${RESOURCE_GROUP} --server ${SQL_SERVER_NAME} --name dataInit --start-ip-address ${MYIP} --end-ip-address ${MYIP} > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/sqlFwCreate.txt"
