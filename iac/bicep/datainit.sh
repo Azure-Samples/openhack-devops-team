@@ -1,19 +1,26 @@
 #!/bin/bash
-ACCEPT_EULA=Y
+cd ~/
+export ACCEPT_EULA="Y"
 MSSQL_VERSION="17.8.1.1-1"
-set -x \
-    && tempDir="$(mktemp -d)" \
-    && chown nobody:nobody $tempDir \
-    && cd $tempDir \
-    && wget "https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_${MSSQL_VERSION}_amd64.apk" \
-    && wget "https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_${MSSQL_VERSION}_amd64.apk" \
-    && apk add --allow-untrusted msodbcsql17_${MSSQL_VERSION}_amd64.apk \
-    && apk add --allow-untrusted mssql-tools_${MSSQL_VERSION}_amd64.apk \
-    && apk update \
-    && apk add bind-tools \
-    && rm -rf $tempDir \
-    && rm -rf /var/cache/apk/*
+
+curl -O "https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_${MSSQL_VERSION}_amd64.apk"
+curl -O "https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_${MSSQL_VERSION}_amd64.apk"
+
+apk add --allow-untrusted msodbcsql17_${MSSQL_VERSION}_amd64.apk
+apk add --allow-untrusted mssql-tools_${MSSQL_VERSION}_amd64.apk
+apk update && apk add bind-tools
+
 export PATH="$PATH:/opt/mssql-tools/bin"
+
+echo "MSSQL_VERSION: ${MSSQL_VERSION}"
+echo "RESOURCE_GROUP: ${RESOURCE_GROUP}"
+echo "SQL_SERVER_NAME: ${SQL_SERVER_NAME}"
+echo "TEAM_REPO: ${TEAM_REPO}"
+echo "TEAM_REPO_BRANCH: ${TEAM_REPO_BRANCH}"
+echo "SQL_ADMIN_LOGIN: ${SQL_ADMIN_LOGIN}"
+echo "SQL_SERVER_FQDN: ${SQL_SERVER_FQDN}"
+echo "SQL_DB_NAME: ${SQL_DB_NAME}"
+
 echo 1
 MYIP="$(dig +short myip.opendns.com @resolver1.opendns.com -4)"
 az sql server firewall-rule create --resource-group ${RESOURCE_GROUP} --server ${SQL_SERVER_NAME} --name dataInit --start-ip-address ${MYIP} --end-ip-address ${MYIP} > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/sqlFwCreate.txt"
