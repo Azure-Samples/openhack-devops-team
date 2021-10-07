@@ -67,15 +67,15 @@ namespace DeviceSim
             //Environmental Variables - Pass to Container
 
             //Database Connection Information
-            dBConnectionInfo.DBServer = funcConfiguration.GetSection("SQL_SERVER").Value ?? ("openhackhts9sql.database.windows.net");
-            dBConnectionInfo.DBUserName = funcConfiguration.GetSection("SQL_USER").Value ?? ("openhackhts9sa");
-            dBConnectionInfo.DBPassword = funcConfiguration.GetSection("SQL_PASSWORD").Value ?? ("tD96d4Uk6pwd");
+            dBConnectionInfo.DBServer = funcConfiguration.GetSection("SQL_SERVER").Value;
+            dBConnectionInfo.DBUserName = funcConfiguration.GetSection("SQL_USER").Value;
+            dBConnectionInfo.DBPassword = funcConfiguration.GetSection("SQL_PASSWORD").Value;
             dBConnectionInfo.DBCatalog = "mydrivingDB";
             //Api Connection Information
             UseApi = Convert.ToBoolean(funcConfiguration.GetSection("USE_API").Value);
-            UserApiEndPoint = funcConfiguration.GetSection("USER_ROOT_URL").Value ?? ("http://akstraefikopenhackut20.eastus.cloudapp.azure.com");
-            PoiApiEndPoint = funcConfiguration.GetSection("POI_ROOT_URL").Value ?? ("http://akstraefikopenhackut20.eastus.cloudapp.azure.com");
-            TripsApiEndPoint = funcConfiguration.GetSection("TRIPS_ROOT_URL").Value ?? ("http://akstraefikopenhackut20.eastus.cloudapp.azure.com");
+            UserApiEndPoint = funcConfiguration.GetSection("USER_ROOT_URL").Value;
+            PoiApiEndPoint = funcConfiguration.GetSection("POI_ROOT_URL").Value;
+            TripsApiEndPoint = funcConfiguration.GetSection("TRIPS_ROOT_URL").Value;
             //Execution Information
             WaitTime = Convert.ToInt32(funcConfiguration.GetSection("TRIP_FREQUENCY").Value ?? ("180000"));
             TeamName = funcConfiguration.GetSection("TEAM_NAME").Value ?? ("TEAM 01");
@@ -85,16 +85,16 @@ namespace DeviceSim
         {
             try
             {
-                if (!UseApi)
+                if (UseApi)
+                {
+                    ApiTripController CurrentTrip = new ApiTripController(dBConnectionInfo, UserApiEndPoint, PoiApiEndPoint, TripsApiEndPoint);
+                    await CurrentTrip.CreateTrip();
+                }
+                else
                 {
                     EFTripController CurrentTrip = new EFTripController(dBConnectionInfo);
                     await CurrentTrip.CreateTrip();
                     await CurrentTrip.SaveChangesAsync();
-                }
-                else
-                {
-                    ApiTripController CurrentTrip = new ApiTripController(dBConnectionInfo, UserApiEndPoint, PoiApiEndPoint, TripsApiEndPoint);
-                    await CurrentTrip.CreateTrip();
                 }
             }
             catch (Exception)

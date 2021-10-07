@@ -111,7 +111,7 @@ deploy_terraform(){
             terraform apply --auto-approve -var="location=${LOCATION}"
         fi
     fi
-    #rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
+    # rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
 test_deploy(){

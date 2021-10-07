@@ -78,9 +78,9 @@ lint_bicep(){
 
 validate_bicep(){
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
-        az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
+        az deployment sub validate --name "${RESOURCES_PREFIX}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
-        az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
+        az deployment sub validate --name "${UNIQUER}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
     else
         az deployment sub validate --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}"
     fi
@@ -88,9 +88,9 @@ validate_bicep(){
 
 preview_bicep(){
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
-        az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
+        az deployment sub what-if --name "${RESOURCES_PREFIX}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}"
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
-        az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
+        az deployment sub what-if --name "${UNIQUER}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer="${UNIQUER}"
     else
         az deployment sub what-if --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}"
     fi
@@ -98,9 +98,9 @@ preview_bicep(){
 
 deploy_bicep(){
     if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
-        _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}")
+        _deployment_output=$(az deployment sub create --name "${RESOURCES_PREFIX}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters resourcesPrefix="${RESOURCES_PREFIX}")
     elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
-        _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer=${UNIQUER})
+        _deployment_output=$(az deployment sub create --name "${UNIQUER}-${BUILD_ID}" --template-file main.bicep --location "${LOCATION}" --parameters uniquer=${UNIQUER})
     else
         _deployment_output=$(az deployment sub create --name "${BUILD_ID}" --template-file main.bicep --location "${LOCATION}")
     fi
@@ -127,4 +127,4 @@ test_deploy "${hostnames}"
 
 azure_logout
 
-echo "${BUILD_ID}"
+echo "Build ID: ${BUILD_ID}"
