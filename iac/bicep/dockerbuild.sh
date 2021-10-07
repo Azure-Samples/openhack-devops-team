@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd ~/
 git clone "${TEAM_REPO}" --branch "${TEAM_REPO_BRANCH}" ~/openhack
 

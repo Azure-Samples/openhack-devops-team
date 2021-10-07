@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd ~/
 export ACCEPT_EULA="Y"
 MSSQL_VERSION="17.8.1.1-1"

@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory)]
     [ValidateNotNullOrEmpty()]
-    [string[]] $HostNames=@()
+    [string[]] $HostNames = @()
 )
 
 if (!(Get-Module -Name Pester)) {
@@ -17,10 +17,10 @@ if (!(Get-Module -Name Pester)) {
 Import-Module Pester
 
 $container = New-PesterContainer `
--Path 'appService.Test.ps1' `
--Data @{ HostNames = $HostNames }
+    -Path 'appService.Test.ps1' `
+    -Data @{ HostNames = $HostNames }
 $p = Invoke-Pester `
--Container $container `
--CI `
--Passthru
+    -Container $container `
+    -CI `
+    -Passthru
 $p | ConvertTo-JUnitReport -AsString | Out-File -Encoding UTF8 -FilePath 'testResultsJunit.xml'
