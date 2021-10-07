@@ -143,9 +143,45 @@ resource appServiceApiPoiStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    cloningInfo: {
-      sourceWebAppId: appServiceApiPoi.id
-    }	
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-poi:${varfile.baseImageTag}'
+      appSettings: [
+        {
+          name: 'SQL_USER'
+          value: sqlServerAdminLogin
+        }
+        {
+          name: 'SQL_PASSWORD'
+          value: sqlServerAdminPassword
+        }
+        {
+          name: 'SQL_SERVER'
+          value: sqlServerFqdn
+        }
+        {
+          name: 'SQL_DBNAME'
+          value: sqlDatabaseName
+        }
+        {
+          name: 'WEBSITES_PORT'
+          value: '8080'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
+      ]
+      alwaysOn: true
+    }
+    httpsOnly: true
   }
 }
 
@@ -200,9 +236,41 @@ resource appServiceApiTripsStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    cloningInfo: {
-      sourceWebAppId: appServiceApiTrips.id
-    }	
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-trips:${varfile.baseImageTag}'
+      appSettings: [
+        {
+          name: 'SQL_USER'
+          value: sqlServerAdminLogin
+        }
+        {
+          name: 'SQL_PASSWORD'
+          value: sqlServerAdminPassword
+        }
+        {
+          name: 'SQL_SERVER'
+          value: sqlServerFqdn
+        }
+        {
+          name: 'SQL_DBNAME'
+          value: sqlDatabaseName
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
+      ]
+      alwaysOn: true
+    }
+    httpsOnly: true
   }
 }
 
@@ -257,9 +325,41 @@ resource appServiceApiUserjavaStaging 'Microsoft.Web/sites/slots@2020-12-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    cloningInfo: {
-      sourceWebAppId: appServiceApiUserjava.id
-    }	
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-user-java:${varfile.baseImageTag}'
+      appSettings: [
+        {
+          name: 'SQL_USER'
+          value: sqlServerAdminLogin
+        }
+        {
+          name: 'SQL_PASSWORD'
+          value: sqlServerAdminPassword
+        }
+        {
+          name: 'SQL_SERVER'
+          value: sqlServerFqdn
+        }
+        {
+          name: 'SQL_DBNAME'
+          value: sqlDatabaseName
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
+      ]
+      alwaysOn: true
+    }
+    httpsOnly: true
   }
 }
 
@@ -314,9 +414,41 @@ resource appServiceApiUserprofileStaging 'Microsoft.Web/sites/slots@2020-12-01' 
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    cloningInfo: {
-      sourceWebAppId: appServiceApiUserprofile.id
-    }	
+    siteConfig: {
+      linuxFxVersion: 'DOCKER|${containerRegistryLoginServer}/devopsoh/api-userprofile:${varfile.baseImageTag}'
+      appSettings: [
+        {
+          name: 'SQL_USER'
+          value: sqlServerAdminLogin
+        }
+        {
+          name: 'SQL_PASSWORD'
+          value: sqlServerAdminPassword
+        }
+        {
+          name: 'SQL_SERVER'
+          value: sqlServerFqdn
+        }
+        {
+          name: 'SQL_DBNAME'
+          value: sqlDatabaseName
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_URL'
+          value: 'https://${containerRegistryLoginServer}'
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+          value: containerRegistryAdminUsername
+        }
+        {
+          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+          value: containerRegistryAdminPassword
+        }
+      ]
+      alwaysOn: true
+    }
+    httpsOnly: true
   }
 }
 

@@ -132,3 +132,5 @@ deploy_terraform $?
 deployment_output=$(terraform output -json)
 hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
 test_deploy "${hostnames}"
+
+echo "Build ID: ${BUILD_ID}"

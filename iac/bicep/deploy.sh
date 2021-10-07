@@ -127,4 +127,4 @@ test_deploy "${hostnames}"
 
 azure_logout
 
-echo "${BUILD_ID}"
+echo "Build ID: ${BUILD_ID}"

@@ -5,6 +5,7 @@ param containerRegistryLoginServer string
 param containerRegistryName string
 param userAssignedManagedIdentityId string
 param userAssignedManagedIdentityPrincipalId string
+param utcValue string = utcNow()
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
@@ -42,7 +43,7 @@ resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
   properties: {
     azCliVersion: '2.28.0'
-    cleanupPreference: 'OnSuccess'
+    cleanupPreference: 'OnExpiration'
     containerSettings: {
       containerGroupName: '${resourcesPrefix}datainit'
     }
@@ -113,6 +114,7 @@ resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     ]
     retentionInterval: 'PT1H'
     timeout: 'PT15M'
+    forceUpdateTag: guid(utcValue)
   }
   dependsOn: [
     sqlContributorRoleAssignment
