@@ -141,7 +141,7 @@ resource "azurerm_app_service" "app_service_api-poi" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
   }
 }
@@ -165,7 +165,7 @@ resource "azurerm_app_service_slot" "app_service_api-poi_staging" {
     "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
   }
 }
@@ -196,7 +196,7 @@ resource "azurerm_app_service" "app_service_api-trips" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
   }
 }
@@ -220,7 +220,7 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
   }
 }
@@ -251,7 +251,7 @@ resource "azurerm_app_service" "app_service_api-user-java" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
   }
 }
@@ -275,7 +275,7 @@ resource "azurerm_app_service_slot" "app_service_api-user-java_staging" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
   }
 }
@@ -306,7 +306,7 @@ resource "azurerm_app_service" "app_service_api-userprofile" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
   }
 }
@@ -330,7 +330,7 @@ resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
   }
 
   site_config {
-    always_on = true
+    always_on        = true
     linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
   }
 }
