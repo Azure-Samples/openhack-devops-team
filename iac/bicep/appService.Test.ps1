@@ -18,7 +18,7 @@ Describe 'Testing connection to Websites' {
         catch [System.Net.WebException] {
             $statusCode = [int]$_.Exception.Response.StatusCode
         }
-        $statusCode | Should -BeIn -BeIn @(200, 404) -Because "the website requires HTTPS"
+        $statusCode | Should -BeIn @(200, 404) -Because "the website requires HTTPS"
     }
 
     It 'Does not serves pages over HTTP' -TestCases $TestCases {
