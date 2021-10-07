@@ -120,7 +120,8 @@ resource "azurerm_role_assignment" "cr_role_assignment_tripviewer" {
 
 resource "azurerm_app_service" "app_service_api-poi" {
   depends_on = [
-    null_resource.db_datainit
+    null_resource.db_datainit,
+    null_resource.docker_api-poi
   ]
   name                = local.app_service_api-poi_name
   location            = azurerm_resource_group.resource_group.location
@@ -140,8 +141,8 @@ resource "azurerm_app_service" "app_service_api-poi" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
   }
 }
 
@@ -164,8 +165,8 @@ resource "azurerm_app_service_slot" "app_service_api-poi_staging" {
     "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
   }
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
   }
 }
 
@@ -175,7 +176,8 @@ resource "azurerm_app_service_slot" "app_service_api-poi_staging" {
 
 resource "azurerm_app_service" "app_service_api-trips" {
   depends_on = [
-    null_resource.db_datainit
+    null_resource.db_datainit,
+    null_resource.docker_api-trips
   ]
   name                = local.app_service_api-trips_name
   location            = azurerm_resource_group.resource_group.location
@@ -194,8 +196,8 @@ resource "azurerm_app_service" "app_service_api-trips" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
   }
 }
 
@@ -218,8 +220,8 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
   }
 }
 
@@ -229,7 +231,8 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
 
 resource "azurerm_app_service" "app_service_api-user-java" {
   depends_on = [
-    null_resource.db_datainit
+    null_resource.db_datainit,
+    null_resource.docker_api-user-java
   ]
   name                = local.app_service_api-user-java_name
   location            = azurerm_resource_group.resource_group.location
@@ -248,8 +251,8 @@ resource "azurerm_app_service" "app_service_api-user-java" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
   }
 }
 
@@ -272,8 +275,8 @@ resource "azurerm_app_service_slot" "app_service_api-user-java_staging" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
   }
 }
 
@@ -283,7 +286,8 @@ resource "azurerm_app_service_slot" "app_service_api-user-java_staging" {
 
 resource "azurerm_app_service" "app_service_api-userprofile" {
   depends_on = [
-    null_resource.db_datainit
+    null_resource.db_datainit,
+    null_resource.docker_api-userprofile
   ]
   name                = local.app_service_api-userprofile_name
   location            = azurerm_resource_group.resource_group.location
@@ -302,8 +306,8 @@ resource "azurerm_app_service" "app_service_api-userprofile" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
   }
 }
 
@@ -326,8 +330,8 @@ resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
   }
 
   site_config {
-    always_on = true
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
+    always_on        = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
   }
 }
 
@@ -377,7 +381,7 @@ resource "azurerm_container_group" "container_group_simulator" {
     memory = "2"
 
     ports {
-      port     = 80
+      port     = 8080
       protocol = "TCP"
     }
 

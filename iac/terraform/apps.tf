@@ -38,3 +38,27 @@ resource "null_resource" "docker_tripviewer" {
     command = "az acr build --image devopsoh/tripviewer:latest --registry ${azurerm_container_registry.container_registry.login_server} --file ../../support/tripviewer/Dockerfile ../../support/tripviewer"
   }
 }
+
+resource "null_resource" "docker_api-poi" {
+  provisioner "local-exec" {
+    command = "az acr build --image devopsoh/api-poi:${local.base_image_tag} --registry ${azurerm_container_registry.container_registry.login_server} --build-arg build_version=${local.base_image_tag} --file ../../apis/poi/web/Dockerfile ../../apis/poi/web"
+  }
+}
+
+resource "null_resource" "docker_api-trips" {
+  provisioner "local-exec" {
+    command = "az acr build --image devopsoh/api-trips:${local.base_image_tag} --registry ${azurerm_container_registry.container_registry.login_server} --build-arg build_version=${local.base_image_tag} --file ../../apis/trips/Dockerfile ../../apis/trips"
+  }
+}
+
+resource "null_resource" "docker_api-user-java" {
+  provisioner "local-exec" {
+    command = "az acr build --image devopsoh/api-user-java:${local.base_image_tag} --registry ${azurerm_container_registry.container_registry.login_server} --build-arg build_version=${local.base_image_tag} --file ../../apis/user-java/Dockerfile ../../apis/user-java"
+  }
+}
+
+resource "null_resource" "docker_api-userprofile" {
+  provisioner "local-exec" {
+    command = "az acr build --image devopsoh/api-userprofile:${local.base_image_tag} --registry ${azurerm_container_registry.container_registry.login_server} --build-arg build_version=${local.base_image_tag} --file ../../apis/userprofile/Dockerfile ../../apis/userprofile"
+  }
+}
