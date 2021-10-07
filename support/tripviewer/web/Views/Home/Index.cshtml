@@ -1,21 +1,26 @@
 ﻿@model TripViewer.Utility.TripViewerConfiguration
 @{
     ViewData["Title"] = "TripViewer Home Page";
-    //Swagger Endpoints
+    // Swagger Endpoints
     var urlUser = Model.USER_ROOT_URL + "/api/docs/user";
     var urlUserJava = Model.USER_JAVA_ROOT_URL + "/api/docs/user-java";
     var urlTrips = Model.TRIPS_ROOT_URL;
     var urlPoi = Model.POI_ROOT_URL + "/api/docs/poi";
-    //Healthcheck EndPoints
+    // Healthcheck EndPoints
     var hcUser = Model.USER_ROOT_URL + "/api/healthcheck/user";
     var hcUserJava = Model.USER_JAVA_ROOT_URL + "/api/healthcheck/user-java";
     var hcTrips = Model.TRIPS_ROOT_URL + "/api/healthcheck/trips";
     var hcPoi = Model.POI_ROOT_URL + "/api/healthcheck/poi";
-    //Version EndPoints
+    // Production Version EndPoints
     var vUser = Model.USER_ROOT_URL + "/api/version/user";
     var vUserJava = Model.USER_JAVA_ROOT_URL + "/api/version/user-java";
     var vTrips = Model.TRIPS_ROOT_URL + "/api/version/trips";
     var vPoi = Model.POI_ROOT_URL + "/api/version/poi";
+    // Staging Version EndPoints
+    var svUser = Model.USER_ROOT_URL + "-staging/api/version/user";
+    var svUserJava = Model.USER_JAVA_ROOT_URL + "-staging/api/version/user-java";
+    var svTrips = Model.TRIPS_ROOT_URL + "-staging/api/version/trips";
+    var svPoi = Model.POI_ROOT_URL + "-staging/api/version/poi";
 }
 
 <div class="text-center">
@@ -29,7 +34,7 @@
 </div>
 
 <div style="width: 100%;">
-    <div style="float: left; width: 33%;">
+    <div style="float: left; width: 25%;">
         <h3>Health Check Links</h3>
         <ul>
             <li>
@@ -46,7 +51,7 @@
             </li>
         </ul>
     </div>
-    <div style="float: left; width: 33%;">
+    <div style="float: left; width: 25%;">
         <h3>Swagger Docs Links</h3>
         <ul>
             <li>
@@ -63,7 +68,7 @@
             </li>
         </ul>
     </div>
-    <div style="float: left; width: 33%;">
+    <div style="float: left; width: 25%;">
         <h3>Check Production Version</h3>
         <ul>
             <li>
@@ -77,6 +82,23 @@
             </li>
             <li>
                 <a href="@vPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left; width: 25%;">
+        <h3>Check Staging Version</h3>
+        <ul>
+            <li>
+                <a href="@svUser" title="User Profile Node API version" target="_blank">User Profile API (Node.js) version</a>
+            </li>
+            <li>
+                <a href="@svUserJava" title="User Java API version" target="_blank">User API (Java) version</a>
+            </li>
+            <li>
+                <a href="@svTrips" title="Trips API version" target="_blank">Trips API (Golang) version</a>
+            </li>
+            <li>
+                <a href="@svPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
             </li>
         </ul>
     </div>

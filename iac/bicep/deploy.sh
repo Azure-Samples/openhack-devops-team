@@ -108,9 +108,10 @@ deploy_bicep(){
     echo "${_deployment_output}"
 }
 
-test_bicep(){
+test_deploy(){
     local _hostnames="${1}"
     
+    sleep 30
     pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
 }
 
@@ -120,8 +121,9 @@ lint_bicep
 validate_bicep
 preview_bicep
 deployment_output=$(deploy_bicep)
+echo "${deployment_output}"
 hostnames=$(echo "${deployment_output}" | jq -r -c '.properties.outputs | map(.value) | join(",")')
-test_bicep "${hostnames}"
+test_deploy "${hostnames}"
 
 azure_logout
 

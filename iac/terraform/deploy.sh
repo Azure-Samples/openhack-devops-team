@@ -114,9 +114,10 @@ deploy_terraform(){
     #rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
-test_terraform(){
+test_deploy(){
     local _hostnames="${1}"
     
+    sleep 30
     pwsh -Command ./smokeTest.ps1 -HostNames "${_hostnames}"
 }
 
@@ -130,4 +131,4 @@ preview_terraform
 deploy_terraform $?
 deployment_output=$(terraform output -json)
 hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
-test_terraform "${hostnames}"
+test_deploy "${hostnames}"
