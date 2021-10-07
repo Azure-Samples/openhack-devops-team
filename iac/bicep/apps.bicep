@@ -5,7 +5,6 @@ param containerRegistryLoginServer string
 param containerRegistryName string
 param userAssignedManagedIdentityId string
 param userAssignedManagedIdentityPrincipalId string
-param utcValue string = utcNow()
 
 var location = resourceGroup().location
 var varfile = json(loadTextContent('./variables.json'))
@@ -13,8 +12,6 @@ var varfile = json(loadTextContent('./variables.json'))
 // https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles
 // Contributor
 var contributorRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-
-
 
 resource sqlServer 'Microsoft.Sql/servers@2021-02-01-preview' existing = {
   name: sqlServerName
@@ -43,11 +40,11 @@ resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
   properties: {
     azCliVersion: '2.28.0'
-    cleanupPreference: 'OnExpiration'
+    cleanupPreference: 'Always'
     containerSettings: {
       containerGroupName: '${resourcesPrefix}datainit'
     }
-    primaryScriptUri: 'https://raw.githubusercontent.com/Azure-Samples/openhack-devops-team/bicepfixes/iac/bicep/datainit.sh'
+    scriptContent: loadTextContent('datainit.sh')
     environmentVariables: [
       {
         name: 'SQL_SERVER_NAME'
@@ -84,7 +81,6 @@ resource dataInit 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     ]
     retentionInterval: 'PT1H'
     timeout: 'PT15M'
-    forceUpdateTag: guid(utcValue)
   }
   dependsOn: [
     sqlContributorRoleAssignment
@@ -122,27 +118,7 @@ resource dockerBuild 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     containerSettings: {
       containerGroupName: '${resourcesPrefix}dockerdbuild'
     }
-    scriptContent: '''
-      git clone "${TEAM_REPO}" --branch "${TEAM_REPO_BRANCH}" ~/openhack
-      
-      cd ~/openhack/support/simulator
-      az acr build --image devopsoh/simulator:latest --registry "${CONTAINER_REGISTRY}" --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/simulator.txt"
-      
-      cd ~/openhack/support/tripviewer
-      az acr build --image devopsoh/tripviewer:latest --registry ${CONTAINER_REGISTRY} --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/tripviewer.txt"
-
-      cd ~/openhack/apis/poi/web
-      az acr build --image devopsoh/api-poi:${BASE_IMAGE_TAG} --registry ${CONTAINER_REGISTRY} --build-arg build_version=${BASE_IMAGE_TAG} --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/poi.txt"
-
-      cd ~/openhack/apis/trips
-      az acr build --image devopsoh/api-trips:${BASE_IMAGE_TAG} --registry ${CONTAINER_REGISTRY} --build-arg build_version=${BASE_IMAGE_TAG} --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/trips.txt"
-
-      cd ~/openhack/apis/user-java
-      az acr build --image devopsoh/api-user-java:${BASE_IMAGE_TAG} --registry ${CONTAINER_REGISTRY} --build-arg build_version=${BASE_IMAGE_TAG} --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/userjava.txt"
-      
-      cd ~/openhack/apis/userprofile
-      az acr build --image devopsoh/api-userprofile:${BASE_IMAGE_TAG} --registry ${CONTAINER_REGISTRY} --build-arg build_version=${BASE_IMAGE_TAG} --file Dockerfile . > "${AZ_SCRIPTS_PATH_OUTPUT_DIRECTORY}/userprofile.txt"
-      '''
+    scriptContent: loadTextContent('dockerbuild.sh')
     environmentVariables: [
       {
         name: 'CONTAINER_REGISTRY'
