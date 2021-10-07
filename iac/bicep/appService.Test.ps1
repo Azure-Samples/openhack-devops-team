@@ -13,13 +13,13 @@ Describe 'Testing connection to Websites' {
         $request = [System.Net.WebRequest]::Create("https://$HostName/")
         $request.AllowAutoRedirect = $false
         $request.GetResponse().StatusCode |
-        Should -Be 200 -Because "the website requires HTTPS"
+        Should -BeIn @(200,404) -Because "the website requires HTTPS"
     }
 
     It 'Does not serves pages over HTTP' -TestCases $TestCases {
         $request = [System.Net.WebRequest]::Create("http://$HostName/")
         $request.AllowAutoRedirect = $false
         $request.GetResponse().StatusCode | 
-        Should -BeGreaterOrEqual 300 -Because "HTTP is not secure"
+        Should -BeIn (300..399) -Because "HTTP is not secure"
     }
 }
