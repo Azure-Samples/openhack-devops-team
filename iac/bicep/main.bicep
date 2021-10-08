@@ -9,7 +9,7 @@ var resourcesPrefixCalculated = empty(resourcesPrefix) ? '${varfile.namePrefix}$
 var resourceGroupName = '${resourcesPrefixCalculated}rg'
 
 module openhackResourceGroup './resourceGroup.bicep' = {
-  name: 'resourceGroupDeployment'
+  name: '${resourcesPrefix}-resourceGroupDeployment'
   params: {
     resourceGroupName: resourceGroupName
     location: location
@@ -121,7 +121,7 @@ module containerGroup './containerGroup.bicep' = {
   ]
 }
 
-output appServiceApiPoiHostname string = appService.outputs.appServiceApiPoiHostname
-output appServiceApiTripsHostname string = appService.outputs.appServiceApiTripsHostname
-output appServiceApiUserjavaHostname string = appService.outputs.appServiceApiUserjavaHostname
-output appServiceApiUserprofileHostname string = appService.outputs.appServiceApiUserprofileHostname
+output appServiceApiPoiHealthcheck string = '${appService.outputs.appServiceApiPoiHostname}/api/healthcheck/poi'
+output appServiceApiTripsHealthcheck string = '${appService.outputs.appServiceApiTripsHostname}/api/healthcheck/trips'
+output appServiceApiUserjavaHealthcheck string = '${appService.outputs.appServiceApiUserjavaHostname}/api/healthcheck/user-java'
+output appServiceApiUserprofileHealthcheck string = '${appService.outputs.appServiceApiUserprofileHostname}/api/healthcheck/user'

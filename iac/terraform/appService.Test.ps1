@@ -23,7 +23,7 @@ Describe 'Testing connection to Websites' {
 
     It 'Does not serves pages over HTTP' -TestCases $TestCases {
         try {
-            $request = [System.Net.WebRequest]::Create("https://$HostName/")
+            $request = [System.Net.WebRequest]::Create("http://$HostName/")
             $request.AllowAutoRedirect = $false
             $statusCode = [int]$request.GetResponse().StatusCode
         }
