@@ -9,7 +9,7 @@ $TestCases = @()
 $HostNames.ForEach{ $TestCases += @{HostName = $_ } }
 Describe 'Testing connection to Websites' {
 
-    It 'Server pages over HTTPS' -TestCases $TestCases {
+    It ' <HostName> over HTTPS' -ForEach $TestCases {
         try {
             $request = [System.Net.WebRequest]::Create("https://$HostName")
             $request.AllowAutoRedirect = $false
@@ -21,7 +21,7 @@ Describe 'Testing connection to Websites' {
         $statusCode | Should -BeIn @(200, 404) -Because "the website requires HTTPS"
     }
 
-    It 'Does not serves pages over HTTP' -TestCases $TestCases {
+    It ' <HostName> over HTTP' -ForEach $TestCases {
         try {
             $request = [System.Net.WebRequest]::Create("http://$HostName")
             $request.AllowAutoRedirect = $false
