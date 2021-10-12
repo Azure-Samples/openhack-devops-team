@@ -24,7 +24,7 @@ RUN apt-get update \
     && curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
     && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
     && apt-get update \
     && apt-get install -y mssql-tools unixodbc-dev azure-cli maven dotnet-sdk-3.1 snapd nodejs build-essential docker-ce docker-ce-cli containerd.io terraform python3 python3-pip powershell jq unzip zip gh \
     && az bicep install \
@@ -41,6 +41,7 @@ RUN curl -fsS https://dl.google.com/go/go1.16.8.linux-amd64.tar.gz -o golang.tar
 ENV GO111MODULE=on \
 CGO_ENABLED=0
 RUN echo 'export PATH="$PATH:/usr/local/go/bin"' >> /etc/bash.bashrc
+
 
 # Create the user - https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user
 RUN groupadd --gid $USER_GID $USERNAME \
