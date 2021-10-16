@@ -9,7 +9,7 @@ var resourcesPrefixCalculated = empty(resourcesPrefix) ? '${varfile.namePrefix}$
 var resourceGroupName = '${resourcesPrefixCalculated}rg'
 
 module openhackResourceGroup './resourceGroup.bicep' = {
-  name: '${resourcesPrefix}-resourceGroupDeployment'
+  name: '${resourcesPrefixCalculated}-resourceGroupDeployment'
   params: {
     resourceGroupName: resourceGroupName
     location: location
