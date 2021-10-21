@@ -1,2 +1,7 @@
+#!/bin/bash
+
+# install dependencies
 npm install
-npm test
+
+# run tests
+npm run test
