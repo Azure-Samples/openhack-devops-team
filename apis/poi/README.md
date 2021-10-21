@@ -4,7 +4,9 @@
 
 POI (Trip Points of Interest) - CRUD API written in .NET Core 3.1 for Points of Interest on trips.
 
-## Restore dependencies
+## Build & Test
+
+### Restore dependencies
 
 ```shell
 dotnet restore
@@ -13,38 +15,38 @@ dotnet restore
 > **NOTE:** Starting with .NET Core 2.0 SDK, you don't have to run [`dotnet restore`](https://docs.microsoft.com/dotnet/core/tools/dotnet-restore) because it's run implicitly by all commands that require a restore to occur, such as `dotnet new`, `dotnet build` and `dotnet run`.
 It's still a valid command in certain scenarios where doing an explicit restore makes sense, such as [continuous integration builds in Azure DevOps Services](https://docs.microsoft.com/azure/devops/build-release/apps/aspnet/build-aspnet-core) or in build systems that need to explicitly control the time at which the restore occurs.
 
-## Build the Application
+### Build the Application
 
 ```shell
 dotnet build
 ```
 
-## Run Tests
+### Testing
 
 You can run the test in Visual Studio/VSCode or with the command line.
 
 To use the command line just type:
 
 ```shell
-dotnet test
+dotnet test --logger "trx;LogFileName=TestResults.trx" --results-directory ./TestResults
 ```
 
 This will run both the **Unit Tests** and the **Integration Tests**.
 
-### Unit Tests
+#### Unit Tests
 
 To run only the **Unit Tests** use filters:
 
 ```shell
-dotnet test --filter "FullyQualifiedName~UnitTest"
+dotnet test --filter "FullyQualifiedName~UnitTest" --logger "trx;LogFileName=UnitTestResults.trx" --results-directory ./TestResults
 ```
 
-### Integration Tests
+#### Integration Tests
 
 To run only the **Integration Tests** use filters:
 
 ```shell
-dotnet test --filter "FullyQualifiedName~IntegrationTests"
+dotnet test --filter "FullyQualifiedName~IntegrationTests" --logger "trx;LogFileName=IntegrationTestResults.trx" --results-directory ./TestResults
 ```
 
 > **NOTE:** **Integration Tests** require the Database to be available
