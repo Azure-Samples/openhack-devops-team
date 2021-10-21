@@ -5,7 +5,6 @@ go clean
 
 # get & install dependencies
 go get
-go install
 
 # build the project
 go build
