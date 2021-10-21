@@ -9,11 +9,10 @@ By using the [OpenAPI-Spec](https://github.com/OAI/OpenAPI-Specification) from a
 
 ## Build & Test
 
-### Get & Install dependencies
+### Get dependencies
 
 ```shell
 go get
-go install
 ```
 
 ### Build the Application

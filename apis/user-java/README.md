@@ -17,9 +17,9 @@ Change default port value in `src/main/resources/application.properties`
 
 1. Install Maven [https://maven.apache.org/install.html](https://maven.apache.org/install.html) and setup the environment path accordingly
 
-2. Go into the project root directory that has the pom.xml and run `mvn clean install`
+2. Go into the project root directory that has the pom.xml and run `mvn package`
 
-## Run only the tests
+## Run only the unit tests
 
 `mvn test`
 
