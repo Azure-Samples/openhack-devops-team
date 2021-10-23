@@ -95,7 +95,7 @@ resource "azurerm_app_service_plan" "app_service_plan" {
 
   sku {
     tier = "Standard"
-    size = "S1"
+    size = "P1V2"
   }
 
   lifecycle {
@@ -132,7 +132,6 @@ resource "azurerm_app_service" "app_service_tripviewer" {
     "STAGING_USER_JAVA_ROOT_URL" = "https://${azurerm_app_service_slot.app_service_api-userjava_staging.default_site_hostname}"
     "STAGING_TRIPS_ROOT_URL"     = "https://${azurerm_app_service_slot.app_service_api-trips_staging.default_site_hostname}"
     "STAGING_POI_ROOT_URL"       = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
-    "WEBSITES_PORT"              = "80"
     "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.container_registry.login_server}"
   }
 
