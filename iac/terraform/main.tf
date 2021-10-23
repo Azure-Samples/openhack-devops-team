@@ -5,6 +5,12 @@
 resource "azurerm_resource_group" "resource_group" {
   name     = local.resource_group_name
   location = local.location
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 ############################################
@@ -17,6 +23,12 @@ resource "azurerm_container_registry" "container_registry" {
   resource_group_name = azurerm_resource_group.resource_group.name
   sku                 = "Standard"
   admin_enabled       = true
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 ############################################
@@ -31,6 +43,12 @@ resource "azurerm_mssql_server" "mssql_server" {
   administrator_login          = local.mssql_server_administrator_login
   administrator_login_password = local.mssql_server_administrator_login_password
   minimum_tls_version          = "1.2"
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_mssql_firewall_rule" "mssql_firewall_rule_myip" {
@@ -56,6 +74,12 @@ resource "azurerm_mssql_database" "mssql_database" {
   server_id = azurerm_mssql_server.mssql_server.id
   collation = "SQL_Latin1_General_CP1_CI_AS"
   sku_name  = "S0"
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 ############################################
@@ -70,8 +94,14 @@ resource "azurerm_app_service_plan" "app_service_plan" {
   reserved            = true
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = "PremiumV2"
+    size = "P1v2"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
   }
 }
 
@@ -95,245 +125,65 @@ resource "azurerm_app_service" "app_service_tripviewer" {
   app_settings = {
     "BING_MAPS_KEY"              = local.bing_maps_key
     "USER_ROOT_URL"              = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
-    "USER_JAVA_ROOT_URL"         = "https://${azurerm_app_service.app_service_api-user-java.default_site_hostname}"
+    "USER_JAVA_ROOT_URL"         = "https://${azurerm_app_service.app_service_api-userjava.default_site_hostname}"
     "TRIPS_ROOT_URL"             = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
     "POI_ROOT_URL"               = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
+    "STAGING_USER_ROOT_URL"      = "https://${azurerm_app_service_slot.app_service_api-userprofile_staging.default_site_hostname}"
+    "STAGING_USER_JAVA_ROOT_URL" = "https://${azurerm_app_service_slot.app_service_api-userjava_staging.default_site_hostname}"
+    "STAGING_TRIPS_ROOT_URL"     = "https://${azurerm_app_service_slot.app_service_api-trips_staging.default_site_hostname}"
+    "STAGING_POI_ROOT_URL"       = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
     "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.container_registry.login_server}"
   }
 
   site_config {
-    acr_use_managed_identity_credentials = true
     always_on                            = true
+    http2_enabled                        = true
+    ftps_state                           = "Disabled"
+    acr_use_managed_identity_credentials = true
     linux_fx_version                     = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/tripviewer:latest"
+  }
+
+  logs {
+    http_logs {
+      file_system {
+        retention_in_days = 7
+        retention_in_mb   = 50
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
   }
 }
 
 resource "azurerm_role_assignment" "cr_role_assignment_tripviewer" {
   scope                = azurerm_container_registry.container_registry.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_app_service.app_service_tripviewer.identity.0.principal_id
+  principal_id         = azurerm_app_service.app_service_tripviewer.identity[0].principal_id
 }
 
-############################################
-## APP SERVICE - API-POI                  ##
-############################################
-
-resource "azurerm_app_service" "app_service_api-poi" {
+resource "azurerm_key_vault_access_policy" "key_vault_access_policy_tripviewer" {
   depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-poi
+    azurerm_app_service.app_service_tripviewer
   ]
-  name                = local.app_service_api-poi_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  https_only          = true
+  key_vault_id = azurerm_key_vault.key_vault.id
+  tenant_id    = azurerm_app_service.app_service_tripviewer.identity[0].tenant_id
+  object_id    = azurerm_app_service.app_service_tripviewer.identity[0].principal_id
 
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "WEBSITES_PORT"                   = "8080"
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
-  }
-}
-
-resource "azurerm_app_service_slot" "app_service_api-poi_staging" {
-  name                = "staging"
-  app_service_name    = azurerm_app_service.app_service_api-poi.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "WEBSITES_PORT"                   = "8080"
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-poi:${local.base_image_tag}"
-  }
-}
-
-############################################
-## APP SERVICE - API-TRIPS                ##
-############################################
-
-resource "azurerm_app_service" "app_service_api-trips" {
-  depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-trips
+  secret_permissions = [
+    "Get"
   ]
-  name                = local.app_service_api-trips_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
-  }
 }
 
-resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
-  name                = "staging"
-  app_service_name    = azurerm_app_service.app_service_api-trips.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-trips:${local.base_image_tag}"
-  }
-}
-
-############################################
-## APP SERVICE - API-USER-JAVA            ##
-############################################
-
-resource "azurerm_app_service" "app_service_api-user-java" {
-  depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-user-java
-  ]
-  name                = local.app_service_api-user-java_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
-  }
-}
-
-resource "azurerm_app_service_slot" "app_service_api-user-java_staging" {
-  name                = "staging"
-  app_service_name    = azurerm_app_service.app_service_api-user-java.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-user-java:${local.base_image_tag}"
-  }
-}
-
-############################################
-## APP SERVICE - API-USERPROFILE          ##
-############################################
-
-resource "azurerm_app_service" "app_service_api-userprofile" {
-  depends_on = [
-    null_resource.db_datainit,
-    null_resource.docker_api-userprofile
-  ]
-  name                = local.app_service_api-userprofile_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
-  }
-}
-
-resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
-  name                = "staging"
-  app_service_name    = azurerm_app_service.app_service_api-userprofile.name
-  app_service_plan_id = azurerm_app_service_plan.app_service_plan.id
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  https_only          = true
-
-  app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
-  }
-
-  site_config {
-    always_on        = true
-    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.login_server}/devopsoh/api-userprofile:${local.base_image_tag}"
-  }
-}
+# resource "azurerm_application_insights" "application_insights_tripviewer" {
+#   name                = local.app_service_tripviewer_name
+#   location            = azurerm_resource_group.resource_group.location
+#   resource_group_name = azurerm_resource_group.resource_group.name
+#   application_type    = "web"
+# }
 
 ############################################
 ## UAMI                                   ##
@@ -344,6 +194,61 @@ resource "azurerm_app_service_slot" "app_service_api-userprofile_staging" {
 #   resource_group_name = azurerm_resource_group.resource_group.name
 #   location            = azurerm_resource_group.resource_group.location
 # }
+
+############################################
+## LOG ANALYTICS                          ##
+############################################
+
+resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
+  name                = local.log_analytics_name
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  sku                 = "free"
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+
+# resource "azurerm_log_analytics_solution" "log_analytics_solution_containerinsights" {
+#   solution_name         = "ContainerInsights"
+#   location              = azurerm_resource_group.resource_group.location
+#   resource_group_name   = azurerm_resource_group.resource_group.name
+#   workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+#   workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace.name
+
+#   plan {
+#     publisher = "Microsoft"
+#     product   = "OMSGallery/ContainerInsights"
+#   }
+
+#   lifecycle {
+#     ignore_changes = [
+#       tags
+#     ]
+#   }
+# }
+
+resource "azurerm_log_analytics_solution" "log_analytics_solution_containers" {
+  solution_name         = "Containers"
+  location              = azurerm_resource_group.resource_group.location
+  resource_group_name   = azurerm_resource_group.resource_group.name
+  workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace.name
+
+  plan {
+    publisher = "Microsoft"
+    product   = "OMSGallery/Containers"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
 
 ############################################
 ## CONTAINER GROUP - SIMULATOR            ##
@@ -391,7 +296,7 @@ resource "azurerm_container_group" "container_group_simulator" {
       "SQL_DBNAME"         = local.mssql_database_name
       "TEAM_NAME"          = local.team_name
       "USER_ROOT_URL"      = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
-      "USER_JAVA_ROOT_URL" = "https://${azurerm_app_service.app_service_api-user-java.default_site_hostname}"
+      "USER_JAVA_ROOT_URL" = "https://${azurerm_app_service.app_service_api-userjava.default_site_hostname}"
       "TRIPS_ROOT_URL"     = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
       "POI_ROOT_URL"       = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
     }
@@ -400,6 +305,20 @@ resource "azurerm_container_group" "container_group_simulator" {
       "SQL_PASSWORD" = local.mssql_server_administrator_login_password
     }
   }
+
+  diagnostics {
+    log_analytics {
+      log_type      = "ContainerInsights"
+      workspace_id  = azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
+      workspace_key = azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 # resource "azurerm_role_assignment" "cr_role_assignment_simulator" {
@@ -407,3 +326,44 @@ resource "azurerm_container_group" "container_group_simulator" {
 #   role_definition_name = "AcrPull"
 #   principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
 # }
+
+############################################
+## KEY VAULT                              ##
+############################################
+
+resource "azurerm_key_vault" "key_vault" {
+  name                       = local.key_vault_name
+  location                   = azurerm_resource_group.resource_group.location
+  resource_group_name        = azurerm_resource_group.resource_group.name
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
+  soft_delete_retention_days = 7
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
+}
+
+resource "azurerm_key_vault_access_policy" "key_vault_access_policy_sp" {
+  key_vault_id = azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  certificate_permissions = [
+    "Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"
+  ]
+
+  key_permissions = [
+    "Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import", "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey"
+  ]
+
+  secret_permissions = [
+    "Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"
+  ]
+
+  storage_permissions = [
+    "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
+  ]
+}

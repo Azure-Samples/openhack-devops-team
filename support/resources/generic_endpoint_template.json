@@ -1,0 +1,22 @@
+{
+    "administratorsGroup": null,
+    "authorization": {
+        "scheme": "UsernamePassword",
+        "parameters": {
+            "username": "",
+            "password": ""
+        }
+    },
+    "createdBy": null,
+    "data": {},
+    "description": "",
+    "groupScopeId": null,
+    "name": "NAME",
+    "operationStatus": null,
+    "readersGroup": null,
+    "serviceEndpointProjectReferences": [],
+    "type": "generic",
+    "url": "URL",
+    "isShared": false,
+    "owner": "library"
+}

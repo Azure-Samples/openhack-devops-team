@@ -129,6 +129,6 @@ init_terrafrom
 validate_terraform
 preview_terraform
 deploy_terraform $?
-deployment_output=$(terraform output -json)
-hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
-test_deploy "${hostnames}"
+# deployment_output=$(terraform output -json)
+# hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
+# test_deploy "${hostnames}"

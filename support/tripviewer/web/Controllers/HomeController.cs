@@ -25,7 +25,11 @@ namespace TripViewer.Controllers
                 USER_ROOT_URL = Configuration.GetValue<string>("USER_ROOT_URL"),
                 USER_JAVA_ROOT_URL = Configuration.GetValue<string>("USER_JAVA_ROOT_URL"),
                 TRIPS_ROOT_URL = Configuration.GetValue<string>("TRIPS_ROOT_URL"),
-                POI_ROOT_URL = Configuration.GetValue<string>("POI_ROOT_URL")
+                POI_ROOT_URL = Configuration.GetValue<string>("POI_ROOT_URL"),
+                STAGING_USER_ROOT_URL = Configuration.GetValue<string>("STAGING_USER_ROOT_URL"),
+                STAGING_USER_JAVA_ROOT_URL = Configuration.GetValue<string>("STAGING_USER_JAVA_ROOT_URL"),
+                STAGING_TRIPS_ROOT_URL = Configuration.GetValue<string>("STAGING_TRIPS_ROOT_URL"),
+                STAGING_POI_ROOT_URL = Configuration.GetValue<string>("STAGING_POI_ROOT_URL")
             };
             return View(tv);
         }
