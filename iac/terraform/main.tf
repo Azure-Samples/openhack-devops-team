@@ -200,7 +200,7 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy_tripviewer" 
 ## LOG ANALYTICS                          ##
 ############################################
 
-resource "azurerm_log_analytics_workspace" "log_analytics_workspace_container_group_simulator" {
+resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = local.log_analytics_name
   location            = azurerm_resource_group.resource_group.location
   resource_group_name = azurerm_resource_group.resource_group.name
@@ -217,8 +217,8 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace_container_gr
 #   solution_name         = "ContainerInsights"
 #   location              = azurerm_resource_group.resource_group.location
 #   resource_group_name   = azurerm_resource_group.resource_group.name
-#   workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.id
-#   workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.name
+#   workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+#   workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace.name
 
 #   plan {
 #     publisher = "Microsoft"
@@ -236,8 +236,8 @@ resource "azurerm_log_analytics_solution" "log_analytics_solution_containers" {
   solution_name         = "Containers"
   location              = azurerm_resource_group.resource_group.location
   resource_group_name   = azurerm_resource_group.resource_group.name
-  workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.id
-  workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.name
+  workspace_resource_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  workspace_name        = azurerm_log_analytics_workspace.log_analytics_workspace.name
 
   plan {
     publisher = "Microsoft"
@@ -310,8 +310,8 @@ resource "azurerm_container_group" "container_group_simulator" {
   diagnostics {
     log_analytics {
       log_type      = "ContainerInsights"
-      workspace_id  = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.workspace_id
-      workspace_key = azurerm_log_analytics_workspace.log_analytics_workspace_container_group_simulator.primary_shared_key
+      workspace_id  = azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
+      workspace_key = azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
     }
   }
 
