@@ -54,7 +54,7 @@ namespace UnitTests.Utility
 
 
         [Fact]
-        public void GetUri_Returns_DefailtUriAndPort_WhenNotInSettings()
+        public void GetUri_Returns_DefaultUriAndPort_WhenNotInSettings()
         {
             //arrange
             IConfiguration configuration = GetTestConfiguration();

@@ -16,6 +16,7 @@ locals {
   team_name                                 = local.resources_prefix
   location                                  = var.location
   resource_group_name                       = "${local.resources_prefix}rg"
+  key_vault_name                            = "${local.resources_prefix}kv"
   container_registry_name                   = "${local.resources_prefix}cr"
   mssql_server_name                         = "${local.resources_prefix}sql"
   mssql_server_administrator_login          = local._secrets.mssql_server_administrator_login
@@ -27,9 +28,10 @@ locals {
   app_service_tripviewer_name               = "${local.resources_prefix}tripviewer"
   app_service_api-poi_name                  = "${local.resources_prefix}poi"
   app_service_api-trips_name                = "${local.resources_prefix}trips"
-  app_service_api-user-java_name            = "${local.resources_prefix}userjava"
+  app_service_api-userjava_name             = "${local.resources_prefix}userjava"
   app_service_api-userprofile_name          = "${local.resources_prefix}userprofile"
   user_assigned_identity_name               = "${local.resources_prefix}uami"
   container_group_simulator_name            = "${local.resources_prefix}simulator"
+  log_analytics_name                        = "${local.resources_prefix}log"
   base_image_tag                            = local._default.base_image_tag
 }

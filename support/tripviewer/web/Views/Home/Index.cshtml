@@ -1,21 +1,57 @@
 ﻿@model TripViewer.Utility.TripViewerConfiguration
 @{
+
     ViewData["Title"] = "TripViewer Home Page";
+
     //Swagger Endpoints
+
     var urlUser = Model.USER_ROOT_URL + "/api/docs/user";
+
     var urlUserJava = Model.USER_JAVA_ROOT_URL + "/api/docs/user-java";
+
     var urlTrips = Model.TRIPS_ROOT_URL;
+
     var urlPoi = Model.POI_ROOT_URL + "/api/docs/poi";
+
     //Healthcheck EndPoints
+
     var hcUser = Model.USER_ROOT_URL + "/api/healthcheck/user";
+
     var hcUserJava = Model.USER_JAVA_ROOT_URL + "/api/healthcheck/user-java";
+
     var hcTrips = Model.TRIPS_ROOT_URL + "/api/healthcheck/trips";
+
     var hcPoi = Model.POI_ROOT_URL + "/api/healthcheck/poi";
+
+    //Staging Healthcheck EndPoints
+
+    var hcStagingUser = Model.STAGING_USER_ROOT_URL + "/api/healthcheck/user";
+
+    var hcStagingUserJava = Model.STAGING_USER_JAVA_ROOT_URL + "/api/healthcheck/user-java";
+
+    var hcStagingTrips = Model.STAGING_TRIPS_ROOT_URL + "/api/healthcheck/trips";
+
+    var hcStagingPoi = Model.STAGING_POI_ROOT_URL + "/api/healthcheck/poi";
+
     //Version EndPoints
+
     var vUser = Model.USER_ROOT_URL + "/api/version/user";
+
     var vUserJava = Model.USER_JAVA_ROOT_URL + "/api/version/user-java";
+
     var vTrips = Model.TRIPS_ROOT_URL + "/api/version/trips";
+
     var vPoi = Model.POI_ROOT_URL + "/api/version/poi";
+
+    //Staging Version EndPoints
+
+    var vStagingUser = Model.STAGING_USER_ROOT_URL + "/api/version/user";
+
+    var vStagingUserJava = Model.STAGING_USER_JAVA_ROOT_URL + "/api/version/user-java";
+
+    var vStagingTrips = Model.STAGING_TRIPS_ROOT_URL + "/api/version/trips";
+
+    var vStagingPoi = Model.STAGING_POI_ROOT_URL + "/api/version/poi";
 }
 
 <div class="text-center">
@@ -23,17 +59,19 @@
     <p>
         Welcome to your team's Trip viewer website running on Azure App Service on Linux.
         The <a href="/Trip"> trip page </a> will replay the trips being sent via the simulator in your App Service.
-        The <a href="/UserProfile"> profile page </a> will show the total number of trips and distance traveled for the user of those simulated trips.
+        The <a href="/UserProfile"> profile page </a> will show the total number of trips and distance traveled for the
+        user of those simulated trips.
         Both of these pages are one way to verify that all of your APIs are functioning.
     </p>
 </div>
 
 <div style="width: 100%;">
     <div style="float: left; width: 33%;">
-        <h3>Health Check Links</h3>
+        <h3>Production Health Check Links</h3>
         <ul>
             <li>
-                <a href="@hcUser" title="View User Profile Health Check" target="_blank">User Profile API Health Check</a>
+                <a href="@hcUser" title="View User Profile Health Check" target="_blank">User Profile API Health
+                    Check</a>
             </li>
             <li>
                 <a href="@hcUserJava" title="View User Health Check" target="_blank">User API (Java) Health Check</a>
@@ -47,10 +85,27 @@
         </ul>
     </div>
     <div style="float: left; width: 33%;">
+        <h3>Check Production Version</h3>
+        <ul>
+            <li>
+                <a href="@vUser" title="User Profile API version" target="_blank">User Profile API (Node.js) version</a>
+            </li>
+            <li>
+                <a href="@vUserJava" title="User Java API version" target="_blank">User API (Java) version</a>
+            </li>
+            <li>
+                <a href="@vTrips" title="Trips API version" target="_blank">Trips API (Golang) version</a>
+            </li>
+            <li>
+                <a href="@vPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left; width: 33%;">
         <h3>Swagger Docs Links</h3>
         <ul>
             <li>
-                <a href="@urlUser" title="User Node API swagger docs" target="_blank">User Profile API (Node.js)</a>
+                <a href="@urlUser" title="User Profile API swagger docs" target="_blank">User Profile API (Node.js)</a>
             </li>
             <li>
                 <a href="@urlUserJava" title="User Java API swagger docs" target="_blank">User API (Java)</a>
@@ -63,22 +118,49 @@
             </li>
         </ul>
     </div>
+    <br style="clear: left;" />
+</div>
+
+<div style="width: 100%;">
     <div style="float: left; width: 33%;">
-        <h3>Check Production Version</h3>
+        <h3>Staging Health Check Links</h3>
         <ul>
             <li>
-                <a href="@vUser" title="User Profile Node API version" target="_blank">User Profile API (Node.js) version</a>
+                <a href="@hcStagingUser" title="View User Profile Health Check" target="_blank">User Profile API Health
+                    Check</a>
             </li>
             <li>
-                <a href="@vUserJava" title="User Java API version" target="_blank">User API (Java) version</a>
+                <a href="@hcStagingUserJava" title="View User Health Check" target="_blank">User API (Java) Health
+                    Check</a>
             </li>
             <li>
-                <a href="@vTrips" title="Trips API version" target="_blank">Trips API (Golang) version</a>
+                <a href="@hcStagingTrips" title="View Trips Health Check" target="_blank">Trips API (Golang) Health
+                    Check</a>
             </li>
             <li>
-                <a href="@vPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
+                <a href="@hcStagingPoi" title="View POI Health Check" target="_blank">POI API (dotnet) Health Check</a>
             </li>
         </ul>
+    </div>
+    <div style="float: left; width: 33%;">
+        <h3>Check Staging Version</h3>
+        <ul>
+            <li>
+                <a href="@vStagingUser" title="User Profile API version" target="_blank">User Profile API (Node.js)
+                    version</a>
+            </li>
+            <li>
+                <a href="@vStagingUserJava" title="User Java API version" target="_blank">User API (Java) version</a>
+            </li>
+            <li>
+                <a href="@vStagingTrips" title="Trips API version" target="_blank">Trips API (Golang) version</a>
+            </li>
+            <li>
+                <a href="@vStagingPoi" title="POI API version" target="_blank">POI API (dotnet) version</a>
+            </li>
+        </ul>
+    </div>
+    <div style="float: left; width: 33%;">
     </div>
     <br style="clear: left;" />
 </div>

@@ -8,7 +8,7 @@ output "appServiceApiTripsHealthcheck" {
 }
 output "appServiceApiUserjavaHealthcheck" {
   description = "Hostname of API-USER-JAVA"
-  value       = "${azurerm_app_service.app_service_api-user-java.default_site_hostname}/api/healthcheck/user-java"
+  value       = "${azurerm_app_service.app_service_api-userjava.default_site_hostname}/api/healthcheck/user-java"
 }
 output "appServiceApiUserprofileHealthcheck" {
   description = "Hostname of API-USERPROFILE"
