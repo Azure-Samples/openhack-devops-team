@@ -95,7 +95,7 @@ resource "azurerm_app_service_plan" "app_service_plan" {
 
   sku {
     tier = "PremiumV2"
-    size = "P1V2"
+    size = "P1v2"
   }
 
   lifecycle {
