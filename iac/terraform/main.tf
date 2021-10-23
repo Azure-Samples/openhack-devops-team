@@ -128,7 +128,7 @@ resource "azurerm_app_service" "app_service_tripviewer" {
     "USER_JAVA_ROOT_URL"         = "https://${azurerm_app_service.app_service_api-userjava.default_site_hostname}"
     "TRIPS_ROOT_URL"             = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
     "POI_ROOT_URL"               = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
-    "STAGING_USER_ROOT_URL"      = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
+    "STAGING_USER_ROOT_URL"      = "https://${azurerm_app_service_slot.app_service_api-userprofile_staging.default_site_hostname}"
     "STAGING_USER_JAVA_ROOT_URL" = "https://${azurerm_app_service_slot.app_service_api-userjava_staging.default_site_hostname}"
     "STAGING_TRIPS_ROOT_URL"     = "https://${azurerm_app_service_slot.app_service_api-trips_staging.default_site_hostname}"
     "STAGING_POI_ROOT_URL"       = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
