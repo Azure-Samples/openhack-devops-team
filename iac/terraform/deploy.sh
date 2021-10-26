@@ -80,7 +80,7 @@ init_terrafrom() {
 }
 
 init_terrafrom_local() {
-    terraform init
+    terraform init -backend=false
 }
 
 validate_terraform(){
@@ -114,6 +114,16 @@ deploy_terraform(){
     # rm -rf .terraform && rm -rf .terraform.lock.hcl && rm -rf terraform.tfstate && rm -rf terraform.tfstate.backup
 }
 
+destroy_terraform(){
+    if [ ${#RESOURCES_PREFIX} -gt 0 ]; then
+        terraform destroy --auto-approve -var="location=${LOCATION}" -var="resources_prefix=${RESOURCES_PREFIX}"
+    elif [[ ${#RESOURCES_PREFIX} -eq 0 && ${#UNIQUER} -gt 0 ]]; then
+        terraform destroy --auto-approve -var="location=${LOCATION}" -var="uniquer=${UNIQUER}"
+    else
+        terraform destroy --auto-approve -var="location=${LOCATION}"
+    fi
+}
+
 test_deploy(){
     local _hostnames="${1}"
     
@@ -129,6 +139,7 @@ init_terrafrom
 validate_terraform
 preview_terraform
 deploy_terraform $?
+# destroy_terraform
 # deployment_output=$(terraform output -json)
 # hostnames=$(echo "${deployment_output}" | jq -r -c 'map(.value) | join(",")')
 # test_deploy "${hostnames}"

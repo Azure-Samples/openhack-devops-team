@@ -11,11 +11,12 @@ data "external" "my_ip" {
 }
 
 locals {
-  uniquer                                   = var.uniquer != null ? var.uniquer : "${random_string.uniquer.id}"
-  resources_prefix                          = var.resources_prefix != null ? var.resources_prefix : "${local._default.name_prefix}${local.uniquer}"
-  team_name                                 = local.resources_prefix
-  location                                  = var.location
-  resource_group_name                       = "${local.resources_prefix}rg"
+  uniquer             = var.uniquer != null ? var.uniquer : "${random_string.uniquer.id}"
+  resources_prefix    = var.resources_prefix != null ? var.resources_prefix : "${local._default.name_prefix}${local.uniquer}"
+  team_name           = local.resources_prefix
+  location            = var.location
+  resource_group_name = "${local.resources_prefix}rg"
+
   key_vault_name                            = "${local.resources_prefix}kv"
   container_registry_name                   = "${local.resources_prefix}cr"
   mssql_server_name                         = "${local.resources_prefix}sql"
@@ -34,4 +35,7 @@ locals {
   container_group_simulator_name            = "${local.resources_prefix}simulator"
   log_analytics_name                        = "${local.resources_prefix}log"
   base_image_tag                            = local._default.base_image_tag
+  docker_registry_server_url                = var.docker_registry_server_url != null ? var.docker_registry_server_url : "https://${azurerm_container_registry.container_registry.login_server}"
+  docker_registry_server_username           = var.docker_registry_server_username != null ? var.docker_registry_server_username : azurerm_container_registry.container_registry.admin_username
+  docker_registry_server_password           = var.docker_registry_server_password != null ? var.docker_registry_server_password : azurerm_container_registry.container_registry.admin_password
 }
