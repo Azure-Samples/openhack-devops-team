@@ -27,7 +27,7 @@ namespace DeviceSim
             UseApi = true;
 
             Console.WriteLine($"***** {TeamName}-Driving Simulator *****");
-            Console.WriteLine($"Currently Using API Routes : {UseApi.ToString()}");
+            Console.WriteLine($"Currently Using API Routes : {UseApi}");
             Console.WriteLine($"*Starting Simulator - A new trip will be created every {WaitTime / 1000} seconds *");
 
             while (true)
@@ -70,7 +70,7 @@ namespace DeviceSim
             dBConnectionInfo.DBServer = funcConfiguration.GetSection("SQL_SERVER").Value;
             dBConnectionInfo.DBUserName = funcConfiguration.GetSection("SQL_USER").Value;
             dBConnectionInfo.DBPassword = funcConfiguration.GetSection("SQL_PASSWORD").Value;
-            dBConnectionInfo.DBCatalog = "mydrivingDB";
+            dBConnectionInfo.DBCatalog = funcConfiguration.GetSection("SQL_DB_NAME").Value ?? "mydrivingDB";
             //Api Connection Information
             UseApi = Convert.ToBoolean(funcConfiguration.GetSection("USE_API").Value);
             UserApiEndPoint = funcConfiguration.GetSection("USER_ROOT_URL").Value;
