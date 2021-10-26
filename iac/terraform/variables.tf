@@ -12,3 +12,22 @@ variable "resources_prefix" {
   type        = string
   default     = null
 }
+
+variable "docker_registry_server_url" {
+  description = ""
+  type        = string
+  default     = null
+}
+
+variable "docker_registry_server_username" {
+  description = ""
+  type        = string
+  default     = null
+}
+
+variable "docker_registry_server_password" {
+  description = ""
+  type        = string
+  default     = null
+  sensitive   = true
+}

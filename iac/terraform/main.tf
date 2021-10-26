@@ -166,9 +166,6 @@ resource "azurerm_role_assignment" "cr_role_assignment_tripviewer" {
 }
 
 resource "azurerm_key_vault_access_policy" "key_vault_access_policy_tripviewer" {
-  depends_on = [
-    azurerm_app_service.app_service_tripviewer
-  ]
   key_vault_id = azurerm_key_vault.key_vault.id
   tenant_id    = azurerm_app_service.app_service_tripviewer.identity[0].tenant_id
   object_id    = azurerm_app_service.app_service_tripviewer.identity[0].principal_id
@@ -367,3 +364,24 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy_sp" {
     "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
   ]
 }
+
+# resource "azurerm_key_vault_secret" "key_vault_secret_sqlpassword" {
+#   name         = "SQL-PASSWORD"
+#   value        = azurerm_container_registry.container_registry.admin_password
+#   key_vault_id = azurerm_key_vault.key_vault.id
+
+#   tags = {
+#     "CredentialId"       = local.mssql_server_administrator_login,
+#     "ProviderAddress"    = azurerm_mssql_server.mssql_server.id,
+#     "ValidityPeriodDays" = 1
+#   }
+
+#   expiration_date = formatdate("YYYY-MM-DDThh:mm:ssZ", timeadd(timestamp(), "24h"))
+
+#   lifecycle {
+#     ignore_changes = [
+#       value,
+#       expiration_date
+#     ]
+#   }
+# }

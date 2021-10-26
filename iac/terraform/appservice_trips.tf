@@ -22,9 +22,9 @@ resource "azurerm_app_service" "app_service_api-trips" {
     "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
     "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
     "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "DOCKER_REGISTRY_SERVER_URL"      = local.docker_registry_server_url
+    "DOCKER_REGISTRY_SERVER_USERNAME" = local.docker_registry_server_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = local.docker_registry_server_password
   }
 
   site_config {
@@ -48,10 +48,7 @@ resource "azurerm_app_service" "app_service_api-trips" {
   lifecycle {
     ignore_changes = [
       tags,
-      app_settings["DOCKER_REGISTRY_SERVER_URL"],
-      app_settings["DOCKER_REGISTRY_SERVER_USERNAME"],
-      app_settings["DOCKER_REGISTRY_SERVER_PASSWORD"],
-      app_settings["SQL_PASSWORD"],
+      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],
       site_config[0].linux_fx_version
     ]
   }
@@ -90,9 +87,9 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
     "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
     "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
     "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.container_registry.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.container_registry.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = "${azurerm_container_registry.container_registry.admin_password}"
+    "DOCKER_REGISTRY_SERVER_URL"      = local.docker_registry_server_url
+    "DOCKER_REGISTRY_SERVER_USERNAME" = local.docker_registry_server_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD" = local.docker_registry_server_password
   }
 
   site_config {
@@ -116,10 +113,7 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
   lifecycle {
     ignore_changes = [
       tags,
-      app_settings["DOCKER_REGISTRY_SERVER_URL"],
-      app_settings["DOCKER_REGISTRY_SERVER_USERNAME"],
-      app_settings["DOCKER_REGISTRY_SERVER_PASSWORD"],
-      app_settings["SQL_PASSWORD"],
+      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],
       site_config[0].linux_fx_version
     ]
   }
