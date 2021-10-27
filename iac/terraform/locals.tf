@@ -19,9 +19,10 @@ locals {
 
   key_vault_name                            = "${local.resources_prefix}kv"
   container_registry_name                   = "${local.resources_prefix}cr"
+  application_insights_name                 = "${local.resources_prefix}appi"
   mssql_server_name                         = "${local.resources_prefix}sql"
-  mssql_server_administrator_login          = local._secrets.mssql_server_administrator_login
-  mssql_server_administrator_login_password = local._secrets.mssql_server_administrator_login_password
+  mssql_server_administrator_login          = var.mssql_server_administrator_login != null ? var.mssql_server_administrator_login : local._secrets.mssql_server_administrator_login
+  mssql_server_administrator_login_password = var.mssql_server_administrator_login_password != null ? var.mssql_server_administrator_login_password : local._secrets.mssql_server_administrator_login_password
   mssql_firewall_rule_myip                  = data.external.my_ip.result["my_ip"]
   mssql_database_name                       = "mydrivingDB"
   bing_maps_key                             = local._secrets.bing_maps_key

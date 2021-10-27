@@ -18,13 +18,15 @@ resource "azurerm_app_service" "app_service_api-trips" {
   }
 
   app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = local.docker_registry_server_url
-    "DOCKER_REGISTRY_SERVER_USERNAME" = local.docker_registry_server_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = local.docker_registry_server_password
+    "SQL_USER"                              = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                          = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                            = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                            = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"            = local.docker_registry_server_url
+    "DOCKER_REGISTRY_SERVER_USERNAME"       = local.docker_registry_server_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"       = local.docker_registry_server_password
+    "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.application_insights.instrumentation_key
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application_insights.connection_string
   }
 
   site_config {
@@ -83,13 +85,15 @@ resource "azurerm_app_service_slot" "app_service_api-trips_staging" {
   }
 
   app_settings = {
-    "SQL_USER"                        = local.mssql_server_administrator_login
-    "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
-    "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
-    "SQL_DBNAME"                      = local.mssql_database_name
-    "DOCKER_REGISTRY_SERVER_URL"      = local.docker_registry_server_url
-    "DOCKER_REGISTRY_SERVER_USERNAME" = local.docker_registry_server_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD" = local.docker_registry_server_password
+    "SQL_USER"                              = local.mssql_server_administrator_login
+    "SQL_PASSWORD"                          = local.mssql_server_administrator_login_password
+    "SQL_SERVER"                            = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
+    "SQL_DBNAME"                            = local.mssql_database_name
+    "DOCKER_REGISTRY_SERVER_URL"            = local.docker_registry_server_url
+    "DOCKER_REGISTRY_SERVER_USERNAME"       = local.docker_registry_server_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"       = local.docker_registry_server_password
+    "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.application_insights_staging.instrumentation_key
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application_insights_staging.connection_string
   }
 
   site_config {
