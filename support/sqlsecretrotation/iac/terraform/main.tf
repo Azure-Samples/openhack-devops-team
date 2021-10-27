@@ -1,8 +1,3 @@
-data "azurerm_container_registry" "container_registry" {
-  name                = var.container_registry_name
-  resource_group_name = var.container_registry_resource_group_name
-}
-
 data "azurerm_key_vault" "key_vault" {
   name                = var.key_vault_name
   resource_group_name = var.key_vault_resource_group_name
@@ -47,13 +42,6 @@ resource "azurerm_app_service_plan" "app_service_plan" {
   location            = azurerm_resource_group.resource_group.location
   resource_group_name = azurerm_resource_group.resource_group.name
   kind                = "FunctionApp"
-  # kind     = "Linux"
-  # reserved = true
-
-  # sku {
-  #   tier = "Standard"
-  #   size = "S1"
-  # }
 
   sku {
     tier = "Dynamic"
@@ -62,35 +50,25 @@ resource "azurerm_app_service_plan" "app_service_plan" {
 
   lifecycle {
     ignore_changes = [
-      tags
+      tags,
+      kind
     ]
   }
 }
 
 resource "azurerm_function_app" "function_app" {
-  # depends_on = [
-  #   null_resource.docker_sqlsecretrotation
-  # ]
   name                       = local.function_app_name
   location                   = azurerm_resource_group.resource_group.location
   resource_group_name        = azurerm_resource_group.resource_group.name
   app_service_plan_id        = azurerm_app_service_plan.app_service_plan.id
   storage_account_name       = azurerm_storage_account.storage_account.name
   storage_account_access_key = azurerm_storage_account.storage_account.primary_access_key
-  # os_type                    = "linux"
-  version    = "~3"
-  https_only = true
-
-  # source_control {
-  #   repo_url           = "https://github.com/Azure-Samples/KeyVault-Rotation-SQLPassword-Csharp.git"
-  #   branch             = "main"
-  #   manual_integration = true
-  # }
+  version                    = "~3"
+  https_only                 = true
 
   app_settings = {
     "APPINSIGHTS_INSTRUMENTATIONKEY" = azurerm_application_insights.application_insights.instrumentation_key
     "FUNCTIONS_WORKER_RUNTIME"       = "dotnet"
-    # "WEBSITE_NODE_DEFAULT_VERSION"   = "~10"
   }
 
   identity {
@@ -98,25 +76,28 @@ resource "azurerm_function_app" "function_app" {
   }
 
   site_config {
-    # linux_fx_version                     = "DOCKER|${data.azurerm_container_registry.container_registry.login_server}/devopsoh/sqlsecretrotation:latest"
-    # always_on = true
-    # http2_enabled                        = true
-    # linux_fx_version = "dotnet|3.1"
-    ftps_state               = "Disabled"
-    dotnet_framework_version = "v4.0"
+    ftps_state                = "Disabled"
+    dotnet_framework_version  = "v4.0"
+    use_32_bit_worker_process = false
   }
 
   lifecycle {
     ignore_changes = [
-      tags
+      tags,
+      # app_settings["WEBSITE_ENABLE_SYNC_UPDATE_SITE"],
+      # app_settings["WEBSITE_RUN_FROM_PACKAGE"],
+      # app_settings["APPINSIGHTS_INSTRUMENTATIONKEY"],
+      # app_settings["FUNCTIONS_WORKER_RUNTIME"]
     ]
   }
 }
 
-# resource "azurerm_role_assignment" "cr_role_assignment_function_app" {
-#   scope                = data.azurerm_container_registry.container_registry.id
-#   role_definition_name = "AcrPull"
-#   principal_id         = azurerm_function_app.function_app.identity[0].principal_id
+# resource "azurerm_app_service_source_control" "app_service_source_control" {
+#   app_id   = azurerm_function_app.function_app.id
+#   repo_url = "https://github.com/Azure-Samples/KeyVault-Rotation-SQLPassword-Csharp.git"
+#   branch   = "main"
+#   manual_integration = true
+#   # scm_type           = "ExternalGit"
 # }
 
 resource "azurerm_key_vault_access_policy" "key_vault_access_policy_function_app" {
@@ -147,13 +128,4 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy_function_app
 #   included_event_types = [
 #     "Microsoft.KeyVault.SecretNearExpiry"
 #   ]
-# }
-
-# resource "null_resource" "docker_sqlsecretrotation" {
-#   depends_on = [
-#     data.azurerm_container_registry.container_registry
-#   ]
-#   provisioner "local-exec" {
-#     command = "az acr build --image devopsoh/sqlsecretrotation:latest --registry ${data.azurerm_container_registry.container_registry.login_server} --file ../../src/Dockerfile ../../src"
-#   }
 # }

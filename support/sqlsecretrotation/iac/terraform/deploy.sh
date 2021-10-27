@@ -5,12 +5,10 @@ declare RESOURCES_PREFIX=$2
 declare SECRET_NAME=$3
 declare KEY_VAULT_RESOURCE_GROUP_NAME=$4
 declare KEY_VAULT_NAME=$5
-declare CONTAINER_REGISTRY_RESOURCE_GROUP_NAME=$6
-declare CONTAINER_REGISTRY_NAME=$7
 
-declare -r USAGE_HELP="Usage: ./deploy.sh <LOCATION> <RESOURCES_PREFIX> <SECRET_NAME> <KEY_VAULT_RESOURCE_GROUP_NAME> <KEY_VAULT_NAME> <CONTAINER_REGISTRY_RESOURCE_GROUP_NAME> <CONTAINER_REGISTRY_NAME>"
+declare -r USAGE_HELP="Usage: ./deploy.sh <LOCATION> <RESOURCES_PREFIX> <SECRET_NAME> <KEY_VAULT_RESOURCE_GROUP_NAME> <KEY_VAULT_NAME>"
 
-if [ $# -ne 7 ]; then
+if [ $# -ne 5 ]; then
     echo "${USAGE_HELP}"
     exit 1
 fi
@@ -27,6 +25,8 @@ fi
 if [ -f "devvars.sh" ]; then
     . devvars.sh
 fi
+
+export ARM_THREEPOINTZERO_BETA_RESOURCES=true
 
 azure_login() {
     _azuresp_json=$(cat azuresp.json)
@@ -45,8 +45,6 @@ prepare_tfvars() {
     echo 'secret_name = "'${SECRET_NAME}'"' >> terraform.tfvars
     echo 'key_vault_resource_group_name = "'${KEY_VAULT_RESOURCE_GROUP_NAME}'"' >> terraform.tfvars
     echo 'key_vault_name = "'${KEY_VAULT_NAME}'"' >> terraform.tfvars
-    echo 'container_registry_resource_group_name = "'${CONTAINER_REGISTRY_RESOURCE_GROUP_NAME}'"' >> terraform.tfvars
-    echo 'container_registry_name = "'${CONTAINER_REGISTRY_NAME}'"' >> terraform.tfvars
     terraform fmt
 }
 
@@ -89,8 +87,8 @@ prepare_tfvars
 azure_login
 lint_terraform
 init_terrafrom
-# # init_terrafrom_local
+# init_terrafrom_local
 validate_terraform
 preview_terraform
 deploy_terraform $?
-# # destroy_terraform
+# destroy_terraform

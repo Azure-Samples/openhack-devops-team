@@ -1,0 +1,114 @@
+trigger:
+  - none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: openhack
+  - group: tfstate
+  - name: ServiceConnectionName
+    value: AzureServiceConnection
+  - name: workDir
+    value: "$(System.DefaultWorkingDirectory)/support/sqlsecretrotation"
+
+stages:
+  - stage: Provision
+    displayName: Provision infrastructure
+    jobs:
+      - deployment: Provision
+        displayName: Provision
+        environment: sqlsecretrotation
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: TerraformInstaller@0
+                  displayName: Setup Terraform
+                  inputs:
+                    terraformVersion: "latest"
+                - task: TerraformCLI@0
+                  displayName: Terraform Init
+                  inputs:
+                    command: "init"
+                    workingDirectory: "$(workDir)/iac/terraform"
+                    backendType: "azurerm"
+                    backendServiceArm: "$(ServiceConnectionName)"
+                    backendAzureRmResourceGroupName: "$(TFSTATE_RESOURCES_GROUP_NAME)"
+                    backendAzureRmStorageAccountName: "$(TFSTATE_STORAGE_ACCOUNT_NAME)"
+                    backendAzureRmContainerName: "$(TFSTATE_STORAGE_CONTAINER_NAME)"
+                    backendAzureRmKey: "sqlsecrot.tfstate"
+                    allowTelemetryCollection: true
+                - task: TerraformCLI@0
+                  displayName: Terraform Plan
+                  inputs:
+                    command: "plan"
+                    workingDirectory: "$(workDir)/iac/terraform"
+                    environmentServiceName: "$(ServiceConnectionName)"
+                    commandOptions: '-detailed-exitcode -var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)" -var="secret_name=SQL-PASSWORD" -var="key_vault_name=$(RESOURCES_PREFIX)kv" -var="key_vault_resource_group_name=$(RESOURCES_PREFIX)rg"'
+                    publishPlanResults: "tfplan"
+                    allowTelemetryCollection: true
+                - task: TerraformCLI@0
+                  displayName: Terraform Apply
+                  condition: eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true')
+                  inputs:
+                    command: "apply"
+                    workingDirectory: "$(workDir)/iac/terraform"
+                    environmentServiceName: "$(ServiceConnectionName)"
+                    commandOptions: '-var="location=$(LOCATION)" -var="resources_prefix=$(RESOURCES_PREFIX)" -var="secret_name=SQL-PASSWORD" -var="key_vault_name=$(RESOURCES_PREFIX)kv" -var="key_vault_resource_group_name=$(RESOURCES_PREFIX)rg"'
+                    allowTelemetryCollection: true
+
+  - stage: Build
+    displayName: Build function
+    dependsOn: Provision
+    condition: succeeded()
+    jobs:
+      - job: Build
+        displayName: Build
+        steps:
+          - checkout: self
+          - task: UseDotNet@2
+            displayName: "Setup .NET Core"
+            inputs:
+              packageType: "sdk"
+              version: "3.x"
+          - task: DotNetCoreCLI@2
+            displayName: Build project
+            inputs:
+              command: "build"
+              projects: "$(workDir)/src/*.csproj"
+              arguments: "--output $(System.DefaultWorkingDirectory)/publish_output --configuration Release"
+              workingDirectory: "$(workDir)/src"
+          - task: ArchiveFiles@2
+            displayName: "Archive files"
+            inputs:
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/publish_output"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+              replaceExistingArchive: true
+          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            displayName: "Publish Artifact"
+            artifact: drop
+
+  - stage: Deploy
+    displayName: Deploy function
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: Deploy
+        displayName: Deploy
+        environment: sqlsecretrotation
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureFunctionApp@1
+                  displayName: "Azure Functions deploy"
+                  inputs:
+                    azureSubscription: "AzureServiceConnection"
+                    appType: "functionApp"
+                    appName: "$(RESOURCES_PREFIX)secrotfunc"
+                    package: "$(Pipeline.Workspace)/drop/$(Build.BuildId).zip"
+                    deploymentMethod: "auto"

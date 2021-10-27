@@ -1,13 +1,3 @@
-variable "container_registry_resource_group_name" {
-  description = ""
-  type        = string
-}
-
-variable "container_registry_name" {
-  description = ""
-  type        = string
-}
-
 variable "key_vault_resource_group_name" {
   description = ""
   type        = string
