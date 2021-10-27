@@ -376,7 +376,7 @@ resource "azurerm_key_vault_secret" "key_vault_secret_sqlpassword" {
   #   "ValidityPeriodDays" = 1
   # }
 
-  # expiration_date = timeadd(timestamp(), "24h")
+  # expiration_date = timeadd(timestamp(), "30m")
 
   lifecycle {
     ignore_changes = [
