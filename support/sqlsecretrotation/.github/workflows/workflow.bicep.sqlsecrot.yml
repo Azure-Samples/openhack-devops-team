@@ -1,6 +1,6 @@
 name: "Deploy - sqlsecrot (Bicep)"
 
-# run on push to main branch only
+# run manually
 on:
   workflow_dispatch:
 
