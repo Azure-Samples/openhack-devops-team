@@ -123,16 +123,18 @@ resource "azurerm_app_service" "app_service_tripviewer" {
   }
 
   app_settings = {
-    "BING_MAPS_KEY"              = local.bing_maps_key
-    "USER_ROOT_URL"              = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
-    "USER_JAVA_ROOT_URL"         = "https://${azurerm_app_service.app_service_api-userjava.default_site_hostname}"
-    "TRIPS_ROOT_URL"             = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
-    "POI_ROOT_URL"               = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
-    "STAGING_USER_ROOT_URL"      = "https://${azurerm_app_service_slot.app_service_api-userprofile_staging.default_site_hostname}"
-    "STAGING_USER_JAVA_ROOT_URL" = "https://${azurerm_app_service_slot.app_service_api-userjava_staging.default_site_hostname}"
-    "STAGING_TRIPS_ROOT_URL"     = "https://${azurerm_app_service_slot.app_service_api-trips_staging.default_site_hostname}"
-    "STAGING_POI_ROOT_URL"       = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
-    "DOCKER_REGISTRY_SERVER_URL" = "https://${azurerm_container_registry.container_registry.login_server}"
+    "BING_MAPS_KEY"                         = local.bing_maps_key
+    "USER_ROOT_URL"                         = "https://${azurerm_app_service.app_service_api-userprofile.default_site_hostname}"
+    "USER_JAVA_ROOT_URL"                    = "https://${azurerm_app_service.app_service_api-userjava.default_site_hostname}"
+    "TRIPS_ROOT_URL"                        = "https://${azurerm_app_service.app_service_api-trips.default_site_hostname}"
+    "POI_ROOT_URL"                          = "https://${azurerm_app_service.app_service_api-poi.default_site_hostname}"
+    "STAGING_USER_ROOT_URL"                 = "https://${azurerm_app_service_slot.app_service_api-userprofile_staging.default_site_hostname}"
+    "STAGING_USER_JAVA_ROOT_URL"            = "https://${azurerm_app_service_slot.app_service_api-userjava_staging.default_site_hostname}"
+    "STAGING_TRIPS_ROOT_URL"                = "https://${azurerm_app_service_slot.app_service_api-trips_staging.default_site_hostname}"
+    "STAGING_POI_ROOT_URL"                  = "https://${azurerm_app_service_slot.app_service_api-poi_staging.default_site_hostname}"
+    "DOCKER_REGISTRY_SERVER_URL"            = "https://${azurerm_container_registry.container_registry.login_server}"
+    "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.application_insights.instrumentation_key
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.application_insights.connection_string
   }
 
   site_config {
@@ -175,12 +177,23 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy_tripviewer" 
   ]
 }
 
-# resource "azurerm_application_insights" "application_insights_tripviewer" {
-#   name                = local.app_service_tripviewer_name
-#   location            = azurerm_resource_group.resource_group.location
-#   resource_group_name = azurerm_resource_group.resource_group.name
-#   application_type    = "web"
-# }
+############################################
+## APPLICATION INSIGHTS                   ##
+############################################
+
+resource "azurerm_application_insights" "application_insights" {
+  name                = local.application_insights_name
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  application_type    = "web"
+}
+
+resource "azurerm_application_insights" "application_insights_staging" {
+  name                = "${local.application_insights_name}staging"
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  application_type    = "web"
+}
 
 ############################################
 ## UAMI                                   ##

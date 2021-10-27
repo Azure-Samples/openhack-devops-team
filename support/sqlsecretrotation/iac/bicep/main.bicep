@@ -66,7 +66,7 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: 'InstrumentationKey=${applicationInsights.properties.InstrumentationKey}'
+          value: applicationInsights.properties.ConnectionString
         }
       ]
     }
