@@ -365,23 +365,23 @@ resource "azurerm_key_vault_access_policy" "key_vault_access_policy_sp" {
   ]
 }
 
-# resource "azurerm_key_vault_secret" "key_vault_secret_sqlpassword" {
-#   name         = "SQL-PASSWORD"
-#   value        = azurerm_container_registry.container_registry.admin_password
-#   key_vault_id = azurerm_key_vault.key_vault.id
+resource "azurerm_key_vault_secret" "key_vault_secret_sqlpassword" {
+  name         = "SQL-PASSWORD"
+  value        = azurerm_container_registry.container_registry.admin_password
+  key_vault_id = azurerm_key_vault.key_vault.id
 
-#   tags = {
-#     "CredentialId"       = local.mssql_server_administrator_login,
-#     "ProviderAddress"    = azurerm_mssql_server.mssql_server.id,
-#     "ValidityPeriodDays" = 1
-#   }
+  # tags = {
+  #   "CredentialId"       = local.mssql_server_administrator_login,
+  #   "ProviderAddress"    = azurerm_mssql_server.mssql_server.id,
+  #   "ValidityPeriodDays" = 1
+  # }
 
-#   expiration_date = formatdate("YYYY-MM-DDThh:mm:ssZ", timeadd(timestamp(), "24h"))
+  # expiration_date = timeadd(timestamp(), "24h")
 
-#   lifecycle {
-#     ignore_changes = [
-#       value,
-#       expiration_date
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      value,
+      expiration_date
+    ]
+  }
+}
