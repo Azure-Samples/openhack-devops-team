@@ -20,6 +20,7 @@ resource "azurerm_app_service" "app_service_api-poi" {
   app_settings = {
     "SQL_USER"                        = local.mssql_server_administrator_login
     "SQL_PASSWORD"                    = local.mssql_server_administrator_login_password
+    # "SQL_PASSWORD"                    = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.key_vault.name};SecretName=${azurerm_key_vault_secret.key_vault_secret_sqlpassword.name})"
     "SQL_SERVER"                      = azurerm_mssql_server.mssql_server.fully_qualified_domain_name
     "SQL_DBNAME"                      = local.mssql_database_name
     "WEBSITES_PORT"                   = "8080"
