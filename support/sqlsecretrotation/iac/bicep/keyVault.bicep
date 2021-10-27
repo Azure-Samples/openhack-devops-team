@@ -48,5 +48,10 @@ resource keyVaultEventSubscription 'Microsoft.EventGrid/eventSubscriptions@2021-
         'Microsoft.KeyVault.SecretNearExpiry'
       ]
     }
+    eventDeliverySchema: 'EventGridSchema'
+    retryPolicy: {
+      eventTimeToLiveInMinutes: 60
+      maxDeliveryAttempts: 30
+    }
   }
 }
