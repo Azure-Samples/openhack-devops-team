@@ -373,10 +373,10 @@ resource "azurerm_key_vault_secret" "key_vault_secret_sqlpassword" {
   # tags = {
   #   "CredentialId"       = local.mssql_server_administrator_login,
   #   "ProviderAddress"    = azurerm_mssql_server.mssql_server.id,
-  #   "ValidityPeriodDays" = 1
+  #   "ValidityPeriodDays" = 30
   # }
 
-  # expiration_date = timeadd(timestamp(), "24h")
+  # expiration_date = timeadd(timestamp(), "30m")
 
   lifecycle {
     ignore_changes = [
