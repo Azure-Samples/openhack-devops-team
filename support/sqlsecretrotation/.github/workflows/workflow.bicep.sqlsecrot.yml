@@ -1,0 +1,59 @@
+name: "Deploy - sqlsecrot (Bicep)"
+
+# run on push to main branch only
+on:
+  workflow_dispatch:
+
+# Set envs
+env:
+  WORKDIR: "iac/bicep"
+  RESOURCES_SUFFIX: "sqlsecrot"
+  # RESOURCES_PREFIX: "devopsoh44707" # hardcoded or dynamic based on repo name
+  # LOCATION: "westus2" # hardcoded or get from secrets
+
+# Set defaults for GitHub Actions runner
+defaults:
+  run:
+    working-directory: "support/sqlsecretrotation/iac/bicep"
+
+jobs:
+  deploy:
+    name: "Deploy"
+    needs: preview
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Get RESOURCES_PREFIX based on the repo name
+      - name: "Get Resources Names"
+        run: |
+          RESOURCES_PREFIX=$(echo '${{ toJson(github.repository) }}' | jq -r -c 'split("/")[1]')
+
+          # Set for current Job
+          echo "RESOURCES_PREFIX=${RESOURCES_PREFIX}" >> $GITHUB_ENV
+
+          RESOURCE_GROUP_NAME="${RESOURCES_PREFIX}${{ env.RESOURCES_SUFFIX }}rg"
+          echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
+
+      # Login to Azure with Service Principal
+      - name: "Azure Login"
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy
+      - name: "Deploy"
+        uses: Azure/cli@1.0.4
+        with:
+          inlineScript: |
+            if [ $(az group exists --name ${{ env.RESOURCE_GROUP_NAME }}) = false ]; then
+              az group create --name ${{ env.RESOURCE_GROUP_NAME }} --location ${{ secrets.LOCATION }}
+            fi
+            az deployment group create \
+            --name ${{ github.run_id }} \
+            --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
+            --template-file ${{ env.WORKDIR }}/main.bicep \
+            --parameters keyVaultRgName='${{ env.RESOURCES_PREFIX }}rg' keyVaultName='${{ env.RESOURCES_PREFIX }}kv' resourcesPrefix='${{ env.RESOURCES_PREFIX }}' resourcesSuffix='${{ env.RESOURCES_SUFFIX }}'
