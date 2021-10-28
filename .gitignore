@@ -10,6 +10,7 @@ testResultsNunit.xml
 testResultsJunit.xml
 integrationtest_results.xml
 unittest_results.xml
+.vscode
 
 # Local .terraform directories
 .terraform
@@ -346,4 +347,3 @@ __pycache__/
 *.xsd.cs
 
 .DS_Store
-.vscode/
