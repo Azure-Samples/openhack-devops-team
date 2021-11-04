@@ -28,15 +28,23 @@ jobs:
         uses: actions/checkout@v2
 
       # Get RESOURCES_PREFIX based on the repo name
-      - name: "Get Resources Names"
-        run: |
-          RESOURCES_PREFIX=$(echo '${{ toJson(github.repository) }}' | jq -r -c 'split("/")[1]')
+      - name: Get repo name
+        uses: actions/github-script@v5
+        id: resources_prefix
+        with:
+          result-encoding: string
+          script: return context.repo.repo.toLowerCase()
 
-          # Set for current Job
-          echo "RESOURCES_PREFIX=${RESOURCES_PREFIX}" >> $GITHUB_ENV
-
-          RESOURCE_GROUP_NAME="${RESOURCES_PREFIX}${{ env.RESOURCES_SUFFIX }}rg"
-          echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
+      # Concat RG name
+      - name: Get repo name
+        uses: actions/github-script@v5
+        id: resource_group_name
+        with:
+          result-encoding: string
+          script: |
+            const { RESOURCES_SUFFIX } = process.env
+            const repo_name = context.repo.repo.toLowerCase()
+            return `${repo_name}${RESOURCES_SUFFIX}rg`
 
       # Login to Azure with Service Principal
       - name: "Azure Login"
@@ -49,11 +57,11 @@ jobs:
         uses: Azure/cli@1.0.4
         with:
           inlineScript: |
-            if [ $(az group exists --name ${{ env.RESOURCE_GROUP_NAME }}) = false ]; then
-              az group create --name ${{ env.RESOURCE_GROUP_NAME }} --location ${{ secrets.LOCATION }}
+            if [ $(az group exists --name ${{ steps.resource_group_name.outputs.result }}) = false ]; then
+              az group create --name ${{ steps.resource_group_name.outputs.result }} --location ${{ secrets.LOCATION }}
             fi
             az deployment group create \
             --name ${{ github.run_id }} \
-            --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
+            --resource-group ${{ steps.resource_group_name.outputs.result }} \
             --template-file ${{ env.WORKDIR }}/main.bicep \
-            --parameters keyVaultRgName='${{ env.RESOURCES_PREFIX }}rg' keyVaultName='${{ env.RESOURCES_PREFIX }}kv' resourcesPrefix='${{ env.RESOURCES_PREFIX }}' resourcesSuffix='${{ env.RESOURCES_SUFFIX }}'
+            --parameters keyVaultRgName='${{ env.RESOURCES_PREFIX }}rg' keyVaultName='${{ steps.resources_prefix.outputs.result }}kv' resourcesPrefix='${{ steps.resources_prefix.outputs.result }}' resourcesSuffix='${{ env.RESOURCES_SUFFIX }}'
