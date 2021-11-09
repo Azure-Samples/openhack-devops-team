@@ -14,7 +14,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./api/poi
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -22,14 +24,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: |
-        cd ./api/poi/
-        dotnet restore
+      run: dotnet restore
     - name: Build
-      run: |
-        cd ./api/poi/
-        dotnet build
+      run: dotnet build
     - name: Test
       run: |
-        cd ./api/poi/tests/UnitTests/
+        cd ./tests/UnitTests/
         dotnet test .
