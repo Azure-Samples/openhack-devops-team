@@ -2,9 +2,9 @@ name: .NET Test POI API
 
 on:
   push:
-    branches: [ main ]
+    paths: 
+      - 'api/poi/'
   pull_request:
-    branches: [ main ]
     paths: 
       - 'api/poi/'
 
@@ -19,7 +19,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore poi.sln
+    - name: Build
+      run: dotnet build poi.sln
     - name: Test
-      run: | 
-        cd api/poi/ 
+      run: |
+        cd ./api/poi/tests/UnitTests/
         dotnet test .
