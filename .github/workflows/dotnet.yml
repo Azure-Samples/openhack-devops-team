@@ -3,10 +3,10 @@ name: .NET Test POI API
 on:
   push:
     paths: 
-      - 'api/poi/'
+      - 'api/poi/**'
   pull_request:
     paths: 
-      - 'api/poi/'
+      - 'api/poi/**'
 
 jobs:
   build:
