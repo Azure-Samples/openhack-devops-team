@@ -1,4 +1,4 @@
-name: .NET
+name: .NET Test POI API
 
 on:
   push:
@@ -19,9 +19,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: | 
+        cd api/poi/ 
+        dotnet test .
