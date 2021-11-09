@@ -2,11 +2,13 @@ name: .NET Test POI API
 
 on:
   push:
-    paths: 
-      - 'api/poi/**'
+    branches:
+      - main
+      - testing/*
   pull_request:
-    paths: 
-      - 'api/poi/**'
+    branches:
+     - main
+     - testing/*
 
 jobs:
   build:
