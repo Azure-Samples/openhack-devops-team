@@ -35,3 +35,8 @@ jobs:
       run: |
         cd ./tests/UnitTests/
         dotnet test .
+    - name: OnFailure
+      if: ${{ failure() }}
+      uses: JasonEtco/create-an-issue@v2
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
