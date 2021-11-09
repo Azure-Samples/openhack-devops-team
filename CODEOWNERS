@@ -12,4 +12,4 @@ apis/ @openhandy
 # /apis/user-java/ @yihui
 
 # userprofile
-# /apis/userprofile/ @openhandy
+/apis/userprofile/ @oberlaender
