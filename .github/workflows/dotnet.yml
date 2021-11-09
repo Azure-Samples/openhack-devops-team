@@ -22,9 +22,13 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore poi.sln
+      run: |
+        cd ./api/poi/
+        dotnet restore
     - name: Build
-      run: dotnet build poi.sln
+      run: |
+        cd ./api/poi/
+        dotnet build
     - name: Test
       run: |
         cd ./api/poi/tests/UnitTests/
