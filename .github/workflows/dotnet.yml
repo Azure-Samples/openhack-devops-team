@@ -3,13 +3,13 @@ name: .NET Test POI API
 on:
   push:
     paths:
-      - 'apis/poi'
+      - 'apis/poi/**'
     branches:
       - main
       - testing/*
   pull_request:
     paths:
-      - 'apis/poi'
+      - 'apis/poi/**'
     branches:
      - main
      - testing/*
