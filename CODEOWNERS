@@ -3,7 +3,7 @@
 
 # API owners
 # POI Owner
-/apis/poi/ @oberlaender
+/apis/ @oberlaender
 
 # Trips
 /apis/trips/ @Maverick-ctrl
