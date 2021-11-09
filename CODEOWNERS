@@ -6,11 +6,10 @@
 /apis/ @oberlaender
 
 # Trips
-/apis/trips/ @Maverick-ctrl
+# /apis/trips/ @Maverick-ctrl
 
 # User-java
-/apis/user-java/ @yihui
+# /apis/user-java/ @yihui
 
 # userprofile
-/apis/userprofile/ @openhandy
-
+# /apis/userprofile/ @openhandy
