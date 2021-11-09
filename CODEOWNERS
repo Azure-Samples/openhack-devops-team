@@ -1,15 +1,15 @@
 # General owners
-* @oberlaender @Maverick-ctrl @yihui @openhandy
+* @oberlaender @Maverick-ctrl yihuixxu@gmail.com @openhandy
 
 # API owners
 # POI Owner
-apis/ @openhandy
+apis/poi/ @openhandy
 
 # Trips
-# /apis/trips/ @Maverick-ctrl
+/apis/trips/ @Maverick-ctrl
 
 # User-java
-# /apis/user-java/ @yihui
+/apis/user-java/ yihuixxu@gmail.com
 
 # userprofile
 /apis/userprofile/ @oberlaender
