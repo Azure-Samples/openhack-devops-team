@@ -3,7 +3,7 @@
 name: Deploy user-profile
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/api-poi
+  IMAGE_NAME: ${{ github.repository }}/api-userprofile
 on:
   push:
     paths:
