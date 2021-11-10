@@ -59,6 +59,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: type=raw,value={{sha}}
         
     - name: Deploy to Azure Web App
@@ -68,4 +69,4 @@ jobs:
         app-name: 'openhackl8y6u383poi'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_fb4f66cc53b14ba1bee66aafb2871b78 }}
-        images: api-poi:${{ steps.meta.outputs.tags }}
+        images: api-poi:${{ steps.meta.outputs.version }}
