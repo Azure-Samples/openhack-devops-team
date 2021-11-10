@@ -1,5 +1,5 @@
 ---
-title: Someone just pushed
+title: Build failed
 labels: bug, enhancement
 ---
-Autotest failed
+Automated tests failed after build on the commited changes.
