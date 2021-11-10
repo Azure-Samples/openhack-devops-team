@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: User-Java Docker Image
 
 on:
   push:
