@@ -41,3 +41,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Deploy to AppService
+        uses: azure/webapps-deploy@v2
+        with:
+          publish-profile: ${{ secrets.POISECRET }}
