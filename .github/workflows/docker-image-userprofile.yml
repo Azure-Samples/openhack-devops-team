@@ -1,4 +1,4 @@
-name: Docker Image CI: userprofile
+name: Docker Image CI userprofile
 
 on:
   push:
