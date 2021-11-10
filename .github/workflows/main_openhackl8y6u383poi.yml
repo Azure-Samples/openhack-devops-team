@@ -30,13 +30,22 @@ jobs:
         registry: https://ghcr.io/ohnovt7/openhack-devops-team/
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v2
+        
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
       with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value={{sha}}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: type=raw,value={{sha}}
+          
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      with:
+        context: ./apis/poi/web/.
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+      
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -53,5 +62,4 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_fb4f66cc53b14ba1bee66aafb2871b78 }}
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=raw,value={{sha}}
+        tags: ${{ steps.meta.outputs.tags }}
