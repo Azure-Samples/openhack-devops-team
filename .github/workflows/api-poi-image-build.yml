@@ -36,5 +36,5 @@ jobs:
           context: ./apis/poi/web/.
           push: true
           tags: |
-            type=sha,prefix={{date 'YYYYMMDD'}}-
+            type=raw,value={{date 'YYYYMMDD'}}-{{sha}}
           labels: ${{ steps.meta.outputs.labels }}
