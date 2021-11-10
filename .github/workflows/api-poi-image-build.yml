@@ -36,6 +36,5 @@ jobs:
           context: ./apis/poi/web/.
           push: true
           tags: |
-            # dynamically set the branch name as a prefix
             type=sha,prefix={{date 'YYYYMMDD'}}-
           labels: ${{ steps.meta.outputs.labels }}
