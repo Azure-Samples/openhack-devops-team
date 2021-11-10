@@ -2,6 +2,8 @@ name: User-Java Docker Image
 
 on:
   push:
+    paths:
+      - 'apis/user-java/**'   
     branches: [ main ]
 env:
   REGISTRY: ghcr.io
