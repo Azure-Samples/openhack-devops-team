@@ -3,8 +3,13 @@
 
 name: Build and deploy container app to Azure Web App - openhackl8y6u383poi
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/api-poi
 on:
   push:
+    paths:
+      - 'apis/poi/**'  
     branches:
       - main
   workflow_dispatch:
@@ -29,10 +34,9 @@ jobs:
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
-        push: true
-        tags: ghcr.io/ohnovt7/openhack-devops-team/${{ secrets.AzureAppService_ContainerUsername_39b0745049944250bd2d16122b6b2253 }}/openhackl8y6u383acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}
-        file: ./Dockerfile
-
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value={{sha}}
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -48,4 +52,6 @@ jobs:
         app-name: 'openhackl8y6u383poi'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_fb4f66cc53b14ba1bee66aafb2871b78 }}
-        images: 'ghcr.io/ohnovt7/openhack-devops-team/${{ secrets.AzureAppService_ContainerUsername_39b0745049944250bd2d16122b6b2253 }}/openhackl8y6u383acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}'
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=raw,value={{sha}}
