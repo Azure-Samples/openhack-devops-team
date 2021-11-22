@@ -19,7 +19,7 @@ go run main.go
 * To run unit tests, execute:
 
   ```shell
-  go test ./tripgo -run Unit
+  go test ./tripsgo -run Unit
   ```
 
 To run all integration tests:
