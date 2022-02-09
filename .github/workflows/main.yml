@@ -35,23 +35,6 @@ jobs:
         run: |
           cd apis/userprofile
           npm install
-
-# This workflow contains a single job called "build"
-  create_issue:
-
-# The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-# Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: nashmaniac/create-issue-action@v1.1
-
-# Create Issue action
-      - name: Create Issue Action
-        with:
-          title: Build Failed
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{github.actor}}
-          labels: worflow-failed
-          body: Workflow failed for commit ${{github.sha}}
+          npm start
+          npm run build --if-present
+          npm test
