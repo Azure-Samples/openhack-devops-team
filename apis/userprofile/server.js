@@ -2,7 +2,7 @@
 
 require('dotenv').config()
 
-var Http = require('http');
+/*var Http = require('http');*/
 var Express = require('express');
 var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
